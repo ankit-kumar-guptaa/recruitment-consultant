@@ -21,11 +21,12 @@ export function CtaBand() {
             id="cta-heading"
             className="relative mx-auto max-w-2xl font-display text-3xl font-extrabold text-white sm:text-4xl"
           >
-            Ready to hire the right people?
+            Have a role open? Let&apos;s fill it.
           </h2>
           <p className="relative mx-auto mt-4 max-w-xl text-navy-100 text-balance-pretty">
-            Share your requirement today and get a screened shortlist within 48
-            working hours. No obligation, no upfront fee.
+            Send us the job description and get a screened shortlist within 48 working
+            hours. No obligation, no upfront fee, and a 90-day replacement
+            guarantee on every permanent placement.
           </p>
 
           <div className="relative mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">

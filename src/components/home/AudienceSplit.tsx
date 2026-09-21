@@ -6,11 +6,12 @@ const blocks = [
   {
     intent: "employer" as const,
     eyebrow: "For Employers",
-    title: "Build a team that stays",
+    title: "Hire without the hiring overhead",
     points: [
       "Screened shortlists within 48 working hours",
-      "Flexible models: permanent, contract, RPO",
-      "Replacement guarantee on every placement",
+      "Permanent, contract, executive search or RPO",
+      "No upfront fee — pay only when the candidate joins",
+      "90-day replacement guarantee on permanent hires",
     ],
     cta: "Hire Talent",
     tone: "dark",
@@ -21,7 +22,7 @@ const blocks = [
     title: "Move to a role that fits",
     points: [
       "Always free — candidates never pay a fee",
-      "Interview prep and honest role briefings",
+      "Honest role briefings and interview prep",
       "Openings across 12+ industries, pan India",
     ],
     cta: "Find a Job",
@@ -35,7 +36,7 @@ export function AudienceSplit() {
       aria-label="For employers and job seekers"
       className="py-16 sm:py-20 lg:py-24"
     >
-      <div className="container-page grid gap-6 lg:grid-cols-2">
+      <div className="container-page grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
         {blocks.map((block, index) => {
           const dark = block.tone === "dark";
           return (

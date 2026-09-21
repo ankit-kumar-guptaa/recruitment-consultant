@@ -1,7 +1,7 @@
 import { Icon } from "@/components/ui/Icon";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { industries } from "@/lib/site";
 import { Reveal } from "@/components/motion/Reveal";
+import { industries } from "@/lib/site";
 
 export function Industries() {
   return (
@@ -14,26 +14,31 @@ export function Industries() {
         <Reveal>
           <SectionHeading
             id="industries-heading"
-            eyebrow="Industries We Serve"
-            title="Specialist hiring across 12+ sectors"
-            description="Our consultants are aligned to industries, not just job boards — so they understand the roles, the market rates and the talent pools."
+            eyebrow="Industries We Recruit For"
+            title="Specialist recruitment across 12+ sectors in India"
+            description="Our consultants are aligned to industries, not job boards — so they know the roles, the salary bands and where the talent actually sits."
           />
         </Reveal>
 
-        <ul className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {industries.map((industry, index) => (
             <Reveal
               as="li"
               key={industry.name}
               direction="scale"
-              delay={(index % 4) * 80}
-              className="group flex items-center gap-3 rounded-xl border border-white bg-white px-4 py-4 shadow-card transition duration-200 hover:-translate-y-0.5 hover:border-navy-200"
+              delay={(index % 3) * 80}
+              className="group flex items-start gap-4 rounded-2xl border border-white bg-white p-5 shadow-card transition duration-300 hover:-translate-y-1 hover:border-navy-200 hover:shadow-float"
             >
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-navy-50 text-navy-700 transition group-hover:bg-navy-600 group-hover:text-white">
-                <Icon name={industry.icon} size={20} />
+              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-navy-50 text-navy-700 transition group-hover:bg-navy-600 group-hover:text-white">
+                <Icon name={industry.icon} size={22} />
               </span>
-              <span className="text-sm font-semibold leading-tight text-ink">
-                {industry.name}
+              <span className="min-w-0">
+                <h3 className="font-display text-base font-bold leading-tight text-ink">
+                  {industry.name} Recruitment
+                </h3>
+                <span className="mt-1 block text-[0.8rem] leading-snug text-ink-soft">
+                  {industry.roles}
+                </span>
               </span>
             </Reveal>
           ))}

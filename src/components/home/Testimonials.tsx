@@ -13,8 +13,8 @@ export function Testimonials() {
         <Reveal>
           <SectionHeading
             id="testimonials-heading"
-            eyebrow="Client &amp; Candidate Stories"
-            title="Hiring teams and candidates who stayed with us"
+            eyebrow="Client Results"
+            title="What hiring teams say after working with us"
           />
         </Reveal>
 

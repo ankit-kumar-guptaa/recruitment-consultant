@@ -14,16 +14,18 @@ export function Faq() {
         <Reveal>
           <SectionHeading
             id="faq-heading"
-            eyebrow="FAQ"
-            title="Questions we get asked most"
+            eyebrow="Employer FAQs"
+            title="Recruitment agency FAQs — fees, timelines and guarantees"
           />
         </Reveal>
 
         <Reveal delay={120} className="mt-10 divide-y divide-slate-100 rounded-2xl border border-slate-100 bg-white shadow-card">
           {faqs.map((faq) => (
             <details key={faq.question} className="group p-6">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-base font-bold text-ink marker:hidden">
-                {faq.question}
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 marker:hidden">
+                <h3 className="font-display text-base font-bold text-ink">
+                  {faq.question}
+                </h3>
                 <Icon
                   name="chevron"
                   size={20}

@@ -53,13 +53,50 @@ npm start       # serve the production build
 
 Copy `.env.example` to `.env.local` and set `NEXT_PUBLIC_SITE_URL` for your environment.
 
-## SEO
+## SEO & keyword strategy
 
+The homepage is written for **employers** — the side that pays. Job-seeker traffic
+arrives anyway through job-title searches, so it gets one nav item, one hero link and
+one homepage card rather than half the page.
+
+**Head terms** (H1, `<title>`, opening copy)
+`recruitment agency in India` · `recruitment consultancy in India` ·
+`staffing company in India` · `manpower consultancy` · `placement agency for companies`
+
+**Service terms** (service card names, H2s, `/services/*` URLs)
+`permanent staffing services` · `contract staffing companies in India` ·
+`temporary staffing agency India` · `executive search firm India` · `RPO services India` ·
+`recruitment process outsourcing India` · `bulk hiring agency` ·
+`campus recruitment agency India` · `third party payroll services India`
+
+**Commercial long-tail** (fees section + FAQ — highest buying intent)
+`recruitment agency charges in India` · `hire employees in India` ·
+`recruitment agency for startups India` · `IT recruitment agency India`
+
+**Local intent** — the coverage section names 16 cities and the schema lists each as an
+`areaServed` City, which is the base for later `/recruitment-agency-in-<city>` pages.
+
+The list lives in `targetKeywords` in `src/lib/site.ts` so inner pages can be built
+against the same map.
+
+### What is implemented
+
+- One `h1` carrying the head term, then a keyword-led `h2` per section and an `h3` per
+  service, industry, process step, fee model, article and FAQ question.
+- Two conversion sections aimed at commercial searches: **engagement models & fees**
+  (answers "what does a recruitment agency charge in India") and an **in-house vs.
+  agency comparison table**.
+- FAQ answers are written long enough to stand alone as answer-engine snippets.
+- Structured data: `EmploymentAgency` + `ProfessionalService` (with `areaServed` cities,
+  `contactPoint` and an `OfferCatalog`), `WebSite` with `SearchAction`, an `ItemList` of
+  `Service` entities, and `FAQPage`.
 - Metadata API with title template, canonical URLs, Open Graph and Twitter cards.
 - Generated OG image at `/opengraph-image`.
-- JSON-LD: `EmploymentAgency`, `WebSite` (with `SearchAction`) and `FAQPage`.
 - `app/sitemap.ts` and `app/robots.ts` generate `/sitemap.xml` and `/robots.txt`.
-- Semantic landmarks, a single `h1`, labelled sections and a skip-to-content link.
+- Semantic landmarks, labelled sections and a skip-to-content link.
+
+### Performance
+
 - Fonts (Outfit for headings, Plus Jakarta Sans for body, Caveat for the handwritten
   accents) are self-hosted through `next/font` — no render-blocking external requests.
 - The hero image is `priority` + WebP and icons are inline SVG rather than an icon library.
@@ -74,11 +111,25 @@ Copy `.env.example` to `.env.local` and set `NEXT_PUBLIC_SITE_URL` for your envi
    rendered as plain text wordmarks and should only name companies you actually work
    with and have permission to list.
 4. **Testimonials and stats** in `src/lib/site.ts` are sample copy — swap in real ones.
-5. **The insight/blog posts** listed on the homepage are sample entries — `/blog/...`
+5. **Check every promise before launch.** The homepage now commits in writing to a
+   48-hour first shortlist, a 90-day replacement guarantee, no upfront fee on contingency
+   hiring, and payroll/PF/ESIC handling for contract staff. These are the main reasons an
+   employer will call, and they are also contractual claims — confirm the business can
+   honour each one, and edit `heroHighlights`, `whyUs`, `hiringModels` and `faqs` in
+   `src/lib/site.ts` if any of them should read differently.
+6. **The insight/blog posts** listed on the homepage are sample entries — `/blog/...`
    routes do not exist yet.
-6. **Inner pages** (`/about`, `/services`, `/industries`, `/job-seekers`, `/employers`,
-   `/blog`, `/contact`, `/search`) are linked from the nav but not built yet; they
-   currently render the 404 page.
+7. **Inner pages** are linked from the nav and from the service cards but not built yet;
+   they currently render the 404 page. The keyword map in `targetKeywords` is the plan for
+   them: `/services/permanent-staffing`, `/services/contract-staffing`,
+   `/services/executive-search`, `/services/rpo`, `/services/bulk-hiring`,
+   `/services/payroll-compliance`, plus `/about`, `/industries`, `/employers`,
+   `/job-seekers`, `/blog`, `/contact` and city pages such as
+   `/recruitment-agency-in-delhi-ncr`.
+8. **Photography.** Every section is built to take a real photo where artwork sits today
+   (`next/image` slots with fixed aspect ratios and alt text). Drop files into
+   `public/images/` and swap the artwork component for an `Image` — the sizes are noted in
+   each component.
 
 ## Structure
 

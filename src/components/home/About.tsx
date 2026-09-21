@@ -46,7 +46,7 @@ export function About() {
                 12<span className="text-gold">+</span>
               </p>
               <p className="mt-1.5 text-sm font-medium leading-snug text-ink">
-                Years of recruitment experience
+                Years of recruitment experience in India
               </p>
               <p className="mt-3 flex items-center gap-2 border-t border-slate-100 pt-3 text-xs text-ink-soft">
                 <Icon name="pin" size={15} className="shrink-0 text-navy-600" />
@@ -62,9 +62,9 @@ export function About() {
             <SectionHeading
               id="about-heading"
               align="left"
-              eyebrow="Who We Are"
-              title="A recruitment partner that behaves like part of your team"
-              description="We started with a simple belief: hiring goes wrong when nobody owns it. So every mandate we take gets a consultant who understands the role, the market and the people on both sides of the table."
+              eyebrow="About Recruitment Consultant"
+              title="A recruitment consultancy that works like part of your hiring team"
+              description="Recruitment Consultant is a pan-India recruitment agency working with startups, SMEs and large enterprises. Every mandate gets a named consultant who understands your sector, your salary band and your timeline — and owns the role until the candidate joins."
             />
           </Reveal>
 

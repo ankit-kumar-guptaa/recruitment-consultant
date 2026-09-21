@@ -13,9 +13,9 @@ export function Process() {
         <Reveal>
           <SectionHeading
             id="process-heading"
-            eyebrow="How It Works"
-            title="Four steps from brief to joining date"
-            description="A transparent process with a single point of contact, so you always know exactly where every role stands."
+            eyebrow="Our Recruitment Process"
+            title="How we fill a role, from brief to joining date"
+            description="One point of contact, weekly pipeline reporting and a written SLA — so you always know exactly where every open position stands."
           />
         </Reveal>
 

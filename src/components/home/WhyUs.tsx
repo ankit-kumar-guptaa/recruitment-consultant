@@ -17,9 +17,9 @@ export function WhyUs() {
             <SectionHeading
               id="why-us-heading"
               align="left"
-              eyebrow="Why Choose Us"
-              title="A hiring partner that actually shortens your hiring cycle"
-              description="We combine an active pan-India talent network with consultants who own your mandate from brief to joining date."
+              eyebrow="Why Employers Choose Us"
+              title="The recruitment agency employers call when the role has to close"
+              description="No upfront fee, a named consultant per mandate, a 48-hour first shortlist and a 90-day replacement guarantee — the commercial terms are on your side, not ours."
             />
           </Reveal>
 

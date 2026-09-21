@@ -17,8 +17,8 @@ export function Insights() {
           <SectionHeading
             id="insights-heading"
             align="left"
-            eyebrow="Insights"
-            title="Hiring notes from the field"
+            eyebrow="Hiring Insights"
+            title="Recruitment insights for employers in India"
           />
           <Link
             href="/blog"

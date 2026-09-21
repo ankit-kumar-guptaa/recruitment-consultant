@@ -44,9 +44,9 @@ export function Coverage() {
           <SectionHeading
             id="coverage-heading"
             inverted
-            eyebrow="Pan-India Coverage"
-            title="We hire where your business grows"
-            description="Metro hubs, tier-2 manufacturing belts and emerging tech corridors — with consultants who know each local talent market."
+            eyebrow="Recruitment Services Across India"
+            title="A recruitment agency wherever you are hiring in India"
+            description="Delhi NCR, Mumbai, Bengaluru, Hyderabad, Pune, Chennai and tier-2 cities across India — with consultants who know each local salary band, notice-period norm and talent pool."
           />
         </Reveal>
 
@@ -67,9 +67,9 @@ export function Coverage() {
 
         <Reveal delay={200} className="mt-10 text-center">
           <p className="text-sm text-navy-200">
-            Hiring somewhere else?{" "}
+            Hiring somewhere we have not listed?{" "}
             <span className="font-semibold text-white">
-              We cover 100+ locations on request.
+              We source across 100+ locations in India on request.
             </span>
           </p>
         </Reveal>

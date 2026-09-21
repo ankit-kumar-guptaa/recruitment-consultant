@@ -31,7 +31,7 @@ export default function OpengraphImage() {
             color: "#bfd4fd",
           }}
         >
-          Your Trusted Hiring Partner
+          Recruitment Agency in India
         </div>
         <div
           style={{
@@ -43,7 +43,7 @@ export default function OpengraphImage() {
             letterSpacing: -2,
           }}
         >
-          Right People For A Brighter Tomorrow
+          Hire the right people, faster
         </div>
         <div
           style={{
@@ -53,7 +53,7 @@ export default function OpengraphImage() {
             color: "#dbe7fe",
           }}
         >
-          Permanent staffing · Contract hiring · Executive search · RPO
+          Shortlists in 48 hours · No upfront fee · 90-day guarantee
         </div>
         <div
           style={{

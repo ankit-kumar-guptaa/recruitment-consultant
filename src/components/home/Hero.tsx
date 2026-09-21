@@ -4,7 +4,7 @@ import { EnquiryButton } from "@/components/ui/EnquiryButton";
 import { RingBackdrop, DotGrid, Squiggle } from "@/components/ui/Artwork";
 import { Reveal } from "@/components/motion/Reveal";
 import { CountUp } from "@/components/motion/CountUp";
-import { heroHighlights, heroStats } from "@/lib/site";
+import { heroHighlights, heroStats, siteConfig } from "@/lib/site";
 
 export function Hero() {
   return (
@@ -26,7 +26,7 @@ export function Hero() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
             </span>
-            Your Trusted Hiring Partner
+            India&apos;s Hiring Partner For 1000+ Employers
           </Reveal>
 
           <Reveal delay={80}>
@@ -34,26 +34,40 @@ export function Hero() {
               id="hero-heading"
               className="mt-5 font-display text-[2.15rem] font-extrabold leading-[1.07] text-ink sm:text-[3rem] lg:text-[2.75rem] xl:text-[3.15rem] 2xl:text-[3.5rem]"
             >
-              Right People
+              Recruitment Agency{" "}
               <br />
-              For A <span className="text-navy-600">Brighter</span>{" "}
+              In India To{" "}
               <span className="relative inline-block whitespace-nowrap text-navy-600">
-                Tomorrow
+                Hire Faster
                 <Squiggle className="absolute -bottom-2 left-0 h-3 w-full text-gold" />
               </span>
             </h1>
           </Reveal>
 
           <Reveal as="p" delay={140} className="mt-5 max-w-lg text-base leading-relaxed text-ink-soft text-balance-pretty sm:text-lg">
-            We connect exceptional talent with great opportunities across
-            industries. From hiring to career growth — we make it happen.
+            Permanent staffing, contract hiring, executive search and RPO across
+            12+ industries and 100+ Indian cities. Screened shortlists in 48
+            hours, no upfront fee — right people for a brighter tomorrow.
           </Reveal>
 
           <Reveal delay={200} className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <EnquiryButton className="w-full sm:w-auto">Hire Talent</EnquiryButton>
-            <EnquiryButton intent="jobseeker" variant="outline" className="w-full sm:w-auto">
-              Find a Job
+            <EnquiryButton className="w-full sm:w-auto">
+              Hire Talent — Free Consultation
             </EnquiryButton>
+            <a
+              href={`tel:${siteConfig.phoneHref}`}
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full border-2 border-navy-600 bg-white px-7 py-3.5 text-[0.95rem] font-semibold text-navy-700 transition-all duration-200 hover:-translate-y-0.5 hover:bg-navy-50 sm:w-auto"
+            >
+              <Icon name="phone" size={18} />
+              {siteConfig.phoneDisplay}
+            </a>
+          </Reveal>
+
+          <Reveal as="p" delay={230} className="mt-4 text-sm text-ink-soft">
+            Looking for a job instead?{" "}
+            <a href="/job-seekers" className="font-semibold text-navy-600 underline-offset-2 hover:underline">
+              Browse openings for job seekers
+            </a>
           </Reveal>
 
           <Reveal as="ul" delay={260} className="mt-8 grid grid-cols-2 gap-x-4 gap-y-4 sm:gap-x-6 lg:grid-cols-4">

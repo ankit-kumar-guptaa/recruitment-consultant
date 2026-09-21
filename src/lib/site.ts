@@ -7,9 +7,9 @@ export const siteConfig = {
     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
     "https://recruitmentconsultant.co.in",
   description:
-    "Recruitment Consultant is a pan-India hiring partner connecting companies with pre-screened talent. Permanent staffing, contract hiring, executive search and RPO across IT, BFSI, manufacturing, healthcare and more.",
+    "Recruitment Consultant is a pan-India recruitment agency for employers. We handle permanent staffing, contract and temporary staffing, executive search, RPO, bulk and campus hiring across 12+ industries — with screened shortlists in 48 hours and a replacement guarantee on every placement.",
   shortDescription:
-    "Pan-India recruitment consultancy for permanent staffing, contract hiring, executive search and RPO.",
+    "Pan-India recruitment agency for employers — permanent staffing, contract hiring, executive search, RPO and payroll outsourcing.",
   email: "info@recruitmentconsultant.co.in",
   phoneDisplay: "+91 98765 43210",
   phoneHref: "+919876543210",
@@ -29,6 +29,40 @@ export const siteConfig = {
   },
 } as const;
 
+/**
+ * Primary commercial keywords, employer side (India).
+ * Head terms live in the H1, metadata and service names; the rest are worked
+ * into section headings, body copy, the FAQ and internal link anchors.
+ * Job-seeker terms are deliberately secondary — see README.
+ */
+export const targetKeywords = {
+  head: [
+    "recruitment agency in India",
+    "recruitment consultancy in India",
+    "staffing company in India",
+    "manpower consultancy in India",
+    "placement agency for companies",
+  ],
+  service: [
+    "permanent staffing services",
+    "contract staffing companies in India",
+    "temporary staffing agency India",
+    "executive search firm India",
+    "RPO services India",
+    "recruitment process outsourcing India",
+    "bulk hiring agency",
+    "campus recruitment agency India",
+    "third party payroll services India",
+  ],
+  commercial: [
+    "hire employees in India",
+    "recruitment agency charges in India",
+    "recruitment agency for startups India",
+    "IT recruitment agency India",
+    "best recruitment agency for manufacturing",
+  ],
+} as const;
+
 export type NavItem = { label: string; href: string };
 
 export const mainNav: NavItem[] = [
@@ -36,16 +70,15 @@ export const mainNav: NavItem[] = [
   { label: "About Us", href: "/about" },
   { label: "Our Services", href: "/services" },
   { label: "Industries", href: "/industries" },
-  { label: "Job Seekers", href: "/job-seekers" },
   { label: "Employers", href: "/employers" },
+  { label: "Job Seekers", href: "/job-seekers" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
 
 /**
  * Client wordmarks shown in the "trusted by" strip.
- * Replace these with the logos of companies you actually work with
- * (and that have approved being listed) before going live.
+ * Replace with companies you actually work with and have permission to list.
  */
 export const clientLogos = [
   "TATA",
@@ -59,91 +92,31 @@ export const clientLogos = [
 ];
 
 export const heroHighlights = [
-  { icon: "network", title: "Pan India", subtitle: "Talent Network" },
-  { icon: "shield", title: "Trusted by", subtitle: "Leading Companies" },
-  { icon: "bolt", title: "Faster", subtitle: "Hiring Process" },
-  { icon: "target", title: "Opportunities", subtitle: "Across All Sectors" },
-] as const;
-
-export const services = [
-  {
-    icon: "users",
-    title: "Permanent Staffing",
-    description:
-      "Full-time hiring for every level — from fresh graduates to senior leadership — with pre-screened, role-ready candidates.",
-    href: "/services#permanent-staffing",
-  },
-  {
-    icon: "clock",
-    title: "Contract & Temp Staffing",
-    description:
-      "Scale teams up or down on demand with contract-to-hire and project-based professionals, fully payroll compliant.",
-    href: "/services#contract-staffing",
-  },
-  {
-    icon: "crown",
-    title: "Executive Search",
-    description:
-      "Confidential CXO and leadership mandates run by dedicated consultants with mapped industry networks.",
-    href: "/services#executive-search",
-  },
-  {
-    icon: "layers",
-    title: "RPO Solutions",
-    description:
-      "We run all or part of your recruitment function — sourcing, screening, scheduling and offer management.",
-    href: "/services#rpo",
-  },
-  {
-    icon: "cap",
-    title: "Campus Hiring",
-    description:
-      "Bulk fresher drives across engineering, management and skill-based colleges, with assessments built in.",
-    href: "/services#campus-hiring",
-  },
-  {
-    icon: "file",
-    title: "Payroll & Compliance",
-    description:
-      "Statutory compliance, payroll processing and onboarding support so your extended workforce stays audit-ready.",
-    href: "/services#payroll",
-  },
-] as const;
-
-export const industries = [
-  { icon: "chip", name: "IT & Software" },
-  { icon: "bank", name: "BFSI" },
-  { icon: "factory", name: "Manufacturing" },
-  { icon: "health", name: "Healthcare & Pharma" },
-  { icon: "cart", name: "Retail & E-commerce" },
-  { icon: "truck", name: "Logistics & Supply Chain" },
-  { icon: "signal", name: "Telecom" },
-  { icon: "book", name: "Education & EdTech" },
-  { icon: "building", name: "Real Estate & Infra" },
-  { icon: "cup", name: "Hospitality & Travel" },
-  { icon: "car", name: "Automotive" },
-  { icon: "headset", name: "BPO & Shared Services" },
+  { icon: "bolt", title: "48-Hour", subtitle: "Screened Shortlists" },
+  { icon: "network", title: "100+ Cities", subtitle: "Pan-India Sourcing" },
+  { icon: "shield", title: "90-Day", subtitle: "Replacement Guarantee" },
+  { icon: "file", title: "No Upfront Fee", subtitle: "Pay On Joining" },
 ] as const;
 
 export const heroStats = [
   {
     value: 5000,
     suffix: "+",
-    label: "Successful Placements",
+    label: "Positions Closed",
     icon: "users",
     tone: "bg-emerald-100 text-emerald-700",
   },
   {
     value: 1000,
     suffix: "+",
-    label: "Happy Clients",
+    label: "Employers Served",
     icon: "building",
     tone: "bg-navy-100 text-navy-700",
   },
   {
     value: 48,
     suffix: " hrs",
-    label: "Average Shortlist Time",
+    label: "To First Shortlist",
     icon: "bolt",
     tone: "bg-gold-soft text-[#b8770a]",
   },
@@ -156,136 +129,268 @@ export const heroStats = [
   },
 ] as const;
 
+export const services = [
+  {
+    icon: "users",
+    title: "Permanent Staffing Services",
+    description:
+      "End-to-end permanent recruitment for junior, mid and senior roles. You receive a ranked shortlist with evaluation notes, and pay only when your chosen candidate joins.",
+    points: ["Junior to CXO", "Contingency or retained", "Pay on joining"],
+    href: "/services/permanent-staffing",
+  },
+  {
+    icon: "clock",
+    title: "Contract & Temporary Staffing",
+    description:
+      "Scale teams for projects, seasonal peaks and interim gaps. We hold the payroll, PF, ESIC and statutory compliance, so headcount stays flexible without adding risk.",
+    points: ["Contract-to-hire", "We hold the payroll", "Full statutory cover"],
+    href: "/services/contract-staffing",
+  },
+  {
+    icon: "crown",
+    title: "Executive Search & Leadership Hiring",
+    description:
+      "Confidential CXO, VP and functional-head mandates run by a dedicated consultant with a mapped industry network, competency-based assessment and market intelligence.",
+    points: ["Confidential search", "Mapped talent pools", "Retained model"],
+    href: "/services/executive-search",
+  },
+  {
+    icon: "layers",
+    title: "RPO — Recruitment Process Outsourcing",
+    description:
+      "We run all or part of your talent acquisition on an SLA — sourcing, screening, scheduling, offer management and reporting — as an embedded extension of your HR team.",
+    points: ["Embedded recruiters", "SLA-driven", "Monthly or per-hire"],
+    href: "/services/rpo",
+  },
+  {
+    icon: "cap",
+    title: "Bulk & Campus Hiring",
+    description:
+      "Volume drives for BPO, retail, warehousing, manufacturing and sales, plus campus recruitment across engineering and management colleges — assessments and logistics included.",
+    points: ["50 to 500+ hires", "Walk-in drives", "Assessments included"],
+    href: "/services/bulk-hiring",
+  },
+  {
+    icon: "file",
+    title: "Payroll Outsourcing & Compliance",
+    description:
+      "Third-party payroll, onboarding documentation, PF/ESIC registration, monthly challans and audit-ready records for your extended and contractual workforce.",
+    points: ["Third-party payroll", "PF · ESIC · PT", "Audit-ready records"],
+    href: "/services/payroll-compliance",
+  },
+] as const;
+
+export const industries = [
+  {
+    icon: "chip",
+    name: "IT & Software",
+    roles: "Engineering, data, cloud, product, QA",
+  },
+  { icon: "bank", name: "BFSI", roles: "Banking, NBFC, insurance, fintech" },
+  {
+    icon: "factory",
+    name: "Manufacturing",
+    roles: "Plant, quality, maintenance, EHS",
+  },
+  {
+    icon: "health",
+    name: "Healthcare & Pharma",
+    roles: "Clinical, R&D, regulatory, sales",
+  },
+  {
+    icon: "cart",
+    name: "Retail & E-commerce",
+    roles: "Store ops, category, supply chain",
+  },
+  {
+    icon: "truck",
+    name: "Logistics & Supply Chain",
+    roles: "Warehouse, transport, planning",
+  },
+  { icon: "signal", name: "Telecom", roles: "Network, field ops, enterprise sales" },
+  { icon: "book", name: "Education & EdTech", roles: "Academic, counselling, sales" },
+  {
+    icon: "building",
+    name: "Real Estate & Infra",
+    roles: "Projects, sales, civil, procurement",
+  },
+  { icon: "cup", name: "Hospitality & Travel", roles: "Front office, F&B, operations" },
+  { icon: "car", name: "Automotive", roles: "Design, production, aftersales" },
+  {
+    icon: "headset",
+    name: "BPO & Shared Services",
+    roles: "Voice, non-voice, F&A, HRO",
+  },
+] as const;
+
 export const hiringProcess = [
   {
     step: "01",
-    title: "Understand the Role",
+    title: "Requirement & Role Mapping",
     description:
-      "We map the job description, team structure, budget and must-have skills before a single profile is sourced.",
+      "A consultant takes the brief: job description, reporting structure, budget band, must-have skills, location and joining timeline. We flag anything that will make the role hard to fill before the search starts.",
   },
   {
     step: "02",
-    title: "Source & Screen",
+    title: "Sourcing & Screening",
     description:
-      "Our consultants search our pan-India database, referrals and passive networks, then screen on skill and intent.",
+      "We search our pan-India database, referral network and passive channels, then screen on skill, stability, notice period and compensation fit — so you never interview a candidate who was never going to accept.",
   },
   {
     step: "03",
-    title: "Shortlist & Interview",
+    title: "Shortlist & Interviews",
     description:
-      "You receive a ranked shortlist with evaluation notes. We coordinate every interview round end to end.",
+      "You receive a ranked shortlist with evaluation notes within 48 working hours for most roles. We coordinate every interview round, chase feedback and keep candidates warm.",
   },
   {
     step: "04",
-    title: "Offer & Onboard",
+    title: "Offer, Joining & Guarantee",
     description:
-      "We support negotiation, documentation and joining follow-ups, plus a replacement guarantee on every hire.",
+      "We support negotiation, offer roll-out, documentation and joining follow-ups, then stay in touch through probation. Every permanent placement carries a 90-day replacement guarantee.",
   },
 ] as const;
 
 export const whyUs = [
   {
-    icon: "target",
-    title: "Role-First Sourcing",
-    description:
-      "Every mandate gets a dedicated consultant who knows the domain, not a generic CV blast.",
-  },
-  {
     icon: "bolt",
     title: "Shortlists in 48 Hours",
     description:
-      "An active, continuously refreshed talent pool means you interview quickly instead of waiting weeks.",
+      "An active, continuously refreshed talent pool across 12+ industries means you start interviewing in days, not weeks.",
+  },
+  {
+    icon: "target",
+    title: "One Consultant Owns the Role",
+    description:
+      "A named specialist who knows your sector runs the mandate end to end — no CV blasts, no handoffs, no chasing a shared inbox.",
   },
   {
     icon: "shield",
-    title: "Replacement Guarantee",
+    title: "90-Day Replacement Guarantee",
     description:
-      "If a placed candidate does not work out within the agreed period, we replace them at no extra cost.",
+      "If a permanent placement does not work out within 90 days of joining, we rerun the search at no additional professional fee.",
   },
   {
-    icon: "network",
-    title: "Pan-India Reach",
+    icon: "file",
+    title: "No Upfront Fee",
     description:
-      "Metro, tier-2 and tier-3 hiring across 12+ industries, including bulk and multi-location drives.",
-  },
-] as const;
-
-export const testimonials = [
-  {
-    quote:
-      "We closed eight engineering roles in under a month. The shortlists were sharp and every candidate had already been briefed properly.",
-    name: "Priya Sharma",
-    role: "Head of Talent, SaaS Product Company",
-  },
-  {
-    quote:
-      "Their team handled a 60-person warehouse ramp-up across three cities for us, including compliance. It simply worked.",
-    name: "Rahul Mehta",
-    role: "Operations Director, Logistics Firm",
-  },
-  {
-    quote:
-      "As a candidate I was guided through every round and never left guessing. I joined a role that actually matched my goals.",
-    name: "Aisha Khan",
-    role: "Senior Financial Analyst",
-  },
-] as const;
-
-export const faqs = [
-  {
-    question: "How quickly can you share the first shortlist?",
-    answer:
-      "For most mid-level roles we share a screened shortlist within 48 working hours of the requirement being signed off. Niche and leadership mandates typically take 5 to 7 working days because of the depth of mapping involved.",
-  },
-  {
-    question: "Which locations and industries do you hire for?",
-    answer:
-      "We recruit across India — metros as well as tier-2 and tier-3 cities — for IT and software, BFSI, manufacturing, healthcare and pharma, retail and e-commerce, logistics, telecom, education, real estate, hospitality, automotive and shared services.",
-  },
-  {
-    question: "Do you charge job seekers any fee?",
-    answer:
-      "No. Our services are completely free for candidates. We are paid by the hiring company, so you should never be asked for money at any stage of the process.",
-  },
-  {
-    question: "What is your replacement guarantee?",
-    answer:
-      "If a placed candidate leaves or is found unsuitable within the guarantee period agreed in your contract, we run the search again and provide a replacement at no additional professional fee.",
-  },
-  {
-    question: "Can you manage bulk or campus hiring drives?",
-    answer:
-      "Yes. We run volume hiring, walk-in drives and campus recruitment programmes, including assessments, logistics coordination and offer roll-out for hundreds of positions at a time.",
+      "Permanent mandates are contingency-based. You are invoiced only after your chosen candidate actually joins.",
   },
 ] as const;
 
 export const aboutPoints = [
   {
     icon: "target",
-    title: "Consultant-led, not CV-led",
+    title: "Built for employers, not job boards",
     description:
-      "One named consultant owns your mandate end to end — they brief candidates properly and tell you honestly when a role needs repositioning.",
+      "We are a recruitment consultancy, not a database subscription. Every profile you see has been spoken to, screened and briefed on your role before it reaches your inbox.",
   },
   {
     icon: "network",
-    title: "An active talent network",
+    title: "Pan-India reach, local knowledge",
     description:
-      "A continuously refreshed database plus referral and passive networks across 12+ industries and every major Indian city.",
+      "Metro hubs, tier-2 manufacturing belts and emerging tech corridors — with consultants who know local salary bands, notice-period norms and attrition patterns.",
   },
   {
     icon: "shield",
-    title: "Accountable on outcomes",
+    title: "Compliance handled end to end",
     description:
-      "Transparent SLAs, weekly pipeline reporting and a replacement guarantee on every placement we make.",
+      "For contract and temporary staffing we hold the payroll and manage PF, ESIC, professional tax and statutory filings, so your extended workforce stays audit-ready.",
   },
 ] as const;
 
+/** Engagement models — answers "how do recruitment agency fees work in India". */
+export const hiringModels = [
+  {
+    name: "Contingency Hiring",
+    best: "Most permanent roles, junior to senior",
+    fee: "% of annual CTC, on joining",
+    points: [
+      "Zero upfront cost — invoiced only after the candidate joins",
+      "Shortlist typically within 48 working hours",
+      "90-day replacement guarantee included",
+    ],
+    featured: false,
+  },
+  {
+    name: "Retained Search",
+    best: "CXO, VP and confidential leadership mandates",
+    fee: "Staged fee across the search",
+    points: [
+      "Dedicated consultant with a mapped, researched talent pool",
+      "Competency-based assessment and market intelligence report",
+      "Exclusive, confidential and milestone-driven",
+    ],
+    featured: true,
+  },
+  {
+    name: "Contract Staffing",
+    best: "Project, seasonal and interim headcount",
+    fee: "Monthly markup on CTC",
+    points: [
+      "We hold the payroll, PF, ESIC and statutory compliance",
+      "Scale up or down without changing your headcount plan",
+      "Contract-to-hire conversion available",
+    ],
+    featured: false,
+  },
+  {
+    name: "RPO / Dedicated Recruiter",
+    best: "Continuous or high-volume hiring",
+    fee: "Fixed monthly retainer",
+    points: [
+      "Recruiters embedded in your process and ATS",
+      "Predictable cost per hire at volume",
+      "Weekly pipeline and SLA reporting",
+    ],
+    featured: false,
+  },
+] as const;
+
+/** In-house hiring vs. a recruitment partner — comparison table. */
+export const comparison = {
+  columns: ["Hiring in-house only", "With Recruitment Consultant"],
+  rows: [
+    {
+      label: "Time to first shortlist",
+      inhouse: "2–4 weeks of job-board sourcing",
+      withUs: "48 working hours for most roles",
+    },
+    {
+      label: "Reach",
+      inhouse: "Candidates actively applying",
+      withUs: "Active + passive + referral networks, pan-India",
+    },
+    {
+      label: "Screening",
+      inhouse: "HR generalist reviews CVs",
+      withUs: "Sector specialist screens skill, stability and intent",
+    },
+    {
+      label: "Offer drop-outs",
+      inhouse: "Discovered on the joining date",
+      withUs: "Notice period and counter-offer risk checked upfront",
+    },
+    {
+      label: "Cost if it fails",
+      inhouse: "Full cost of a re-run search",
+      withUs: "Free replacement within 90 days",
+    },
+    {
+      label: "Compliance for contract staff",
+      inhouse: "Your legal and payroll team",
+      withUs: "We hold payroll, PF, ESIC and filings",
+    },
+  ],
+} as const;
+
 export const cities = [
   "Delhi NCR",
+  "Gurugram",
+  "Noida",
   "Mumbai",
+  "Pune",
   "Bengaluru",
   "Hyderabad",
-  "Pune",
   "Chennai",
   "Ahmedabad",
   "Kolkata",
@@ -294,9 +399,28 @@ export const cities = [
   "Chandigarh",
   "Coimbatore",
   "Lucknow",
-  "Nagpur",
   "Kochi",
-  "Bhubaneswar",
+] as const;
+
+export const testimonials = [
+  {
+    quote:
+      "We closed eight engineering roles in under a month. The shortlists were sharp and every candidate had already been briefed on the role, the stack and the compensation band.",
+    name: "Priya Sharma",
+    role: "Head of Talent, SaaS Product Company",
+  },
+  {
+    quote:
+      "They ran a 60-person warehouse ramp-up across three cities for us, including payroll and statutory compliance. Our internal team did not have to touch it.",
+    name: "Rahul Mehta",
+    role: "Operations Director, Logistics Firm",
+  },
+  {
+    quote:
+      "Our CFO search was confidential and we could not post it anywhere. They mapped the market, gave us four genuinely relevant profiles and we closed in seven weeks.",
+    name: "Anand Iyer",
+    role: "Managing Director, Manufacturing Group",
+  },
 ] as const;
 
 export const insights = [
@@ -304,7 +428,7 @@ export const insights = [
     art: "hiring" as const,
     category: "Hiring Strategy",
     readingTime: "6 min read",
-    title: "How to cut your time-to-hire without lowering the bar",
+    title: "How to cut time-to-hire without lowering the bar",
     excerpt:
       "Most delays are not caused by a shortage of candidates. They are caused by unclear briefs, slow feedback loops and interview panels that keep changing.",
     href: "/blog/cut-time-to-hire",
@@ -313,19 +437,19 @@ export const insights = [
     art: "salary" as const,
     category: "Market Insights",
     readingTime: "8 min read",
-    title: "India salary benchmarks: what candidates expect in 2026",
+    title: "What recruitment agencies charge in India in 2026",
     excerpt:
-      "Offer expectations have shifted sharply in tier-2 cities. Here is what we are seeing across engineering, sales, finance and operations roles.",
-    href: "/blog/india-salary-benchmarks",
+      "Contingency percentages, retained milestones and contract-staffing markups explained — plus what actually drives the number up or down.",
+    href: "/blog/recruitment-agency-fees-india",
   },
   {
     art: "resume" as const,
-    category: "For Job Seekers",
-    readingTime: "5 min read",
-    title: "The resume mistakes that quietly cost you interviews",
+    category: "Employer Guide",
+    readingTime: "7 min read",
+    title: "Contract staffing vs permanent hiring: which fits the role?",
     excerpt:
-      "Recruiters spend seconds on a first pass. These five fixes make your experience readable, searchable and far harder to skip.",
-    href: "/blog/resume-mistakes",
+      "A practical framework for deciding when to add headcount, when to hire on contract, and what each option really costs over 12 months.",
+    href: "/blog/contract-vs-permanent-hiring",
   },
 ] as const;
 
@@ -333,8 +457,69 @@ export const shortlistPreview = {
   role: "Senior Backend Engineer",
   location: "Bengaluru · Hybrid",
   candidates: [
-    { initials: "NR", name: "N. Rao", match: 96, note: "Go · Kafka · 7 yrs", tone: "bg-navy-600" },
-    { initials: "SK", name: "S. Kapoor", match: 91, note: "Java · AWS · 6 yrs", tone: "bg-emerald-600" },
-    { initials: "AM", name: "A. Menon", match: 88, note: "Node · K8s · 8 yrs", tone: "bg-navy-800" },
+    {
+      initials: "NR",
+      name: "N. Rao",
+      match: 96,
+      note: "Go · Kafka · 7 yrs · 30-day notice",
+      tone: "bg-navy-600",
+    },
+    {
+      initials: "SK",
+      name: "S. Kapoor",
+      match: 91,
+      note: "Java · AWS · 6 yrs · Immediate",
+      tone: "bg-emerald-600",
+    },
+    {
+      initials: "AM",
+      name: "A. Menon",
+      match: 88,
+      note: "Node · K8s · 8 yrs · 45-day notice",
+      tone: "bg-navy-800",
+    },
   ],
 } as const;
+
+export const faqs = [
+  {
+    question: "What does a recruitment agency charge in India?",
+    answer:
+      "For permanent roles we work on contingency: a percentage of the candidate's annual CTC, invoiced only after they join. The percentage depends on the seniority and difficulty of the role, and is agreed in writing before the search starts. Retained executive search is billed in stages across the mandate, contract staffing carries a monthly markup on CTC, and RPO is a fixed monthly retainer. There is never an upfront fee for contingency hiring.",
+  },
+  {
+    question: "How quickly will we get the first shortlist?",
+    answer:
+      "For most mid-level roles we share a screened shortlist within 48 working hours of the requirement being signed off. Niche technical roles and leadership mandates typically take five to seven working days because of the depth of market mapping involved.",
+  },
+  {
+    question: "What happens if the candidate leaves or does not work out?",
+    answer:
+      "Every permanent placement carries a 90-day replacement guarantee from the date of joining. If the candidate leaves or is found unsuitable in that window, we rerun the search and provide a replacement at no additional professional fee. Longer guarantee periods can be agreed for retained leadership mandates.",
+  },
+  {
+    question: "Which industries and locations do you recruit for?",
+    answer:
+      "We hire across IT and software, BFSI, manufacturing, healthcare and pharma, retail and e-commerce, logistics, telecom, education, real estate, hospitality, automotive and BPO or shared services. Our consultants cover Delhi NCR, Mumbai, Bengaluru, Hyderabad, Pune, Chennai, Ahmedabad, Kolkata and tier-2 and tier-3 cities across India, and we can source for 100+ locations on request.",
+  },
+  {
+    question: "Can you handle bulk hiring or a new-site ramp-up?",
+    answer:
+      "Yes. We run volume hiring drives, walk-in events and campus recruitment programmes for 50 to 500+ positions, including assessments, venue and logistics coordination, offer roll-out and joining follow-up. For contract headcount we also hold the payroll and statutory compliance.",
+  },
+  {
+    question: "Do you provide contract staffing with payroll and compliance?",
+    answer:
+      "Yes. Under contract and temporary staffing the worker is on our payroll. We manage PF, ESIC, professional tax, monthly challans, onboarding documentation and audit-ready records, so your compliance exposure stays with us rather than with your team.",
+  },
+  {
+    question: "How is a recruitment consultancy different from a job portal?",
+    answer:
+      "A job portal gives you access to applications and leaves the sourcing, screening, coordination and closing to your team. A recruitment consultancy does that work for you: we reach passive candidates who are not applying anywhere, screen on skill and intent, manage the interview process and take ownership of the closure — and with contingency hiring you pay only for a result.",
+  },
+  {
+    question: "Do job seekers pay any fee?",
+    answer:
+      "No. Our services are completely free for candidates. We are paid by the hiring company, so no candidate should ever be asked for money at any stage of the process.",
+  },
+] as const;

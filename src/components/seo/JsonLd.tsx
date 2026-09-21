@@ -1,4 +1,4 @@
-import { siteConfig, services, industries, faqs } from "@/lib/site";
+import { siteConfig, services, industries, faqs, cities } from "@/lib/site";
 
 function Script({ data }: { data: Record<string, unknown> }) {
   return (
@@ -15,16 +15,18 @@ export function OrganizationJsonLd() {
     <Script
       data={{
         "@context": "https://schema.org",
-        "@type": "EmploymentAgency",
+        "@type": ["EmploymentAgency", "ProfessionalService"],
         "@id": `${siteConfig.url}/#organization`,
         name: siteConfig.name,
         legalName: siteConfig.legalName,
         url: siteConfig.url,
+        logo: `${siteConfig.url}/brand/icon-512.png`,
+        image: `${siteConfig.url}/brand/icon-512.png`,
         description: siteConfig.description,
         slogan: siteConfig.tagline,
         email: siteConfig.email,
         telephone: siteConfig.phoneDisplay,
-        areaServed: { "@type": "Country", name: "India" },
+        priceRange: "$$",
         address: {
           "@type": "PostalAddress",
           streetAddress: siteConfig.address.street,
@@ -33,17 +35,34 @@ export function OrganizationJsonLd() {
           postalCode: siteConfig.address.postalCode,
           addressCountry: siteConfig.address.country,
         },
+        areaServed: [
+          { "@type": "Country", name: "India" },
+          ...cities.map((city) => ({ "@type": "City", name: city })),
+        ],
+        contactPoint: [
+          {
+            "@type": "ContactPoint",
+            telephone: siteConfig.phoneDisplay,
+            email: siteConfig.email,
+            contactType: "sales",
+            areaServed: "IN",
+            availableLanguage: ["en", "hi"],
+          },
+        ],
         sameAs: Object.values(siteConfig.social),
-        knowsAbout: industries.map((industry) => industry.name),
+        knowsAbout: industries.map((industry) => `${industry.name} recruitment`),
         hasOfferCatalog: {
           "@type": "OfferCatalog",
-          name: "Recruitment Services",
+          name: "Recruitment and staffing services in India",
           itemListElement: services.map((service) => ({
             "@type": "Offer",
             itemOffered: {
               "@type": "Service",
               name: service.title,
               description: service.description,
+              serviceType: service.title,
+              areaServed: { "@type": "Country", name: "India" },
+              provider: { "@id": `${siteConfig.url}/#organization` },
             },
           })),
         },
@@ -82,10 +101,40 @@ export function FaqJsonLd() {
       data={{
         "@context": "https://schema.org",
         "@type": "FAQPage",
+        "@id": `${siteConfig.url}/#faq`,
         mainEntity: faqs.map((faq) => ({
           "@type": "Question",
           name: faq.question,
           acceptedAnswer: { "@type": "Answer", text: faq.answer },
+        })),
+      }}
+    />
+  );
+}
+
+/** Individual Service entities so each offering can surface on its own. */
+export function ServicesJsonLd() {
+  return (
+    <Script
+      data={{
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "@id": `${siteConfig.url}/#services`,
+        name: "Recruitment services for employers in India",
+        itemListElement: services.map((service, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          item: {
+            "@type": "Service",
+            name: service.title,
+            description: service.description,
+            url: `${siteConfig.url}${service.href}`,
+            serviceType: service.title,
+            category: "Recruitment",
+            provider: { "@id": `${siteConfig.url}/#organization` },
+            areaServed: { "@type": "Country", name: "India" },
+            audience: { "@type": "BusinessAudience", name: "Employers" },
+          },
         })),
       }}
     />
