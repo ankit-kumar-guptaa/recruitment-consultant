@@ -5,8 +5,9 @@ Marketing site for a pan-India recruitment consultancy, built with **Next.js 15 
 
 ## What is built so far
 
-- **Brand** — custom logo mark (three rising figures for *People · Growth · Success*)
-  in `public/brand/`, used in the header, footer and as the favicon.
+- **Brand** — the supplied logo lockup in `public/brand/` (`logo.webp` for light
+  backgrounds, `logo-white.webp` for the dark footer) plus the circular icon, wired up
+  as the favicon (`src/app/icon.png`) and Apple touch icon (`src/app/apple-icon.png`).
 - **Header** — sticky, responsive, active-link state, expandable search, mobile drawer,
   scroll-progress bar and a `Hire Talent` CTA that opens the enquiry popup.
 - **Hero** — headline, sub-copy, dual CTAs, four trust highlights and a clean portrait
@@ -36,10 +37,10 @@ Every animation is disabled under `prefers-reduced-motion: reduce`.
 
 ## Artwork
 
-There is no stock photography in the build. The hero portrait was cut out of the supplied
-design mock-up, and every other visual (logo, insight card covers, coverage map, dot grids,
-decorative rings) is inline SVG generated in `components/ui/Artwork.tsx` — crisp at any
-resolution and a few KB in total.
+There is no stock photography in the build. The logo and favicon are the supplied brand
+files, the hero portrait was cut out of the supplied design mock-up, and every other visual
+(insight card covers, coverage map, dot grids, decorative rings) is inline SVG generated in
+`components/ui/Artwork.tsx` — crisp at any resolution and a few KB in total.
 
 ## Getting started
 
@@ -93,7 +94,7 @@ src/
                   Icon, Logo, Artwork, SectionHeading
     seo/          JSON-LD components
 public/
-  brand/          logo-mark.svg, logo-mark-white.svg
+  brand/          logo.webp, logo-white.webp, icon-192.png, icon-512.png
   images/         hero-consultant.webp
   lib/site.ts     all site content, nav and contact config
 ```

@@ -27,7 +27,7 @@ export function Footer() {
     <footer className="border-t border-slate-100 bg-navy-950 text-navy-100">
       <div className="container-page grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] lg:gap-8">
         <div>
-          <Logo inverted />
+          <Logo inverted className="h-12 w-auto sm:h-14" />
           <p className="mt-5 max-w-sm text-sm leading-relaxed text-navy-200">
             {siteConfig.shortDescription} We help companies build strong teams
             and help professionals find work that moves their career forward.

@@ -2,43 +2,32 @@ import Image from "next/image";
 import Link from "next/link";
 import { siteConfig } from "@/lib/site";
 
-export function Logo({ inverted = false }: { inverted?: boolean }) {
+// Intrinsic size of public/brand/logo.webp (and the white variant).
+const LOGO_W = 849;
+const LOGO_H = 220;
+
+export function Logo({
+  inverted = false,
+  className = "h-10 w-auto sm:h-12 xl:h-[3.4rem]",
+}: {
+  inverted?: boolean;
+  className?: string;
+}) {
   return (
     <Link
       href="/"
-      className="group flex items-center gap-2.5"
+      className="group inline-flex shrink-0 items-center"
       aria-label={`${siteConfig.name} — home`}
     >
       <Image
-        src={inverted ? "/brand/logo-mark-white.svg" : "/brand/logo-mark.svg"}
-        alt=""
-        width={64}
-        height={64}
+        src={inverted ? "/brand/logo-white.webp" : "/brand/logo.webp"}
+        alt={`${siteConfig.name} — ${siteConfig.tagline}`}
+        width={LOGO_W}
+        height={LOGO_H}
         priority
-        unoptimized
-        aria-hidden="true"
-        className="h-9 w-9 shrink-0 transition-transform duration-300 group-hover:-rotate-3 group-hover:scale-105 sm:h-11 sm:w-11"
+        sizes="(min-width: 1280px) 220px, 200px"
+        className={`${className} transition-transform duration-300 group-hover:scale-[1.03]`}
       />
-      <span className="leading-none">
-        <span
-          className={`block font-display text-[1.05rem] font-bold tracking-tight sm:text-[1.3rem] ${
-            inverted ? "text-white" : "text-navy-900"
-          }`}
-        >
-          Recruitment
-          <span className={inverted ? "text-navy-300" : "text-navy-600"}>
-            Consultant
-          </span>
-        </span>
-        <span
-          className={`mt-1 block text-[0.54rem] font-semibold tracking-[0.18em] sm:text-[0.63rem] ${
-            inverted ? "text-navy-300" : "text-ink-soft"
-          }`}
-        >
-          PEOPLE <span className="text-gold">|</span> GROWTH{" "}
-          <span className="text-gold">|</span> SUCCESS
-        </span>
-      </span>
     </Link>
   );
 }

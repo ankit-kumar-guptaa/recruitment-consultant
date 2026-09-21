@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: "Recruitment Consultant",
   legalName: "Recruitment Consultant",
-  tagline: "People | Growth | Success",
+  tagline: "People | Potential | Progress",
   domain: "recruitmentconsultant.co.in",
   url:
     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
