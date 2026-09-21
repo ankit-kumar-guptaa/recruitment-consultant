@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
 import { EnquiryButton } from "@/components/ui/EnquiryButton";
+import { ScrollProgress } from "@/components/motion/ScrollProgress";
 import { mainNav, siteConfig } from "@/lib/site";
 
 export function Header() {
@@ -110,6 +111,8 @@ export function Header() {
           </button>
         </div>
       </div>
+
+      <ScrollProgress />
 
       {searchOpen ? (
         <div id="site-search" className="border-t border-slate-100 bg-white">

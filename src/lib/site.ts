@@ -125,11 +125,35 @@ export const industries = [
   { icon: "headset", name: "BPO & Shared Services" },
 ] as const;
 
-export const stats = [
-  { value: "5000+", label: "Successful Placements" },
-  { value: "1000+", label: "Happy Clients" },
-  { value: "48 hrs", label: "Average Shortlist Time" },
-  { value: "94%", label: "One-Year Retention" },
+export const heroStats = [
+  {
+    value: 5000,
+    suffix: "+",
+    label: "Successful Placements",
+    icon: "users",
+    tone: "bg-emerald-100 text-emerald-700",
+  },
+  {
+    value: 1000,
+    suffix: "+",
+    label: "Happy Clients",
+    icon: "building",
+    tone: "bg-navy-100 text-navy-700",
+  },
+  {
+    value: 48,
+    suffix: " hrs",
+    label: "Average Shortlist Time",
+    icon: "bolt",
+    tone: "bg-gold-soft text-[#b8770a]",
+  },
+  {
+    value: 94,
+    suffix: "%",
+    label: "One-Year Retention",
+    icon: "shield",
+    tone: "bg-navy-100 text-navy-700",
+  },
 ] as const;
 
 export const hiringProcess = [
@@ -234,3 +258,83 @@ export const faqs = [
       "Yes. We run volume hiring, walk-in drives and campus recruitment programmes, including assessments, logistics coordination and offer roll-out for hundreds of positions at a time.",
   },
 ] as const;
+
+export const aboutPoints = [
+  {
+    icon: "target",
+    title: "Consultant-led, not CV-led",
+    description:
+      "One named consultant owns your mandate end to end — they brief candidates properly and tell you honestly when a role needs repositioning.",
+  },
+  {
+    icon: "network",
+    title: "An active talent network",
+    description:
+      "A continuously refreshed database plus referral and passive networks across 12+ industries and every major Indian city.",
+  },
+  {
+    icon: "shield",
+    title: "Accountable on outcomes",
+    description:
+      "Transparent SLAs, weekly pipeline reporting and a replacement guarantee on every placement we make.",
+  },
+] as const;
+
+export const cities = [
+  "Delhi NCR",
+  "Mumbai",
+  "Bengaluru",
+  "Hyderabad",
+  "Pune",
+  "Chennai",
+  "Ahmedabad",
+  "Kolkata",
+  "Jaipur",
+  "Indore",
+  "Chandigarh",
+  "Coimbatore",
+  "Lucknow",
+  "Nagpur",
+  "Kochi",
+  "Bhubaneswar",
+] as const;
+
+export const insights = [
+  {
+    art: "hiring" as const,
+    category: "Hiring Strategy",
+    readingTime: "6 min read",
+    title: "How to cut your time-to-hire without lowering the bar",
+    excerpt:
+      "Most delays are not caused by a shortage of candidates. They are caused by unclear briefs, slow feedback loops and interview panels that keep changing.",
+    href: "/blog/cut-time-to-hire",
+  },
+  {
+    art: "salary" as const,
+    category: "Market Insights",
+    readingTime: "8 min read",
+    title: "India salary benchmarks: what candidates expect in 2026",
+    excerpt:
+      "Offer expectations have shifted sharply in tier-2 cities. Here is what we are seeing across engineering, sales, finance and operations roles.",
+    href: "/blog/india-salary-benchmarks",
+  },
+  {
+    art: "resume" as const,
+    category: "For Job Seekers",
+    readingTime: "5 min read",
+    title: "The resume mistakes that quietly cost you interviews",
+    excerpt:
+      "Recruiters spend seconds on a first pass. These five fixes make your experience readable, searchable and far harder to skip.",
+    href: "/blog/resume-mistakes",
+  },
+] as const;
+
+export const shortlistPreview = {
+  role: "Senior Backend Engineer",
+  location: "Bengaluru · Hybrid",
+  candidates: [
+    { initials: "NR", name: "N. Rao", match: 96, note: "Go · Kafka · 7 yrs", tone: "bg-navy-600" },
+    { initials: "SK", name: "S. Kapoor", match: 91, note: "Java · AWS · 6 yrs", tone: "bg-emerald-600" },
+    { initials: "AM", name: "A. Menon", match: 88, note: "Node · K8s · 8 yrs", tone: "bg-navy-800" },
+  ],
+} as const;

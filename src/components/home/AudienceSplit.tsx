@@ -1,5 +1,6 @@
 import { Icon } from "@/components/ui/Icon";
 import { EnquiryButton } from "@/components/ui/EnquiryButton";
+import { Reveal } from "@/components/motion/Reveal";
 
 const blocks = [
   {
@@ -35,11 +36,12 @@ export function AudienceSplit() {
       className="py-16 sm:py-20 lg:py-24"
     >
       <div className="container-page grid gap-6 lg:grid-cols-2">
-        {blocks.map((block) => {
+        {blocks.map((block, index) => {
           const dark = block.tone === "dark";
           return (
-            <div
+            <Reveal
               key={block.intent}
+              direction={index === 0 ? "left" : "right"}
               className={`flex flex-col rounded-3xl p-8 sm:p-10 ${
                 dark
                   ? "bg-gradient-to-br from-navy-900 to-navy-700 text-white"
@@ -90,7 +92,7 @@ export function AudienceSplit() {
                   {block.cta}
                 </EnquiryButton>
               </div>
-            </div>
+            </Reveal>
           );
         })}
       </div>

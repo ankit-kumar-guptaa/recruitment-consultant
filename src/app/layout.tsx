@@ -1,23 +1,25 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Poppins, Caveat } from "next/font/google";
+import { Outfit, Plus_Jakarta_Sans, Caveat } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { EnquiryProvider } from "@/components/ui/EnquiryModal";
+import { FloatingContact } from "@/components/ui/FloatingContact";
 import { OrganizationJsonLd, WebsiteJsonLd } from "@/components/seo/JsonLd";
 import { siteConfig } from "@/lib/site";
 
-const inter = Inter({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
-  variable: "--font-inter",
+  variable: "--font-body",
 });
 
-const poppins = Poppins({
+const outfit = Outfit({
   subsets: ["latin"],
-  weight: ["600", "700", "800"],
+  weight: ["500", "600", "700", "800"],
   display: "swap",
-  variable: "--font-poppins",
+  variable: "--font-display-face",
 });
 
 const caveat = Caveat({
@@ -102,13 +104,14 @@ export default function RootLayout({
   return (
     <html
       lang="en-IN"
-      className={`${inter.variable} ${poppins.variable} ${caveat.variable}`}
+      className={`${jakarta.variable} ${outfit.variable} ${caveat.variable}`}
     >
       <body className="min-h-dvh bg-white antialiased">
         <EnquiryProvider>
           <Header />
           <main id="main">{children}</main>
           <Footer />
+          <FloatingContact />
         </EnquiryProvider>
         <OrganizationJsonLd />
         <WebsiteJsonLd />

@@ -1,12 +1,13 @@
 import { EnquiryButton } from "@/components/ui/EnquiryButton";
 import { Icon } from "@/components/ui/Icon";
 import { siteConfig } from "@/lib/site";
+import { Reveal } from "@/components/motion/Reveal";
 
 export function CtaBand() {
   return (
     <section aria-labelledby="cta-heading" className="pb-16 sm:pb-20 lg:pb-24">
       <div className="container-page">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-navy-900 via-navy-800 to-navy-600 px-6 py-14 text-center sm:px-12">
+        <Reveal direction="scale" className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-navy-900 via-navy-800 to-navy-600 px-6 py-14 text-center sm:px-12">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/10 blur-2xl"
@@ -39,7 +40,7 @@ export function CtaBand() {
               {siteConfig.phoneDisplay}
             </a>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

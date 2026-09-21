@@ -1,14 +1,15 @@
 import Link from "next/link";
 import { Icon } from "@/components/ui/Icon";
 import { clientLogos } from "@/lib/site";
+import { Reveal } from "@/components/motion/Reveal";
 
 export function TrustBar() {
   return (
     <section
       aria-label="Companies that trust us"
-      className="border-y border-slate-100 bg-navy-50/50"
+      className="border-y border-slate-100 bg-navy-50/50 pt-8 sm:pt-20"
     >
-      <div className="container-page flex flex-col gap-5 py-6 lg:flex-row lg:items-center lg:gap-10">
+      <Reveal direction="fade" className="container-page flex flex-col gap-5 py-6 lg:flex-row lg:items-center lg:gap-10">
         <p className="shrink-0 text-[0.7rem] font-bold uppercase leading-snug tracking-[0.14em] text-ink-soft">
           Trusted by
           <br className="hidden lg:block" /> Growing Businesses
@@ -35,7 +36,7 @@ export function TrustBar() {
           And Many More
           <Icon name="arrow" size={16} />
         </Link>
-      </div>
+      </Reveal>
     </section>
   );
 }
