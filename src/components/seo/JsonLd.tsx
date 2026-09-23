@@ -1,4 +1,5 @@
 import { siteConfig, services, industries, faqs, cities } from "@/lib/site";
+import type { Post } from "@/lib/blog-content";
 
 function Script({ data }: { data: Record<string, unknown> }) {
   return (
@@ -223,6 +224,46 @@ export function ServiceJsonLd({
           }}
         />
       ) : null}
+    </>
+  );
+}
+
+/** Blog article: Article entity plus the post's own FAQ block. */
+export function ArticleJsonLd({ post }: { post: Post }) {
+  const url = `${siteConfig.url}/blog/${post.slug}`;
+
+  return (
+    <>
+      <Script
+        data={{
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "@id": `${url}#article`,
+          headline: post.title,
+          description: post.metaDescription,
+          url,
+          mainEntityOfPage: { "@type": "WebPage", "@id": url },
+          datePublished: post.published,
+          dateModified: post.updated,
+          articleSection: post.category,
+          inLanguage: "en-IN",
+          author: { "@id": `${siteConfig.url}/#organization` },
+          publisher: { "@id": `${siteConfig.url}/#organization` },
+          image: `${siteConfig.url}/opengraph-image`,
+        }}
+      />
+      <Script
+        data={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "@id": `${url}#faq`,
+          mainEntity: post.faqs.map((faq) => ({
+            "@type": "Question",
+            name: faq.question,
+            acceptedAnswer: { "@type": "Answer", text: faq.answer },
+          })),
+        }}
+      />
     </>
   );
 }
