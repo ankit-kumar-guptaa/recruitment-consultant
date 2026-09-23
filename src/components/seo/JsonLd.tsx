@@ -25,7 +25,11 @@ export function OrganizationJsonLd() {
         description: siteConfig.description,
         slogan: siteConfig.tagline,
         email: siteConfig.email,
-        telephone: siteConfig.phoneDisplay,
+        // Only published when the client wants the number public (see siteConfig).
+        ...(siteConfig.showPhoneNumber
+          ? { telephone: siteConfig.phoneDisplay }
+          : {}),
+        foundingDate: String(siteConfig.foundedYear),
         priceRange: "$$",
         address: {
           "@type": "PostalAddress",
@@ -42,7 +46,9 @@ export function OrganizationJsonLd() {
         contactPoint: [
           {
             "@type": "ContactPoint",
-            telephone: siteConfig.phoneDisplay,
+            ...(siteConfig.showPhoneNumber
+              ? { telephone: siteConfig.phoneDisplay }
+              : {}),
             email: siteConfig.email,
             contactType: "sales",
             areaServed: "IN",
@@ -136,6 +142,36 @@ export function ServicesJsonLd() {
             audience: { "@type": "BusinessAudience", name: "Employers" },
           },
         })),
+      }}
+    />
+  );
+}
+
+/** Breadcrumb trail for an inner page. */
+export function BreadcrumbJsonLd({
+  items,
+}: {
+  items: { name: string; path: string }[];
+}) {
+  return (
+    <Script
+      data={{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: siteConfig.url,
+          },
+          ...items.map((item, index) => ({
+            "@type": "ListItem",
+            position: index + 2,
+            name: item.name,
+            item: `${siteConfig.url}${item.path}`,
+          })),
+        ],
       }}
     />
   );

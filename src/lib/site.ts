@@ -10,10 +10,20 @@ export const siteConfig = {
     "Recruitment Consultant is a pan-India recruitment agency for employers. We handle permanent staffing, contract and temporary staffing, executive search, RPO, bulk and campus hiring across 12+ industries — with screened shortlists in 48 hours and a replacement guarantee on every placement.",
   shortDescription:
     "Pan-India recruitment agency for employers — permanent staffing, contract hiring, executive search, RPO and payroll outsourcing.",
+  foundedYear: 2010,
   email: "info@recruitmentconsultant.co.in",
+  careersEmail: "careers@recruitmentconsultant.co.in",
+  /**
+   * The phone number is never rendered as text anywhere on the site — the
+   * client asked for email-first contact. Call and WhatsApp actions still work
+   * through these values, but the UI only ever shows a label.
+   * Flip `showPhoneNumber` to true if that decision changes.
+   */
+  showPhoneNumber: false,
   phoneDisplay: "+91 98765 43210",
   phoneHref: "+919876543210",
   whatsapp: "919876543210",
+  officeHours: "Monday to Saturday, 9:30 am – 6:30 pm IST",
   address: {
     street: "Business District",
     locality: "New Delhi",
@@ -521,5 +531,101 @@ export const faqs = [
     question: "Do job seekers pay any fee?",
     answer:
       "No. Our services are completely free for candidates. We are paid by the hiring company, so no candidate should ever be asked for money at any stage of the process.",
+  },
+] as const;
+
+/** Years in business, derived so it never goes stale. */
+export const yearsInBusiness = new Date().getFullYear() - siteConfig.foundedYear;
+
+export const milestones = [
+  {
+    year: "2010",
+    title: "Recruitment Consultant is founded",
+    description:
+      "We start as a two-person permanent-recruitment desk in Delhi NCR, hiring for IT and BFSI clients who needed faster shortlists than job portals could give them.",
+  },
+  {
+    year: "2014",
+    title: "Contract staffing and payroll added",
+    description:
+      "Clients asked us to hold contract headcount as well as fill it, so we built an in-house payroll and statutory compliance function for PF, ESIC and professional tax.",
+  },
+  {
+    year: "2017",
+    title: "Executive search practice launched",
+    description:
+      "A dedicated retained-search team for CXO, VP and functional-head mandates, with competency-based assessment and market mapping.",
+  },
+  {
+    year: "2020",
+    title: "Remote-first hiring at scale",
+    description:
+      "Through the pandemic we moved the entire process online — video screening, digital documentation and remote onboarding — and kept clients hiring.",
+  },
+  {
+    year: "2023",
+    title: "RPO and bulk hiring",
+    description:
+      "Embedded recruiter teams and volume drives for BPO, retail, warehousing and manufacturing clients ramping up new sites across tier-2 India.",
+  },
+  {
+    year: "Today",
+    title: "Pan-India, 12+ industries",
+    description:
+      "Consultants covering 16 cities and sourcing across 100+ locations, with permanent, contract, executive search, RPO and payroll under one roof.",
+  },
+] as const;
+
+export const values = [
+  {
+    icon: "target",
+    title: "Tell the truth about the role",
+    description:
+      "If a budget will not attract the profile you want, or a JD is written for two different jobs, we say so before the search starts — not three weeks in.",
+  },
+  {
+    icon: "users",
+    title: "Treat candidates like people",
+    description:
+      "Every candidate is briefed properly, told where they stand and never charged a rupee. That is also why they answer our calls when the next role opens.",
+  },
+  {
+    icon: "shield",
+    title: "Own the outcome",
+    description:
+      "One named consultant stays on the mandate until the candidate joins, and the replacement guarantee means a bad hire costs us, not you.",
+  },
+  {
+    icon: "bolt",
+    title: "Move at the speed of hiring",
+    description:
+      "Good candidates are off the market in days. Our process is built to get you a real shortlist in 48 working hours, not a CV dump in two weeks.",
+  },
+] as const;
+
+export const jobSeekerSteps = [
+  {
+    step: "01",
+    title: "Share your profile",
+    description:
+      "Send us your CV with the roles, locations and salary range you are targeting. No fee, ever.",
+  },
+  {
+    step: "02",
+    title: "Talk to a consultant",
+    description:
+      "A sector specialist calls you, understands what you actually want next and tells you honestly where you fit in today's market.",
+  },
+  {
+    step: "03",
+    title: "Get matched and briefed",
+    description:
+      "We put you forward only for roles that match. You get the full brief — team, manager, budget and growth path — before every interview.",
+  },
+  {
+    step: "04",
+    title: "Offer and joining support",
+    description:
+      "We help with negotiation, documentation and notice-period planning, and stay in touch after you join.",
   },
 ] as const;

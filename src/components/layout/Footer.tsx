@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Icon } from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
-import { siteConfig, services, industries } from "@/lib/site";
+import { siteConfig, services, industries, yearsInBusiness } from "@/lib/site";
 
 const quickLinks = [
   { label: "About Us", href: "/about" },
@@ -29,8 +29,9 @@ export function Footer() {
         <div>
           <Logo inverted className="h-12 w-auto sm:h-14" />
           <p className="mt-5 max-w-sm text-sm leading-relaxed text-navy-200">
-            {siteConfig.shortDescription} We help companies build strong teams
-            and help professionals find work that moves their career forward.
+            {siteConfig.shortDescription} Serving employers across India since{" "}
+            {siteConfig.foundedYear} — {yearsInBusiness} years of building teams
+            that stay.
           </p>
 
           <ul className="mt-6 flex gap-2">
@@ -111,8 +112,12 @@ export function Footer() {
                 href={`tel:${siteConfig.phoneHref}`}
                 className="text-navy-200 transition hover:text-white"
               >
-                {siteConfig.phoneDisplay}
+                Call our hiring desk
               </a>
+            </li>
+            <li className="flex items-start gap-3">
+              <Icon name="clock" size={18} className="mt-0.5 shrink-0 text-navy-400" />
+              <span className="text-navy-200">{siteConfig.officeHours}</span>
             </li>
             <li className="flex items-center gap-3">
               <Icon name="mail" size={18} className="shrink-0 text-navy-400" />

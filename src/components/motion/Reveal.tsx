@@ -24,6 +24,7 @@ export function Reveal({
   delay = 0,
   className = "",
   once = true,
+  id,
 }: {
   children: ReactNode;
   as?: ElementType;
@@ -31,6 +32,7 @@ export function Reveal({
   delay?: number;
   className?: string;
   once?: boolean;
+  id?: string;
 }) {
   const ref = useRef<HTMLElement>(null);
   const [armed, setArmed] = useState(false);
@@ -76,6 +78,7 @@ export function Reveal({
   return (
     <Tag
       ref={ref}
+      id={id}
       style={delay ? { transitionDelay: `${delay}ms` } : undefined}
       className={`transition-[opacity,transform] duration-700 ease-out will-change-transform motion-reduce:transition-none ${state} ${className}`}
     >

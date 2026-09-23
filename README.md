@@ -18,8 +18,14 @@ Marketing site for a pan-India recruitment consultancy, built with **Next.js 15 
   testimonials, insights/blog, FAQ accordion and a closing CTA band.
 - **Footer** — brand blurb, social links, quick links, services, contact details,
   WhatsApp CTA, industry keyword row and legal bar.
-- **Popup enquiry form** — accessible modal (focus trap, `Esc` to close, scroll lock,
-  honeypot field) with separate *hiring* and *job hunting* modes. Posts to `/api/enquiry`.
+- **Enquiry form** — one shared form (`components/ui/EnquiryForm.tsx`) with a
+  **Looking for candidates / Looking for a job** switch that changes the fields. It is
+  rendered inline in the hero card, inside the popup modal (focus trap, `Esc`, scroll
+  lock) and on the contact page, so all three always collect and validate the same thing.
+  Posts to `/api/enquiry`, with a honeypot field for bots.
+- **Pages** — `/`, `/about`, `/services`, `/industries`, `/employers`, `/job-seekers`,
+  `/contact`, `/blog` and `/search`, each with its own metadata, canonical URL and
+  breadcrumb schema.
 - **Floating contact rail** — fixed bottom-left WhatsApp, call and enquiry buttons that
   fade in after the first scroll.
 
@@ -107,6 +113,10 @@ against the same map.
    submission — wire it to email (Resend/SendGrid), a CRM webhook or a database.
 2. **Replace the placeholder contact details** in `src/lib/site.ts`
    (phone, email, address, social profiles).
+   The phone number is **never rendered as text** anywhere — the client asked for
+   email-first contact, so call and WhatsApp buttons carry a label instead of digits and
+   `telephone` is left out of the structured data. Set `showPhoneNumber: true` in
+   `siteConfig` to publish it again.
 3. **Replace the client logos** in `clientLogos` (`src/lib/site.ts`). They are currently
    rendered as plain text wordmarks and should only name companies you actually work
    with and have permission to list.
@@ -119,14 +129,14 @@ against the same map.
    `src/lib/site.ts` if any of them should read differently.
 6. **The insight/blog posts** listed on the homepage are sample entries — `/blog/...`
    routes do not exist yet.
-7. **Inner pages** are linked from the nav and from the service cards but not built yet;
-   they currently render the 404 page. The keyword map in `targetKeywords` is the plan for
-   them: `/services/permanent-staffing`, `/services/contract-staffing`,
-   `/services/executive-search`, `/services/rpo`, `/services/bulk-hiring`,
-   `/services/payroll-compliance`, plus `/about`, `/industries`, `/employers`,
-   `/job-seekers`, `/blog`, `/contact` and city pages such as
-   `/recruitment-agency-in-delhi-ncr`.
-8. **Photography.** Every section is built to take a real photo where artwork sits today
+7. **Company history.** `milestones` in `src/lib/site.ts` tells the story from 2010 to
+   today on the About page. The years and events are a plausible reconstruction — replace
+   them with what actually happened.
+8. **Still to build:** the six `/services/*` detail pages, individual `/blog/*` posts, and
+   city pages such as `/recruitment-agency-in-delhi-ncr`. The keyword map in
+   `targetKeywords` is the plan for them; every one of those URLs is already linked from
+   the site and currently renders the 404 page.
+9. **Photography.** Every section is built to take a real photo where artwork sits today
    (`next/image` slots with fixed aspect ratios and alt text). Drop files into
    `public/images/` and swap the artwork component for an `Image` — the sizes are noted in
    each component.
@@ -137,12 +147,14 @@ against the same map.
 src/
   app/            layout, home page, api/enquiry, sitemap, robots, opengraph-image, icon
   components/
-    layout/       Header, Footer
+    layout/       Header, Footer, PageHero
     home/         Hero, TrustBar, About, Services, Industries, WhyUs, Process,
-                  Coverage, AudienceSplit, Testimonials, Insights, Faq, CtaBand
+                  HiringModels, Comparison, Coverage, AudienceSplit, Testimonials,
+                  Insights, Faq, CtaBand
     motion/       Reveal, CountUp, ScrollProgress
-    ui/           EnquiryModal (+ provider), EnquiryButton, FloatingContact,
-                  Icon, Logo, Artwork, SectionHeading
+    ui/           EnquiryForm (+ IntentTabs), EnquiryModal (+ provider),
+                  EnquiryButton, ContactForm, FloatingContact, Icon, Logo,
+                  Artwork, SectionHeading
     seo/          JSON-LD components
 public/
   brand/          logo.webp, logo-white.webp, icon-192.png, icon-512.png
