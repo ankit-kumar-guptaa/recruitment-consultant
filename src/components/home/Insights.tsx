@@ -3,7 +3,7 @@ import { Icon } from "@/components/ui/Icon";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { BlogArt } from "@/components/ui/Artwork";
 import { Reveal } from "@/components/motion/Reveal";
-import { insights } from "@/lib/site";
+import { posts } from "@/lib/blog-content";
 
 export function Insights() {
   return (
@@ -30,8 +30,8 @@ export function Insights() {
         </Reveal>
 
         <ul className="mt-12 grid gap-6 lg:grid-cols-3">
-          {insights.map((post, index) => (
-            <Reveal as="li" key={post.href} delay={index * 120}>
+          {posts.map((post, index) => (
+            <Reveal as="li" key={post.slug} delay={index * 120}>
               <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-card transition duration-300 hover:-translate-y-1.5 hover:shadow-float">
                 <div className="relative aspect-[16/9] overflow-hidden">
                   <BlogArt
@@ -48,7 +48,7 @@ export function Insights() {
                     {post.readingTime}
                   </p>
                   <h3 className="mt-2 font-display text-lg font-bold leading-snug text-ink">
-                    <Link href={post.href} className="after:absolute after:inset-0">
+                    <Link href={`/blog/${post.slug}`} className="after:absolute after:inset-0">
                       {post.title}
                     </Link>
                   </h3>

@@ -433,35 +433,6 @@ export const testimonials = [
   },
 ] as const;
 
-export const insights = [
-  {
-    art: "hiring" as const,
-    category: "Hiring Strategy",
-    readingTime: "6 min read",
-    title: "How to cut time-to-hire without lowering the bar",
-    excerpt:
-      "Most delays are not caused by a shortage of candidates. They are caused by unclear briefs, slow feedback loops and interview panels that keep changing.",
-    href: "/blog/cut-time-to-hire",
-  },
-  {
-    art: "salary" as const,
-    category: "Market Insights",
-    readingTime: "8 min read",
-    title: "What recruitment agencies charge in India in 2026",
-    excerpt:
-      "Contingency percentages, retained milestones and contract-staffing markups explained — plus what actually drives the number up or down.",
-    href: "/blog/recruitment-agency-fees-india",
-  },
-  {
-    art: "resume" as const,
-    category: "Employer Guide",
-    readingTime: "7 min read",
-    title: "Contract staffing vs permanent hiring: which fits the role?",
-    excerpt:
-      "A practical framework for deciding when to add headcount, when to hire on contract, and what each option really costs over 12 months.",
-    href: "/blog/contract-vs-permanent-hiring",
-  },
-] as const;
 
 export const shortlistPreview = {
   role: "Senior Backend Engineer",

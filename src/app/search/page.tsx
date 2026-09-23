@@ -3,7 +3,10 @@ import Link from "next/link";
 import { PageHero } from "@/components/layout/PageHero";
 import { Icon } from "@/components/ui/Icon";
 import { EnquiryButton } from "@/components/ui/EnquiryButton";
-import { services, industries, faqs, insights, mainNav } from "@/lib/site";
+import { industries, faqs, mainNav } from "@/lib/site";
+import { serviceDetails } from "@/lib/services-content";
+import { posts } from "@/lib/blog-content";
+import { cityPages } from "@/lib/cities-content";
 
 export const metadata: Metadata = {
   title: "Search",
@@ -22,11 +25,17 @@ function buildIndex(): Result[] {
         excerpt: `Go to the ${item.label} page.`,
         kind: "Page",
       })),
-    ...services.map((service) => ({
-      title: service.title,
-      href: service.href,
-      excerpt: service.description,
+    ...serviceDetails.map((service) => ({
+      title: service.name,
+      href: `/services/${service.slug}`,
+      excerpt: service.metaDescription,
       kind: "Service",
+    })),
+    ...cityPages.map((city) => ({
+      title: `Recruitment Agency in ${city.name}`,
+      href: `/recruitment-agency-in-${city.slug}`,
+      excerpt: `${city.state}. Sectors: ${city.sectors.join(", ")}. Areas: ${city.hubs.join(", ")}.`,
+      kind: "Location",
     })),
     ...industries.map((industry) => ({
       title: `${industry.name} Recruitment`,
@@ -34,15 +43,15 @@ function buildIndex(): Result[] {
       excerpt: `Roles we fill: ${industry.roles}.`,
       kind: "Industry",
     })),
-    ...insights.map((post) => ({
+    ...posts.map((post) => ({
       title: post.title,
-      href: post.href,
+      href: `/blog/${post.slug}`,
       excerpt: post.excerpt,
       kind: "Article",
     })),
     ...faqs.map((faq) => ({
       title: faq.question,
-      href: "/services#faq",
+      href: "/services",
       excerpt: faq.answer,
       kind: "FAQ",
     })),
