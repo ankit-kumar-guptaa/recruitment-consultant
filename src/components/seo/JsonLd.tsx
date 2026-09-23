@@ -176,3 +176,53 @@ export function BreadcrumbJsonLd({
     />
   );
 }
+
+/** A single service page: Service entity plus its own FAQ block. */
+export function ServiceJsonLd({
+  name,
+  description,
+  path,
+  faqs: serviceFaqs,
+}: {
+  name: string;
+  description: string;
+  path: string;
+  faqs?: { question: string; answer: string }[];
+}) {
+  return (
+    <>
+      <Script
+        data={{
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "@id": `${siteConfig.url}${path}#service`,
+          name,
+          description,
+          url: `${siteConfig.url}${path}`,
+          serviceType: name,
+          category: "Recruitment",
+          provider: { "@id": `${siteConfig.url}/#organization` },
+          areaServed: [
+            { "@type": "Country", name: "India" },
+            ...cities.map((city) => ({ "@type": "City", name: city })),
+          ],
+          audience: { "@type": "BusinessAudience", name: "Employers" },
+        }}
+      />
+      {serviceFaqs && serviceFaqs.length > 0 ? (
+        <Script
+          data={{
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "@id": `${siteConfig.url}${path}#faq`,
+            mainEntity: serviceFaqs.map((faq) => ({
+              "@type": "Question",
+              name: faq.question,
+              acceptedAnswer: { "@type": "Answer", text: faq.answer },
+            })),
+          }}
+        />
+      ) : null}
+    </>
+  );
+}
