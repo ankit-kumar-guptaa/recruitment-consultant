@@ -23,7 +23,7 @@ Marketing site for a pan-India recruitment consultancy, built with **Next.js 15 
   rendered inline in the hero card, inside the popup modal (focus trap, `Esc`, scroll
   lock) and on the contact page, so all three always collect and validate the same thing.
   Posts to `/api/enquiry`, with a honeypot field for bots.
-- **Pages** — 35 indexable routes, each with its own metadata, canonical URL and
+- **Pages** — 37 indexable routes, each with its own metadata, canonical URL and
   breadcrumb schema:
   - Core: `/`, `/about`, `/services`, `/industries`, `/locations`, `/employers`,
     `/job-seekers`, `/contact`, `/blog`, plus `/search` (noindex).
@@ -31,6 +31,7 @@ Marketing site for a pan-India recruitment consultancy, built with **Next.js 15 
   - Seventeen city pages at `/recruitment-agency-in-<city>`, from
     `src/lib/cities-content.ts`.
   - Three articles at `/blog/<slug>`, from `src/lib/blog-content.ts`.
+  - `/privacy-policy` and `/terms`.
 - **Floating contact rail** — fixed bottom-left WhatsApp, call and enquiry buttons that
   fade in after the first scroll.
 
@@ -145,7 +146,9 @@ against the same map.
    `src/lib/cities-content.ts` are written from general market knowledge. Have someone
    who works each market read their city page before launch — local detail is exactly
    what makes these pages rank, and exactly what is embarrassing when it is wrong.
-9. **Photography.** Every section is built to take a real photo where artwork sits today
+9. **Legal pages.** `/privacy-policy` and `/terms` are a solid starting draft, not legal
+   advice — have the client's lawyer review both before launch.
+10. **Photography.** Every section is built to take a real photo where artwork sits today
    (`next/image` slots with fixed aspect ratios and alt text). Drop files into
    `public/images/` and swap the artwork component for an `Image` — the sizes are noted in
    each component.
@@ -162,10 +165,11 @@ src/
                   HiringModels, Comparison, Coverage, AudienceSplit, Testimonials,
                   Insights, Faq, CtaBand
     motion/       Reveal, CountUp, ScrollProgress
+    legal/        LegalPage
+    seo/          JSON-LD components
     ui/           EnquiryForm (+ IntentTabs), EnquiryModal (+ provider),
                   EnquiryButton, ContactForm, FloatingContact, Icon, Logo,
                   Artwork, SectionHeading
-    seo/          JSON-LD components
 public/
   brand/          logo.webp, logo-white.webp, icon-192.png, icon-512.png
   images/         hero-consultant.webp
