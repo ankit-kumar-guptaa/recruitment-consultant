@@ -1,14 +1,17 @@
 import Link from "next/link";
 import { Icon } from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
-import { siteConfig, services, industries, yearsInBusiness } from "@/lib/site";
+import { siteConfig, industries, yearsInBusiness } from "@/lib/site";
+import { serviceDetails } from "@/lib/services-content";
+import { cityPages } from "@/lib/cities-content";
 
 const quickLinks = [
   { label: "About Us", href: "/about" },
   { label: "Our Services", href: "/services" },
   { label: "Industries", href: "/industries" },
-  { label: "Job Seekers", href: "/job-seekers" },
+  { label: "Locations", href: "/locations" },
   { label: "Employers", href: "/employers" },
+  { label: "Job Seekers", href: "/job-seekers" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
@@ -80,13 +83,13 @@ export function Footer() {
             Services
           </h2>
           <ul className="mt-5 space-y-3 text-sm">
-            {services.map((service) => (
-              <li key={service.title}>
+            {serviceDetails.map((service) => (
+              <li key={service.slug}>
                 <Link
-                  href={service.href}
+                  href={`/services/${service.slug}`}
                   className="text-navy-200 transition hover:text-white"
                 >
-                  {service.title}
+                  {service.name}
                 </Link>
               </li>
             ))}
@@ -139,6 +142,26 @@ export function Footer() {
             <Icon name="whatsapp" size={18} />
             Chat on WhatsApp
           </a>
+        </div>
+      </div>
+
+      <div className="border-t border-white/10">
+        <div className="container-page py-5">
+          <h2 className="text-[0.66rem] font-bold uppercase tracking-[0.14em] text-navy-400">
+            Recruitment agency near you
+          </h2>
+          <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-xs">
+            {cityPages.map((city) => (
+              <li key={city.slug}>
+                <Link
+                  href={`/recruitment-agency-in-${city.slug}`}
+                  className="text-navy-300 transition hover:text-white"
+                >
+                  Recruitment Agency in {city.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
 

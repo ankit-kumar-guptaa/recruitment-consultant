@@ -23,9 +23,14 @@ Marketing site for a pan-India recruitment consultancy, built with **Next.js 15 
   rendered inline in the hero card, inside the popup modal (focus trap, `Esc`, scroll
   lock) and on the contact page, so all three always collect and validate the same thing.
   Posts to `/api/enquiry`, with a honeypot field for bots.
-- **Pages** — `/`, `/about`, `/services`, `/industries`, `/employers`, `/job-seekers`,
-  `/contact`, `/blog` and `/search`, each with its own metadata, canonical URL and
-  breadcrumb schema.
+- **Pages** — 35 indexable routes, each with its own metadata, canonical URL and
+  breadcrumb schema:
+  - Core: `/`, `/about`, `/services`, `/industries`, `/locations`, `/employers`,
+    `/job-seekers`, `/contact`, `/blog`, plus `/search` (noindex).
+  - Six service pages at `/services/<slug>`, from `src/lib/services-content.ts`.
+  - Seventeen city pages at `/recruitment-agency-in-<city>`, from
+    `src/lib/cities-content.ts`.
+  - Three articles at `/blog/<slug>`, from `src/lib/blog-content.ts`.
 - **Floating contact rail** — fixed bottom-left WhatsApp, call and enquiry buttons that
   fade in after the first scroll.
 
@@ -94,8 +99,12 @@ against the same map.
   agency comparison table**.
 - FAQ answers are written long enough to stand alone as answer-engine snippets.
 - Structured data: `EmploymentAgency` + `ProfessionalService` (with `areaServed` cities,
-  `contactPoint` and an `OfferCatalog`), `WebSite` with `SearchAction`, an `ItemList` of
-  `Service` entities, and `FAQPage`.
+  `contactPoint`, `foundingDate` and an `OfferCatalog`), `WebSite` with `SearchAction`,
+  an `ItemList` of `Service` entities, per-page `Service`, `Article` and `FAQPage`
+  blocks, and `BreadcrumbList` on every inner page.
+- City pages target local intent (`recruitment agency in <city>`) with their own
+  `Service` scoped to that city, the business districts covered, local market notes and
+  city-specific FAQs.
 - Metadata API with title template, canonical URLs, Open Graph and Twitter cards.
 - Generated OG image at `/opengraph-image`.
 - `app/sitemap.ts` and `app/robots.ts` generate `/sitemap.xml` and `/robots.txt`.
@@ -132,10 +141,10 @@ against the same map.
 7. **Company history.** `milestones` in `src/lib/site.ts` tells the story from 2010 to
    today on the About page. The years and events are a plausible reconstruction — replace
    them with what actually happened.
-8. **Still to build:** the six `/services/*` detail pages, individual `/blog/*` posts, and
-   city pages such as `/recruitment-agency-in-delhi-ncr`. The keyword map in
-   `targetKeywords` is the plan for them; every one of those URLs is already linked from
-   the site and currently renders the 404 page.
+8. **City page content.** The business districts and sector notes in
+   `src/lib/cities-content.ts` are written from general market knowledge. Have someone
+   who works each market read their city page before launch — local detail is exactly
+   what makes these pages rank, and exactly what is embarrassing when it is wrong.
 9. **Photography.** Every section is built to take a real photo where artwork sits today
    (`next/image` slots with fixed aspect ratios and alt text). Drop files into
    `public/images/` and swap the artwork component for an `Image` — the sizes are noted in
@@ -148,6 +157,7 @@ src/
   app/            layout, home page, api/enquiry, sitemap, robots, opengraph-image, icon
   components/
     layout/       Header, Footer, PageHero
+    blog/         ArticleBody, TableOfContents
     home/         Hero, TrustBar, About, Services, Industries, WhyUs, Process,
                   HiringModels, Comparison, Coverage, AudienceSplit, Testimonials,
                   Insights, Faq, CtaBand
@@ -159,5 +169,9 @@ src/
 public/
   brand/          logo.webp, logo-white.webp, icon-192.png, icon-512.png
   images/         hero-consultant.webp
-  lib/site.ts     all site content, nav and contact config
+  lib/
+    site.ts             shared content, nav, contact config, keyword map
+    services-content.ts the six service pages
+    blog-content.ts     article bodies as typed blocks
+    cities-content.ts   the seventeen city pages
 ```

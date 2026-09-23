@@ -267,3 +267,48 @@ export function ArticleJsonLd({ post }: { post: Post }) {
     </>
   );
 }
+
+/** City landing page: a Service scoped to that city, plus its FAQ block. */
+export function LocalServiceJsonLd({
+  city,
+  slug,
+  faqs: localFaqs,
+}: {
+  city: string;
+  slug: string;
+  faqs: { question: string; answer: string }[];
+}) {
+  const url = `${siteConfig.url}/recruitment-agency-in-${slug}`;
+
+  return (
+    <>
+      <Script
+        data={{
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "@id": `${url}#service`,
+          name: `Recruitment Agency in ${city}`,
+          description: `Permanent staffing, contract staffing, executive search, RPO and bulk hiring services for employers in ${city}, India.`,
+          url,
+          serviceType: "Recruitment agency",
+          category: "Recruitment",
+          provider: { "@id": `${siteConfig.url}/#organization` },
+          areaServed: { "@type": "City", name: city, address: { "@type": "PostalAddress", addressCountry: "IN" } },
+          audience: { "@type": "BusinessAudience", name: "Employers" },
+        }}
+      />
+      <Script
+        data={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "@id": `${url}#faq`,
+          mainEntity: localFaqs.map((faq) => ({
+            "@type": "Question",
+            name: faq.question,
+            acceptedAnswer: { "@type": "Answer", text: faq.answer },
+          })),
+        }}
+      />
+    </>
+  );
+}

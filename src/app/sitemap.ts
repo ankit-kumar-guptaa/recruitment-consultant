@@ -1,5 +1,8 @@
 import type { MetadataRoute } from "next";
-import { siteConfig, services, insights } from "@/lib/site";
+import { siteConfig } from "@/lib/site";
+import { serviceDetails } from "@/lib/services-content";
+import { posts } from "@/lib/blog-content";
+import { cityPages } from "@/lib/cities-content";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -10,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/employers", priority: 0.95, freq: "monthly" },
     { path: "/services", priority: 0.9, freq: "monthly" },
     { path: "/industries", priority: 0.85, freq: "monthly" },
+    { path: "/locations", priority: 0.85, freq: "monthly" },
     { path: "/about", priority: 0.8, freq: "monthly" },
     { path: "/job-seekers", priority: 0.75, freq: "monthly" },
     { path: "/contact", priority: 0.75, freq: "monthly" },
@@ -23,17 +27,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: entry.freq,
       priority: entry.priority,
     })),
-    ...services.map((service) => ({
-      url: url(service.href),
+    ...serviceDetails.map((service) => ({
+      url: url(`/services/${service.slug}`),
       lastModified: now,
       changeFrequency: "monthly" as const,
-      priority: 0.7,
+      priority: 0.85,
     })),
-    ...insights.map((post) => ({
-      url: url(post.href),
+    ...cityPages.map((city) => ({
+      url: url(`/recruitment-agency-in-${city.slug}`),
       lastModified: now,
       changeFrequency: "monthly" as const,
-      priority: 0.6,
+      priority: 0.75,
+    })),
+    ...posts.map((post) => ({
+      url: url(`/blog/${post.slug}`),
+      lastModified: new Date(post.updated),
+      changeFrequency: "monthly" as const,
+      priority: 0.65,
     })),
   ];
 }
