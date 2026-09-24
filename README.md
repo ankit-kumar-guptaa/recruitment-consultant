@@ -19,10 +19,15 @@ Marketing site for a pan-India recruitment consultancy, built with **Next.js 15 
 - **Footer** — brand blurb, social links, quick links, services, contact details,
   WhatsApp CTA, industry keyword row and legal bar.
 - **Enquiry form** — one shared form (`components/ui/EnquiryForm.tsx`) with a
-  **Looking for candidates / Looking for a job** switch that changes the fields. It is
-  rendered inline in the hero card, inside the popup modal (focus trap, `Esc`, scroll
-  lock) and on the contact page, so all three always collect and validate the same thing.
-  Posts to `/api/enquiry`, with a honeypot field for bots.
+  **Looking for candidates / Looking for a job** switch that changes the fields.
+  Rendered in the popup modal (focus trap, `Esc`, scroll lock, sticky submit bar so it
+  fits a 1366×768 laptop) and on the contact page, so both collect and validate the same
+  thing. Job seekers can attach a CV (PDF/DOC/DOCX/RTF/ODT, up to 5 MB). Posts as
+  `multipart/form-data` to `/api/enquiry`, with a honeypot field for bots.
+- **Page banners** — every inner page header sits on generated artwork in
+  `public/images/banners/` (four variants: navy, cobalt, teal, gold — about 20 KB each).
+  Regenerate or restyle them with `scripts/banners.mjs` in the scratchpad notes; the
+  variant is chosen per page via the `variant` prop on `PageHero`.
 - **Pages** — 37 indexable routes, each with its own metadata, canonical URL and
   breadcrumb schema:
   - Core: `/`, `/about`, `/services`, `/industries`, `/locations`, `/employers`,
@@ -64,6 +69,45 @@ npm start       # serve the production build
 ```
 
 Copy `.env.example` to `.env.local` and set `NEXT_PUBLIC_SITE_URL` for your environment.
+
+## Email (enquiries and CVs)
+
+Submissions go to `/api/enquiry`, which validates the fields, accepts an optional CV
+attachment and sends two emails through SMTP:
+
+1. **To the admin inbox** (`MAIL_TO`) — every field in a formatted table, `Reply-To` set
+   to the sender so hitting reply reaches them directly, with the CV attached and
+   renamed `<Candidate-Name>-CV.pdf`.
+2. **To the person who submitted** — a short acknowledgement. This is best effort; if it
+   fails the submission still counts as successful, because the lead is already
+   delivered.
+
+### Setup
+
+```bash
+cp .env.example .env.local     # then fill in the real values
+npm run mail:test              # verifies the connection and sends one test email
+```
+
+`.env.local` is git-ignored and **no credentials are stored in the repository** — the
+mailer reads everything from the environment. On Vercel, Hostinger or any other host,
+add the same variables in that platform's environment settings.
+
+| Variable | Purpose |
+| --- | --- |
+| `SMTP_HOST` / `SMTP_PORT` | Mail server. Port 465 uses implicit TLS, 587 uses STARTTLS. |
+| `SMTP_USER` / `SMTP_PASS` | Mailbox credentials. |
+| `MAIL_FROM` | Envelope sender — normally the same as `SMTP_USER`. |
+| `MAIL_TO` | Where enquiries and CVs are delivered. |
+
+If SMTP is not configured the form still accepts submissions and logs them to the server
+console rather than failing — but nothing is emailed, so set the variables before launch.
+Every lead is logged before delivery is attempted, so a mail outage can never lose one
+silently.
+
+**Run `npm run mail:test` from the server that will host the site.** Outbound SMTP is
+frequently blocked on laptops, office networks and CI runners, so a failure there does
+not necessarily mean the credentials are wrong.
 
 ## SEO & keyword strategy
 
@@ -119,8 +163,9 @@ against the same map.
 
 ## Before going live
 
-1. **Leads go nowhere yet.** `src/app/api/enquiry/route.ts` validates and logs the
-   submission — wire it to email (Resend/SendGrid), a CRM webhook or a database.
+1. **Set the SMTP variables** on the host (see **Email** above) and run
+   `npm run mail:test` to confirm delivery before launch. Rotate the mailbox password if
+   it has ever been shared over chat or email.
 2. **Replace the placeholder contact details** in `src/lib/site.ts`
    (phone, email, address, social profiles).
    The phone number is **never rendered as text** anywhere — the client asked for

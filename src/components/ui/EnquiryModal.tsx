@@ -110,7 +110,7 @@ function EnquiryDialog({
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-end justify-center overflow-y-auto bg-navy-950/60 p-0 backdrop-blur-sm sm:items-center sm:p-6"
+      className="fixed inset-0 z-[100] flex items-end justify-center bg-navy-950/60 p-0 backdrop-blur-sm sm:items-center sm:p-4 md:p-6"
       role="presentation"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose();
@@ -121,37 +121,39 @@ function EnquiryDialog({
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="relative w-full max-w-2xl rounded-t-3xl bg-white shadow-float sm:rounded-3xl"
+        className="relative flex max-h-[94dvh] w-full max-w-2xl flex-col overflow-hidden rounded-t-2xl bg-white shadow-float sm:max-h-[92dvh] sm:rounded-2xl"
       >
         <button
           type="button"
           onClick={onClose}
           aria-label="Close enquiry form"
-          className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full text-white/80 transition hover:bg-white/15 hover:text-white"
+          className="absolute right-3 top-3 z-10 grid h-9 w-9 place-items-center rounded-full text-white/80 transition hover:bg-white/15 hover:text-white"
         >
           <Icon name="close" size={20} />
         </button>
 
-        <div className="rounded-t-3xl bg-gradient-to-br from-navy-900 to-navy-700 px-6 py-6 text-white sm:px-8">
-          <h2 id={titleId} className="text-xl font-bold sm:text-2xl">
+        {/* Header — fixed */}
+        <div className="shrink-0 bg-gradient-to-br from-navy-900 to-navy-700 px-5 py-4 text-white sm:px-7 sm:py-5">
+          <h2 id={titleId} className="pr-10 text-lg font-bold sm:text-xl">
             {isEmployer ? "Hire the right talent" : "Find your next role"}
           </h2>
-          <p className="mt-1 text-sm text-navy-100">
+          <p className="mt-0.5 hidden text-sm text-navy-100 sm:block [@media(max-height:660px)]:sm:hidden">
             {isEmployer
               ? "Share your requirement and a consultant will get back to you within one working day."
               : "Tell us what you are looking for and we will match you to relevant openings."}
           </p>
         </div>
 
-        <div className="px-6 pb-8 pt-6 sm:px-8">
+        {/* Body — scrolls on short screens so the submit button is always reachable */}
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-4 sm:px-7 sm:py-5">
           <IntentTabs
             intent={intent}
             onChange={setIntent}
-            className="mb-6 max-w-md"
+            className="mb-4 max-w-md"
           />
-          <EnquiryForm intent={intent} />
+          <EnquiryForm intent={intent} stickySubmit />
 
-          <p className="mt-6 border-t border-slate-100 pt-4 text-center text-xs text-ink-soft">
+          <p className="mt-4 pt-1 text-center text-xs text-ink-soft [@media(max-height:660px)]:hidden">
             Or write to us at{" "}
             <a
               href={`mailto:${siteConfig.email}`}

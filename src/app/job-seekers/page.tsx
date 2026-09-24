@@ -26,6 +26,7 @@ export default function JobSeekersPage() {
   return (
     <>
       <PageHero
+        variant="teal"
         eyebrow="For Job Seekers"
         title="Move to a role that actually fits — and never pay a rupee"
         description="We are paid by the companies that hire, never by candidates. Send us your profile and a consultant will tell you honestly where you fit in today's market."

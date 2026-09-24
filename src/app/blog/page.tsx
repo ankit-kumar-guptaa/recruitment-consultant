@@ -27,6 +27,7 @@ export default function BlogPage() {
   return (
     <>
       <PageHero
+        variant="gold"
         eyebrow="Insights"
         title="Hiring notes for employers in India"
         description="No thought-leadership filler. These are the questions clients ask us on calls, written down so you can read them before the call."

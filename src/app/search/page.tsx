@@ -85,6 +85,7 @@ export default async function SearchPage({
   return (
     <>
       <PageHero
+        variant="navy"
         eyebrow="Search"
         title={query ? `Results for “${query}”` : "Search this site"}
         description={

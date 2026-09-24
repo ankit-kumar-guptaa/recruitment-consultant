@@ -26,6 +26,7 @@ export default function IndustriesPage() {
   return (
     <>
       <PageHero
+        variant="teal"
         eyebrow="Industries"
         title="Sector-specialist recruitment across 12+ industries in India"
         description="A generalist recruiter sends you CVs. A sector specialist knows which companies your next hire is likely to be sitting in, what they are being paid, and what it will take to move them."

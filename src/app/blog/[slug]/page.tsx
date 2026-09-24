@@ -56,6 +56,7 @@ export default async function BlogPostPage({ params }: Params) {
   return (
     <>
       <PageHero
+        variant="gold"
         eyebrow={post.category}
         title={post.title}
         crumbs={[{ label: "Blog", href: "/blog" }, { label: post.category }]}

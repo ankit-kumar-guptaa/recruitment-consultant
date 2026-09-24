@@ -35,6 +35,7 @@ export default function EmployersPage() {
   return (
     <>
       <PageHero
+        variant="cobalt"
         eyebrow="For Employers"
         title="Hire without the hiring overhead"
         description="Send us the job description. You get a screened, briefed shortlist in 48 working hours, one consultant answerable for the role, and an invoice only when your candidate actually joins."

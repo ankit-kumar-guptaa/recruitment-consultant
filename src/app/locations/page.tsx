@@ -26,6 +26,7 @@ export default function LocationsPage() {
   return (
     <>
       <PageHero
+        variant="teal"
         eyebrow="Locations"
         title="Recruitment agency services across India"
         description="Metro hubs, tier-2 manufacturing belts and emerging tech corridors — each with consultants who know the local salary bands, notice-period norms and talent pools."

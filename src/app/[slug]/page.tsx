@@ -85,6 +85,7 @@ export default async function CityPage({ params }: Params) {
   return (
     <>
       <PageHero
+        variant="teal"
         eyebrow={`Hiring in ${city.state}`}
         title={`Recruitment Agency in ${city.name}`}
         description={city.intro}

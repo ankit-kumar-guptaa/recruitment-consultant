@@ -37,6 +37,7 @@ export default function ServicesPage() {
         title="Recruitment and staffing services for employers in India"
         description="Six practices under one roof, so a single consultant can solve the whole problem — whether that is one confidential leadership hire or 300 warehouse associates across three cities."
         crumbs={[{ label: "Our Services" }]}
+        variant="cobalt"
       >
         <EnquiryButton variant="light">Get a Hiring Plan</EnquiryButton>
       </PageHero>

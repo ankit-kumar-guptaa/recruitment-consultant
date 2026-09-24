@@ -2,7 +2,7 @@
 
 import { useId, useRef, useState, type ReactNode } from "react";
 import { Icon } from "./Icon";
-import { industries, siteConfig } from "@/lib/site";
+import { industries } from "@/lib/site";
 
 export type EnquiryIntent = "employer" | "jobseeker";
 
@@ -13,8 +13,13 @@ export const intentTabs = [
 
 type Status = "idle" | "submitting" | "success" | "error";
 
+/** Keep in sync with the limits enforced in src/app/api/enquiry/route.ts */
+export const CV_MAX_BYTES = 5 * 1024 * 1024;
+export const CV_ACCEPT = ".pdf,.doc,.docx,.rtf,.odt";
+const CV_EXTENSIONS = [".pdf", ".doc", ".docx", ".rtf", ".odt"];
+
 const inputClass =
-  "w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-ink outline-none transition placeholder:text-slate-400 focus:border-navy-500 focus:bg-white focus:ring-2 focus:ring-navy-200";
+  "w-full rounded-lg border border-slate-200 bg-slate-50/70 px-3.5 py-2.5 text-sm text-ink outline-none transition placeholder:text-slate-400 focus:border-navy-500 focus:bg-white focus:ring-2 focus:ring-navy-200";
 
 const experienceBands = [
   "Fresher",
@@ -41,7 +46,7 @@ function Field({
     <div className={className}>
       <label
         htmlFor={`enquiry-${name}`}
-        className="mb-1.5 block text-sm font-medium text-ink"
+        className="mb-1 block text-[0.8rem] font-medium text-ink"
       >
         {label}
         {required ? <span className="text-red-500"> *</span> : null}
@@ -51,44 +56,85 @@ function Field({
   );
 }
 
+function formatBytes(bytes: number) {
+  return bytes < 1024 * 1024
+    ? `${Math.round(bytes / 1024)} KB`
+    : `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
 /**
- * Shared enquiry form. Used inside the hero card and inside the popup modal,
+ * Shared enquiry form. Rendered inside the popup modal and on the contact page,
  * so both always collect and validate the same fields.
+ * Submits as multipart/form-data because job seekers can attach a CV.
  */
 export function EnquiryForm({
   intent,
-  compact = false,
-  autoFocus = false,
   onSuccess,
+  /** Pins the submit row to the bottom of a scrolling container (the modal). */
+  stickySubmit = false,
 }: {
   intent: EnquiryIntent;
-  compact?: boolean;
-  autoFocus?: boolean;
   onSuccess?: () => void;
+  stickySubmit?: boolean;
 }) {
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
-  const firstFieldRef = useRef<HTMLInputElement>(null);
+  const [cv, setCv] = useState<File | null>(null);
+  const [cvError, setCvError] = useState("");
+  const cvInputRef = useRef<HTMLInputElement>(null);
   const statusId = useId();
 
   const isEmployer = intent === "employer";
 
+  function handleCvChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0] ?? null;
+    setCvError("");
+
+    if (!file) {
+      setCv(null);
+      return;
+    }
+    const name = file.name.toLowerCase();
+    if (!CV_EXTENSIONS.some((ext) => name.endsWith(ext))) {
+      setCv(null);
+      event.target.value = "";
+      setCvError("Please attach a PDF, DOC, DOCX, RTF or ODT file.");
+      return;
+    }
+    if (file.size > CV_MAX_BYTES) {
+      setCv(null);
+      event.target.value = "";
+      setCvError(`That file is ${formatBytes(file.size)}. Please keep it under 5 MB.`);
+      return;
+    }
+    setCv(file);
+  }
+
+  function clearCv() {
+    setCv(null);
+    setCvError("");
+    if (cvInputRef.current) cvInputRef.current.value = "";
+  }
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
-    const payload = Object.fromEntries(new FormData(form).entries());
+    const data = new FormData(form);
+    data.set("intent", intent);
+    if (!isEmployer && cv) data.set("cv", cv);
+    else data.delete("cv");
+
     setStatus("submitting");
     setMessage("");
     try {
-      const res = await fetch("/api/enquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...payload, intent }),
-      });
-      const data = (await res.json()) as { ok?: boolean; error?: string };
-      if (!res.ok || !data.ok) throw new Error(data.error ?? "Something went wrong.");
+      const res = await fetch("/api/enquiry", { method: "POST", body: data });
+      const payload = (await res.json()) as { ok?: boolean; error?: string };
+      if (!res.ok || !payload.ok) {
+        throw new Error(payload.error ?? "Something went wrong.");
+      }
       setStatus("success");
       form.reset();
+      clearCv();
       onSuccess?.();
     } catch (error) {
       setStatus("error");
@@ -104,12 +150,12 @@ export function EnquiryForm({
     return (
       <div
         role="status"
-        className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-center"
+        className="rounded-xl border border-emerald-200 bg-emerald-50 p-6 text-center"
       >
-        <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-emerald-600 text-white">
-          <Icon name="check" size={24} />
+        <div className="mx-auto grid h-11 w-11 place-items-center rounded-full bg-emerald-600 text-white">
+          <Icon name="check" size={22} />
         </div>
-        <h3 className="mt-4 font-display text-lg font-bold text-emerald-900">
+        <h3 className="mt-3 font-display text-base font-bold text-emerald-900">
           Request received
         </h3>
         <p className="mt-1 text-sm text-emerald-800">
@@ -120,7 +166,7 @@ export function EnquiryForm({
         <button
           type="button"
           onClick={() => setStatus("idle")}
-          className="mt-5 text-sm font-semibold text-emerald-800 underline underline-offset-2"
+          className="mt-4 text-sm font-semibold text-emerald-800 underline underline-offset-2"
         >
           Send another request
         </button>
@@ -132,17 +178,16 @@ export function EnquiryForm({
     <form
       onSubmit={handleSubmit}
       aria-describedby={statusId}
-      className={`grid gap-4 ${compact ? "" : "sm:grid-cols-2"}`}
+      encType="multipart/form-data"
+      className="grid gap-3.5 sm:grid-cols-2"
     >
       <Field label="Full name" name="name" required>
         <input
-          ref={firstFieldRef}
           id="enquiry-name"
           name="name"
           type="text"
           required
           autoComplete="name"
-          autoFocus={autoFocus}
           placeholder="Your name"
           className={inputClass}
         />
@@ -195,7 +240,12 @@ export function EnquiryForm({
       </Field>
 
       <Field label="Industry" name="industry">
-        <select id="enquiry-industry" name="industry" defaultValue="" className={inputClass}>
+        <select
+          id="enquiry-industry"
+          name="industry"
+          defaultValue=""
+          className={inputClass}
+        >
           <option value="">Select an industry</option>
           {industries.map((industry) => (
             <option key={industry.name} value={industry.name}>
@@ -234,15 +284,88 @@ export function EnquiryForm({
         </Field>
       )}
 
+      {/* ---------- CV upload (candidates only) ---------- */}
+      {!isEmployer ? (
+        <div className="sm:col-span-2">
+          <label
+            htmlFor="enquiry-cv"
+            className="mb-1 block text-[0.8rem] font-medium text-ink"
+          >
+            Attach your CV{" "}
+            <span className="font-normal text-ink-soft">
+              (PDF or Word, up to 5 MB)
+            </span>
+          </label>
+
+          <input
+            ref={cvInputRef}
+            id="enquiry-cv"
+            name="cv"
+            type="file"
+            accept={CV_ACCEPT}
+            onChange={handleCvChange}
+            className="sr-only"
+          />
+
+          {cv ? (
+            <div className="flex items-center gap-3 rounded-lg border border-emerald-200 bg-emerald-50 px-3.5 py-2.5">
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-emerald-600 text-white">
+                <Icon name="file" size={16} />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-sm font-medium text-emerald-900">
+                  {cv.name}
+                </span>
+                <span className="block text-xs text-emerald-700">
+                  {formatBytes(cv.size)} · attached
+                </span>
+              </span>
+              <button
+                type="button"
+                onClick={clearCv}
+                className="shrink-0 rounded-full p-1.5 text-emerald-800 transition hover:bg-emerald-100"
+                aria-label={`Remove ${cv.name}`}
+              >
+                <Icon name="close" size={16} />
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => cvInputRef.current?.click()}
+              className="flex w-full items-center gap-3 rounded-lg border border-dashed border-slate-300 bg-slate-50/70 px-3.5 py-3 text-left transition hover:border-navy-400 hover:bg-navy-50/60"
+            >
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-navy-100 text-navy-700">
+                <Icon name="file" size={16} />
+              </span>
+              <span className="min-w-0">
+                <span className="block text-sm font-medium text-ink">
+                  Choose a file
+                </span>
+                <span className="block text-xs text-ink-soft">
+                  Optional, but it gets you matched faster
+                </span>
+              </span>
+            </button>
+          )}
+
+          {cvError ? (
+            <p role="alert" className="mt-1.5 text-xs font-medium text-red-600">
+              {cvError}
+            </p>
+          ) : null}
+        </div>
+      ) : null}
+
       <Field
         label={isEmployer ? "Anything else?" : "Role & location you want"}
         name="message"
-        className={compact ? "" : "sm:col-span-2"}
+        className="sm:col-span-2"
       >
         <textarea
           id="enquiry-message"
           name="message"
-          rows={compact ? 2 : 3}
+          rows={2}
           placeholder={
             isEmployer
               ? "Skills, location, budget band and joining timeline…"
@@ -262,55 +385,44 @@ export function EnquiryForm({
         className="hidden"
       />
 
-      <div
-        id={statusId}
-        aria-live="polite"
-        className={compact ? "" : "sm:col-span-2"}
-      >
+      <div id={statusId} aria-live="polite" className="sm:col-span-2 empty:hidden">
         {status === "error" ? (
-          <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+          <p className="rounded-lg bg-red-50 px-3.5 py-2.5 text-sm text-red-700">
             {message}
           </p>
         ) : null}
       </div>
 
       <div
-        className={`flex flex-col gap-3 ${
-          compact ? "" : "sm:col-span-2 sm:flex-row sm:items-center sm:justify-between"
+        className={`sm:col-span-2 flex flex-col-reverse gap-2.5 sm:flex-row sm:items-center sm:justify-between ${
+          stickySubmit
+            ? "sticky bottom-0 z-10 -mx-5 -mb-4 border-t border-slate-100 bg-white px-5 py-3 sm:-mx-7 sm:-mb-5 sm:px-7 sm:py-3.5"
+            : ""
         }`}
       >
+        <p className="text-xs leading-snug text-ink-soft">
+          {isEmployer
+            ? "No obligation. We reply within one working day."
+            : "Free for candidates — we never charge job seekers."}
+        </p>
         <button
           type="submit"
           disabled={status === "submitting"}
-          className={`inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full bg-navy-800 px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-navy-900 disabled:cursor-not-allowed disabled:opacity-60 ${
-            compact ? "w-full" : "sm:order-2"
-          }`}
+          className="inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-navy-800 px-6 py-3 text-sm font-semibold text-white transition hover:bg-navy-900 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
         >
           {status === "submitting"
             ? "Sending…"
             : isEmployer
               ? "Request a callback"
               : "Submit my profile"}
-          <Icon name="arrow" size={18} />
+          <Icon name="arrow" size={17} />
         </button>
-        <p className="text-xs leading-relaxed text-ink-soft">
-          {isEmployer
-            ? "No obligation. We reply within one working day."
-            : "Free for candidates — we never charge job seekers."}{" "}
-          Prefer email?{" "}
-          <a
-            href={`mailto:${siteConfig.email}`}
-            className="font-semibold text-navy-700 underline underline-offset-2"
-          >
-            {siteConfig.email}
-          </a>
-        </p>
       </div>
     </form>
   );
 }
 
-/** Segmented control used above the form in the hero and the modal. */
+/** Segmented control used above the form in the modal and on the contact page. */
 export function IntentTabs({
   intent,
   onChange,
@@ -333,7 +445,7 @@ export function IntentTabs({
           role="tab"
           aria-selected={intent === tab.key}
           onClick={() => onChange(tab.key)}
-          className={`rounded-full px-3 py-2.5 text-[0.82rem] font-semibold transition sm:text-sm ${
+          className={`rounded-full px-3 py-2 text-[0.8rem] font-semibold transition sm:text-sm ${
             intent === tab.key
               ? "bg-navy-800 text-white shadow-sm"
               : "text-navy-800 hover:bg-navy-100"
@@ -345,3 +457,4 @@ export function IntentTabs({
     </div>
   );
 }
+

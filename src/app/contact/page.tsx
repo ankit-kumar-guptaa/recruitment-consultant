@@ -57,6 +57,7 @@ export default function ContactPage() {
   return (
     <>
       <PageHero
+        variant="navy"
         eyebrow="Contact"
         title="Tell us what you need to hire"
         description={`A consultant reads every enquiry. Share the role, the location and the timeline, and you will hear back within one working day — the same way we have worked for ${yearsInBusiness} years.`}

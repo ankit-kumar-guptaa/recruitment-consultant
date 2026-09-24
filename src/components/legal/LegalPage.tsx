@@ -32,6 +32,7 @@ export function LegalPage({
         title={title}
         description={description}
         crumbs={[{ label: crumbLabel }]}
+        variant="navy"
       >
         <p className="text-sm text-navy-200">Last updated: {updated}</p>
       </PageHero>

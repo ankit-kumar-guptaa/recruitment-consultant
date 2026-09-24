@@ -47,6 +47,7 @@ export default async function ServiceDetailPage({ params }: Params) {
   return (
     <>
       <PageHero
+        variant="cobalt"
         eyebrow="Our Services"
         title={service.h1}
         description={service.intro[0]}

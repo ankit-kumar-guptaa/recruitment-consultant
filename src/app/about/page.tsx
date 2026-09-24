@@ -40,6 +40,7 @@ export default function AboutPage() {
         title="A recruitment agency built around one idea: someone has to own the hire"
         description={`Recruitment Consultant started in ${siteConfig.foundedYear} as a two-person permanent-recruitment desk in ${siteConfig.address.locality}. ${yearsInBusiness} years later we run permanent staffing, contract staffing, executive search, RPO and payroll for employers across India — and the principle has not changed.`}
         crumbs={[{ label: "About Us" }]}
+        variant="navy"
       >
         <EnquiryButton variant="light">Talk to a Consultant</EnquiryButton>
       </PageHero>
