@@ -65,31 +65,32 @@ Every animation is disabled under `prefers-reduced-motion: reduce`.
 
 ## Photography
 
-There is no stock photography in the repo. Every real photograph the site can
-show is declared as a **slot** in `src/lib/photos.ts`: drop a file at the declared
-path, rebuild, and it appears. Until the file exists the page renders its illustrated
-fallback, so a missing photo never breaks a layout.
+Every photograph is declared as a **slot** in `src/lib/photos.ts`: the file lives at the
+declared path, and replacing it swaps the photo on the next build with no code change.
+If a file is missing the page renders its illustrated fallback instead, so a layout can
+never break over a photo.
 
-| Drop this file into `public/images/photos/` | Size | Appears on | What to shoot |
-| --- | --- | --- | --- |
-| `about-team.jpg` | 1200×1350 portrait | About page, story section | The real team at work — a desk, a screen, a conversation. Not a posed line-up. |
-| `employers-meeting.jpg` | 1400×1000 landscape | Employers page | Two or three people around a laptop or a printed shortlist. Should read as a client meeting, not a stock handshake. |
-| `job-seeker-interview.jpg` | 1400×1000 landscape | Job seekers page | A warm one-to-one conversation — a candidate being helped, not interrogated. |
-| `office-reception.jpg` | 1400×1000 landscape | Contact page | The actual office: entrance, reception or main floor. This is the trust photo. |
+| File in `public/images/photos/` | Size | Appears on |
+| --- | --- | --- |
+| `about-team.webp` | 1182×1330 portrait | About page, story section |
+| `employers-meeting.webp` | 1484×1060 landscape | Employers page |
+| `job-seeker-interview.webp` | 1484×1060 landscape | Job seekers page |
+| `office-reception.webp` | 1484×1060 landscape | Contact page |
 
-JPG, PNG and WebP all work; WebP is smallest. The homepage hero portrait
-(`/images/hero-consultant.webp`) is already filled from the supplied design mock-up and
-can be replaced the same way.
+The homepage hero portrait (`/images/hero-consultant.webp`) is a slot too.
+
+To add a new one, add an entry to `photoSlots` and render `<Photo slot="…" />` with an
+illustrated `fallback`.
 
 To add a new slot, add an entry to `photoSlots` and render `<Photo slot="…" />` with an
 illustrated `fallback`.
 
 ## Artwork
 
-There is no stock photography in the build. The logo and favicon are the supplied brand
-files, the hero portrait was cut out of the supplied design mock-up, and every other visual
-(insight card covers, coverage map, dot grids, decorative rings) is inline SVG generated in
-`components/ui/Artwork.tsx` — crisp at any resolution and a few KB in total.
+Photographs are the client's own files (see **Photography** above). Everything else — page
+banners, insight card covers, the coverage map, dot grids and decorative rings — is
+generated: inline SVG in `components/ui/Artwork.tsx` plus the banner images from
+`scripts/generate-banners.mjs`. Crisp at any resolution and a few KB each.
 
 ## Getting started
 
@@ -229,8 +230,9 @@ against the same map.
    `src/lib/cities-content.ts` are written from general market knowledge. Have someone
    who works each market read their city page before launch — local detail is exactly
    what makes these pages rank, and exactly what is embarrassing when it is wrong.
-9. **Photography.** Add the four files listed under **Photography** above. Until then
-   those sections fall back to illustrations.
+9. **Check the reception photo.** `office-reception.webp` has *Elite Corporate
+   Solutions* signage on the wall, not *Recruitment Consultant*. Fine if that is the same
+   business or the parent brand — confusing to a visitor if it is not.
 10. **Legal pages.** `/privacy-policy` and `/terms` are a solid starting draft, not legal
    advice — have the client's lawyer review both before launch.
 

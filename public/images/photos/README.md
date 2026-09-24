@@ -1,15 +1,15 @@
 # Photos
 
-Drop real photographs here and they replace the illustrated placeholders
-automatically on the next build. The expected filenames, sizes and briefs are
-declared in `src/lib/photos.ts` and listed in the project README.
+These are the real photographs used on the site. They are declared in
+`src/lib/photos.ts` — replacing a file here (same name) swaps the photo on the
+next build, with no code change.
 
 | File | Size | Shows on |
 | --- | --- | --- |
-| `about-team.jpg` | 1200×1350 portrait | About page |
-| `employers-meeting.jpg` | 1400×1000 landscape | Employers page |
-| `job-seeker-interview.jpg` | 1400×1000 landscape | Job seekers page |
-| `office-reception.jpg` | 1400×1000 landscape | Contact page |
+| `about-team.webp` | 1182×1330 portrait | About page, story section |
+| `employers-meeting.webp` | 1484×1060 landscape | Employers page |
+| `job-seeker-interview.webp` | 1484×1060 landscape | Job seekers page |
+| `office-reception.webp` | 1484×1060 landscape | Contact page |
 
-JPG, PNG or WebP all work — WebP is smallest. Nothing here is committed as a
-placeholder, so a missing file simply means the illustrated version stays.
+If a file is removed, the page falls back to its illustrated version rather than
+breaking.
