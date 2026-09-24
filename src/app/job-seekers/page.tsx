@@ -4,6 +4,7 @@ import { PageHero } from "@/components/layout/PageHero";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { EnquiryButton } from "@/components/ui/EnquiryButton";
 import { Icon } from "@/components/ui/Icon";
+import { Photo } from "@/components/ui/Photo";
 import { Reveal } from "@/components/motion/Reveal";
 import { Coverage } from "@/components/home/Coverage";
 import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
@@ -72,6 +73,12 @@ export default function JobSeekersPage() {
               title="From your CV to your joining date"
             />
           </Reveal>
+
+          <Photo
+            slot="jobSeekerInterview"
+            sizes="(min-width: 1024px) 70vw, 92vw"
+            className="mx-auto mt-10 h-auto w-full max-w-4xl rounded-3xl object-cover shadow-float"
+          />
 
           <ol className="relative mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
             <span

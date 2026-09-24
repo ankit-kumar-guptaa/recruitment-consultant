@@ -3,6 +3,7 @@ import { PageHero } from "@/components/layout/PageHero";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { EnquiryButton } from "@/components/ui/EnquiryButton";
 import { Icon } from "@/components/ui/Icon";
+import { Photo } from "@/components/ui/Photo";
 import { Reveal } from "@/components/motion/Reveal";
 import { Services } from "@/components/home/Services";
 import { HiringModels } from "@/components/home/HiringModels";
@@ -97,6 +98,12 @@ export default function EmployersPage() {
               aria-hidden="true"
               className="absolute -inset-6 -z-10 rounded-[2.5rem] bg-gradient-to-br from-navy-100 via-navy-50 to-transparent blur-xl"
             />
+            <Photo
+              slot="employersMeeting"
+              sizes="(min-width: 1024px) 44vw, 92vw"
+              className="mb-5 h-auto w-full rounded-3xl object-cover shadow-float"
+            />
+
             <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-float sm:p-8">
               <div className="flex items-start justify-between gap-4">
                 <div>

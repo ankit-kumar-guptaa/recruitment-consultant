@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/layout/PageHero";
 import { Icon } from "@/components/ui/Icon";
+import { Photo } from "@/components/ui/Photo";
 import { ContactForm } from "@/components/ui/ContactForm";
 import { Reveal } from "@/components/motion/Reveal";
 import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
@@ -81,6 +82,12 @@ export default function ContactPage() {
               Email is fastest and gives us the detail we need to be useful on
               the first reply.
             </p>
+
+            <Photo
+              slot="officeReception"
+              sizes="(min-width: 1024px) 38vw, 92vw"
+              className="mt-8 h-auto w-full rounded-2xl object-cover shadow-card"
+            />
 
             <ul className="mt-8 space-y-4">
               {channels.map((channel, index) => {

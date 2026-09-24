@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { Photo } from "@/components/ui/Photo";
 import { PageHero } from "@/components/layout/PageHero";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { EnquiryButton } from "@/components/ui/EnquiryButton";
@@ -62,13 +63,20 @@ export default function AboutPage() {
                 className="absolute -right-2 bottom-16 h-20 w-20 rounded-2xl bg-gold/15"
               />
               <div className="relative aspect-[4/4.5] overflow-hidden rounded-[2rem] bg-gradient-to-br from-navy-200 via-navy-100 to-navy-50 ring-1 ring-navy-100">
-                <Image
-                  src="/images/hero-consultant.webp"
-                  alt="Consultant at Recruitment Consultant, a recruitment agency in India"
-                  width={746}
-                  height={1056}
+                <Photo
+                  slot="aboutTeam"
                   sizes="(min-width: 1024px) 26vw, 70vw"
-                  className="absolute bottom-0 left-1/2 h-[96%] w-auto max-w-none -translate-x-1/2 object-contain"
+                  className="absolute inset-0 h-full w-full object-cover"
+                  fallback={
+                    <Image
+                      src="/images/hero-consultant.webp"
+                      alt="Consultant at Recruitment Consultant, a recruitment agency in India"
+                      width={746}
+                      height={1056}
+                      sizes="(min-width: 1024px) 26vw, 70vw"
+                      className="absolute bottom-0 left-1/2 h-[96%] w-auto max-w-none -translate-x-1/2 object-contain"
+                    />
+                  }
                 />
               </div>
               <div className="absolute bottom-0 left-0 w-[13rem] rounded-2xl bg-white p-5 shadow-float ring-1 ring-slate-100">

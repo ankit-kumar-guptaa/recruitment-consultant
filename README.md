@@ -63,6 +63,27 @@ No animation library — everything is `IntersectionObserver` and CSS:
 
 Every animation is disabled under `prefers-reduced-motion: reduce`.
 
+## Photography
+
+There is no stock photography in the repo. Every real photograph the site can
+show is declared as a **slot** in `src/lib/photos.ts`: drop a file at the declared
+path, rebuild, and it appears. Until the file exists the page renders its illustrated
+fallback, so a missing photo never breaks a layout.
+
+| Drop this file into `public/images/photos/` | Size | Appears on | What to shoot |
+| --- | --- | --- | --- |
+| `about-team.jpg` | 1200×1350 portrait | About page, story section | The real team at work — a desk, a screen, a conversation. Not a posed line-up. |
+| `employers-meeting.jpg` | 1400×1000 landscape | Employers page | Two or three people around a laptop or a printed shortlist. Should read as a client meeting, not a stock handshake. |
+| `job-seeker-interview.jpg` | 1400×1000 landscape | Job seekers page | A warm one-to-one conversation — a candidate being helped, not interrogated. |
+| `office-reception.jpg` | 1400×1000 landscape | Contact page | The actual office: entrance, reception or main floor. This is the trust photo. |
+
+JPG, PNG and WebP all work; WebP is smallest. The homepage hero portrait
+(`/images/hero-consultant.webp`) is already filled from the supplied design mock-up and
+can be replaced the same way.
+
+To add a new slot, add an entry to `photoSlots` and render `<Photo slot="…" />` with an
+illustrated `fallback`.
+
 ## Artwork
 
 There is no stock photography in the build. The logo and favicon are the supplied brand
@@ -163,7 +184,13 @@ against the same map.
   city-specific FAQs.
 - Metadata API with title template, canonical URLs, Open Graph and Twitter cards.
 - Generated OG image at `/opengraph-image`.
-- `app/sitemap.ts` and `app/robots.ts` generate `/sitemap.xml` and `/robots.txt`.
+- `app/sitemap.ts` generates `/sitemap.xml` from the same content modules the pages
+  render from, so a new service, city or article appears automatically — 37 URLs today.
+  `/search` is deliberately excluded.
+- `app/robots.ts` generates `/robots.txt`: everything public is crawlable, `/api/` and
+  `/search` are disallowed, Googlebot/Bingbot are spelled out explicitly, and a few
+  aggressive backlink scrapers are blocked. `/_next/` is never blocked — Googlebot needs
+  the JS and CSS to render the page.
 - Semantic landmarks, labelled sections and a skip-to-content link.
 
 ### Performance
@@ -202,12 +229,11 @@ against the same map.
    `src/lib/cities-content.ts` are written from general market knowledge. Have someone
    who works each market read their city page before launch — local detail is exactly
    what makes these pages rank, and exactly what is embarrassing when it is wrong.
-9. **Legal pages.** `/privacy-policy` and `/terms` are a solid starting draft, not legal
+9. **Photography.** Add the four files listed under **Photography** above. Until then
+   those sections fall back to illustrations.
+10. **Legal pages.** `/privacy-policy` and `/terms` are a solid starting draft, not legal
    advice — have the client's lawyer review both before launch.
-10. **Photography.** Every section is built to take a real photo where artwork sits today
-   (`next/image` slots with fixed aspect ratios and alt text). Drop files into
-   `public/images/` and swap the artwork component for an `Image` — the sizes are noted in
-   each component.
+
 
 ## Structure
 
