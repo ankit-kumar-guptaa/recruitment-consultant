@@ -42,13 +42,24 @@ Marketing site for a pan-India recruitment consultancy, built with **Next.js 15 
 
 ## Motion
 
-Scroll animations are built on `IntersectionObserver`, not an animation library:
+No animation library — everything is `IntersectionObserver` and CSS:
 
 - `components/motion/Reveal.tsx` — staggered fade/slide/scale entrances. Content renders
   visible by default and is only hidden once JS confirms support, so nothing can get
   stuck behind a broken animation. Anything already on screen shows immediately.
 - `components/motion/CountUp.tsx` — stat counters that run once in view.
 - `components/motion/ScrollProgress.tsx` — reading-progress bar under the header.
+- `components/motion/RouteProgress.tsx` — navigation progress bar pinned to the top of
+  the viewport. Next.js client-side navigation gives no feedback of its own, so a slow
+  RSC fetch just looks like a frozen page. The bar starts on any internal link click and
+  finishes when the route actually changes.
+  *Gotcha worth remembering:* `useSearchParams()` returns a fresh object on every render,
+  so it must not be used as an effect dependency here — the bar compares the serialised
+  URL instead.
+- `components/motion/PageTransition.tsx` — fades each route in on mount, keyed by
+  pathname.
+- `app/loading.tsx` — skeleton shown if a route segment actually suspends. Prefetched
+  static pages never reach it, so it does not flash on normal navigation.
 
 Every animation is disabled under `prefers-reduced-motion: reduce`.
 

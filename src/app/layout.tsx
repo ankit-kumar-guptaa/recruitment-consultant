@@ -5,6 +5,8 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { EnquiryProvider } from "@/components/ui/EnquiryModal";
 import { FloatingContact } from "@/components/ui/FloatingContact";
+import { RouteProgress } from "@/components/motion/RouteProgress";
+import { PageTransition } from "@/components/motion/PageTransition";
 import { OrganizationJsonLd, WebsiteJsonLd } from "@/components/seo/JsonLd";
 import { siteConfig } from "@/lib/site";
 
@@ -116,8 +118,11 @@ export default function RootLayout({
     >
       <body className="min-h-dvh bg-white antialiased">
         <EnquiryProvider>
+          <RouteProgress />
           <Header />
-          <main id="main">{children}</main>
+          <main id="main">
+            <PageTransition>{children}</PageTransition>
+          </main>
           <Footer />
           <FloatingContact />
         </EnquiryProvider>
