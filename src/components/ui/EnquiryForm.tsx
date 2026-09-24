@@ -282,7 +282,7 @@ export function EnquiryForm({
         <button
           type="submit"
           disabled={status === "submitting"}
-          className={`inline-flex items-center justify-center gap-2 rounded-full bg-navy-800 px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-navy-900 disabled:cursor-not-allowed disabled:opacity-60 ${
+          className={`inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full bg-navy-800 px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-navy-900 disabled:cursor-not-allowed disabled:opacity-60 ${
             compact ? "w-full" : "sm:order-2"
           }`}
         >
