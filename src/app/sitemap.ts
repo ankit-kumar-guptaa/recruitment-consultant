@@ -4,6 +4,8 @@ import { serviceDetails } from "@/lib/services-content";
 import { posts } from "@/lib/blog-content";
 import { cityPages } from "@/lib/cities-content";
 
+export const dynamic = "force-static";
+
 type Freq = MetadataRoute.Sitemap[number]["changeFrequency"];
 
 /**

@@ -127,7 +127,7 @@ export function EnquiryForm({
     setStatus("submitting");
     setMessage("");
     try {
-      const res = await fetch("/api/enquiry", { method: "POST", body: data });
+      const res = await fetch("/api/enquiry.php", { method: "POST", body: data });
       const payload = (await res.json()) as { ok?: boolean; error?: string };
       if (!res.ok || !payload.ok) {
         throw new Error(payload.error ?? "Something went wrong.");
