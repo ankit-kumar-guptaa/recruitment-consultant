@@ -4,6 +4,7 @@ import { Icon } from "@/components/ui/Icon";
 import { Photo } from "@/components/ui/Photo";
 import { ContactForm } from "@/components/ui/ContactForm";
 import { Reveal } from "@/components/motion/Reveal";
+import { Branches } from "@/components/contact/Branches";
 import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import { siteConfig, yearsInBusiness } from "@/lib/site";
 
@@ -39,18 +40,21 @@ const channels = [
   {
     icon: "phone",
     title: "Call us",
-    lines: ["Request a callback"],
+    lines: [
+      siteConfig.showPhoneNumber ? siteConfig.phoneDisplay : "Request a callback",
+    ],
     href: `tel:${siteConfig.phoneHref}`,
     note: siteConfig.officeHours,
   },
   {
     icon: "pin",
-    title: "Office",
+    title: "Head office",
     lines: [
       siteConfig.address.street,
-      `${siteConfig.address.locality}, ${siteConfig.address.region} ${siteConfig.address.postalCode}`,
+      `${siteConfig.address.locality} – ${siteConfig.address.postalCode}, India`,
     ],
-    note: "Visits by appointment — email us first so a consultant is free.",
+    href: "#offices",
+    note: "Five offices across India and the UAE — see them all below.",
   },
 ];
 
@@ -149,6 +153,8 @@ export default function ContactPage() {
           </Reveal>
         </div>
       </section>
+
+      <Branches />
 
       <BreadcrumbJsonLd items={[{ name: "Contact", path: "/contact" }]} />
     </>

@@ -205,12 +205,12 @@ against the same map.
 1. **Set the SMTP variables** on the host (see **Email** above) and run
    `npm run mail:test` to confirm delivery before launch. Rotate the mailbox password if
    it has ever been shared over chat or email.
-2. **Replace the placeholder contact details** in `src/lib/site.ts`
-   (phone, email, address, social profiles).
-   The phone number is **never rendered as text** anywhere — the client asked for
-   email-first contact, so call and WhatsApp buttons carry a label instead of digits and
-   `telephone` is left out of the structured data. Set `showPhoneNumber: true` in
-   `siteConfig` to publish it again.
+2. **Contact details** — phone, address and the five offices are the client's real ones,
+   set in `siteConfig` and `branches` in `src/lib/site.ts`. Still placeholders: the email
+   addresses (`info@` / `careers@`) and the social profile URLs.
+   `showPhoneNumber` controls whether the number is rendered as text anywhere; set it to
+   `false` and call/WhatsApp buttons fall back to a label and `telephone` drops out of the
+   structured data.
 3. **Replace the client logos** in `clientLogos` (`src/lib/site.ts`). They are currently
    rendered as plain text wordmarks and should only name companies you actually work
    with and have permission to list.

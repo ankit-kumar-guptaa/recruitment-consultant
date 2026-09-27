@@ -34,11 +34,13 @@ export function CtaBand() {
               Hire Talent
             </EnquiryButton>
             <a
-              href={`mailto:${siteConfig.email}`}
+              href={`tel:${siteConfig.phoneHref}`}
               className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/40 px-7 py-3.5 text-[0.95rem] font-semibold text-white transition hover:bg-white/10 sm:w-auto"
             >
-              <Icon name="mail" size={18} />
-              {siteConfig.email}
+              <Icon name="phone" size={18} />
+              {siteConfig.showPhoneNumber
+                ? siteConfig.phoneDisplay
+                : "Call our hiring desk"}
             </a>
           </div>
         </Reveal>

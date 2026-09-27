@@ -14,21 +14,21 @@ export const siteConfig = {
   email: "info@recruitmentconsultant.co.in",
   careersEmail: "careers@recruitmentconsultant.co.in",
   /**
-   * The phone number is never rendered as text anywhere on the site — the
-   * client asked for email-first contact. Call and WhatsApp actions still work
-   * through these values, but the UI only ever shows a label.
-   * Flip `showPhoneNumber` to true if that decision changes.
+   * Set to false to hide the number everywhere: call and WhatsApp buttons keep
+   * working but show a label instead of digits, and `telephone` is dropped from
+   * the structured data.
    */
-  showPhoneNumber: false,
-  phoneDisplay: "+91 98765 43210",
-  phoneHref: "+919876543210",
-  whatsapp: "919876543210",
+  showPhoneNumber: true,
+  phoneDisplay: "+91 98703 64340",
+  phoneHref: "+919870364340",
+  whatsapp: "919870364340",
   officeHours: "Monday to Saturday, 9:30 am – 6:30 pm IST",
+  /** Head office. Every branch is listed in `branches` below. */
   address: {
-    street: "Business District",
+    street: "A-83, Okhla Phase II",
     locality: "New Delhi",
     region: "Delhi",
-    postalCode: "110001",
+    postalCode: "110020",
     country: "IN",
   },
   social: {
@@ -72,6 +72,93 @@ export const targetKeywords = {
     "best recruitment agency for manufacturing",
   ],
 } as const;
+
+export type Branch = {
+  name: string;
+  /** Rendered one line per entry. */
+  lines: string[];
+  locality: string;
+  region: string;
+  postalCode?: string;
+  country: string;
+  countryName: string;
+  phoneDisplay?: string;
+  phoneHref?: string;
+  isHeadOffice?: boolean;
+  /** City page to link to, when we have one. */
+  cityPath?: string;
+};
+
+export const branches: Branch[] = [
+  {
+    name: "Head Office — Delhi NCR",
+    lines: ["A-83, Okhla Phase II", "New Delhi – 110020", "India"],
+    locality: "New Delhi",
+    region: "Delhi",
+    postalCode: "110020",
+    country: "IN",
+    countryName: "India",
+    phoneDisplay: "+91 98703 64340",
+    phoneHref: "+919870364340",
+    isHeadOffice: true,
+    cityPath: "/recruitment-agency-in-delhi-ncr",
+  },
+  {
+    name: "Hyderabad Branch",
+    lines: [
+      "eSeva Ln, K P H B Phase 3",
+      "Kukatpally, Hyderabad",
+      "Telangana 500072",
+    ],
+    locality: "Hyderabad",
+    region: "Telangana",
+    postalCode: "500072",
+    country: "IN",
+    countryName: "India",
+    cityPath: "/recruitment-agency-in-hyderabad",
+  },
+  {
+    name: "Pune Branch",
+    lines: [
+      "2nd Floor, River Side Business Bay",
+      "Plot no. 84, Wellesley Road",
+      "Near RTO (Sangam Bridge)",
+      "Pune, Maharashtra 411001",
+    ],
+    locality: "Pune",
+    region: "Maharashtra",
+    postalCode: "411001",
+    country: "IN",
+    countryName: "India",
+    cityPath: "/recruitment-agency-in-pune",
+  },
+  {
+    name: "Hapur Branch",
+    lines: [
+      "Ground Floor Ward 15/136/1",
+      "Railway Road, 2",
+      "Hapur, Uttar Pradesh",
+    ],
+    locality: "Hapur",
+    region: "Uttar Pradesh",
+    country: "IN",
+    countryName: "India",
+  },
+  {
+    name: "UAE Branch",
+    lines: [
+      "BC-889265",
+      "26th Floor, Amber Gem Tower",
+      "Ajman, UAE",
+    ],
+    locality: "Ajman",
+    region: "Ajman",
+    country: "AE",
+    countryName: "United Arab Emirates",
+    phoneDisplay: "+971 58 234 8005",
+    phoneHref: "+971582348005",
+  },
+];
 
 export type NavItem = { label: string; href: string };
 

@@ -115,7 +115,9 @@ export function Footer() {
                 href={`tel:${siteConfig.phoneHref}`}
                 className="text-navy-200 transition hover:text-white"
               >
-                Call our hiring desk
+                {siteConfig.showPhoneNumber
+                  ? siteConfig.phoneDisplay
+                  : "Call our hiring desk"}
               </a>
             </li>
             <li className="flex items-start gap-3">

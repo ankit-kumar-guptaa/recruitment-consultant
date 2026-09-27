@@ -1,4 +1,4 @@
-import { siteConfig, services, industries, faqs, cities } from "@/lib/site";
+import { siteConfig, services, industries, faqs, cities, branches } from "@/lib/site";
 import type { Post } from "@/lib/blog-content";
 
 function Script({ data }: { data: Record<string, unknown> }) {
@@ -42,8 +42,25 @@ export function OrganizationJsonLd() {
         },
         areaServed: [
           { "@type": "Country", name: "India" },
+          { "@type": "Country", name: "United Arab Emirates" },
           ...cities.map((city) => ({ "@type": "City", name: city })),
         ],
+        // Every office, so each one can surface in local results.
+        location: branches.map((branch) => ({
+          "@type": "Place",
+          name: `${siteConfig.name} — ${branch.locality}`,
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: branch.lines.slice(0, -1).join(", "),
+            addressLocality: branch.locality,
+            addressRegion: branch.region,
+            ...(branch.postalCode ? { postalCode: branch.postalCode } : {}),
+            addressCountry: branch.country,
+          },
+          ...(siteConfig.showPhoneNumber && branch.phoneDisplay
+            ? { telephone: branch.phoneDisplay }
+            : {}),
+        })),
         contactPoint: [
           {
             "@type": "ContactPoint",

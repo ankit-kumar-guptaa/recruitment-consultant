@@ -14,7 +14,7 @@ import {
 } from "@/components/seo/JsonLd";
 import { cityPages, cityBySlug } from "@/lib/cities-content";
 import { serviceDetails } from "@/lib/services-content";
-import { heroStats, siteConfig, yearsInBusiness } from "@/lib/site";
+import { branches, heroStats, siteConfig, yearsInBusiness } from "@/lib/site";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -62,6 +62,10 @@ export default async function CityPage({ params }: Params) {
     .map((s) => cityBySlug.get(s))
     .filter((c): c is NonNullable<typeof c> => Boolean(c));
 
+  const localBranch = branches.find(
+    (branch) => branch.locality.toLowerCase() === city.name.toLowerCase(),
+  );
+
   const cityFaqs = [
     {
       question: `Do you recruit across all of ${city.name}?`,
@@ -78,7 +82,9 @@ export default async function CityPage({ params }: Params) {
     },
     {
       question: `Do you have an office in ${city.name}?`,
-      answer: `Our registered office is in ${siteConfig.address.locality}, and our consultants cover ${city.name} directly — including on-site drives, walk-in events and client meetings. Most mandates are run remotely with on-ground support where the role needs it.`,
+      answer: localBranch
+        ? `Yes — we have an office at ${localBranch.lines.join(", ")}. Visits are by appointment, so email us first and we will make sure the right consultant is free. Most mandates are run remotely with on-ground support for drives, walk-in events and client meetings.`
+        : `Our head office is at ${siteConfig.address.street}, ${siteConfig.address.locality} – ${siteConfig.address.postalCode}, and our consultants cover ${city.name} directly — including on-site drives, walk-in events and client meetings. Most mandates are run remotely with on-ground support where the role needs it.`,
     },
   ];
 

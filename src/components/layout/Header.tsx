@@ -178,6 +178,15 @@ export function Header() {
               <EnquiryButton intent="jobseeker" variant="outline" className="w-full">
                 Find a Job
               </EnquiryButton>
+              {siteConfig.showPhoneNumber ? (
+                <a
+                  href={`tel:${siteConfig.phoneHref}`}
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 px-6 py-3 text-sm font-semibold text-navy-800"
+                >
+                  <Icon name="phone" size={18} />
+                  {siteConfig.phoneDisplay}
+                </a>
+              ) : null}
               <a
                 href={`mailto:${siteConfig.email}`}
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 px-6 py-3 text-sm font-semibold text-navy-800"

@@ -30,7 +30,9 @@ export function FloatingContact() {
     },
     {
       key: "call",
-      label: "Call our hiring desk",
+      label: siteConfig.showPhoneNumber
+        ? `Call ${siteConfig.phoneDisplay}`
+        : "Call our hiring desk",
       href: `tel:${siteConfig.phoneHref}`,
       icon: "phone",
       className: "bg-navy-800 hover:bg-navy-900",
