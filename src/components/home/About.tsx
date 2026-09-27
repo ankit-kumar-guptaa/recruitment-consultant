@@ -11,7 +11,7 @@ export function About() {
     <section
       id="about"
       aria-labelledby="about-heading"
-      className="py-16 sm:py-20 lg:py-24"
+      className="py-16 mt-5 sm:py-20 lg:py-24"
     >
       <div className="container-page grid gap-14 lg:grid-cols-2 lg:items-center lg:gap-16">
         {/* Portrait panel */}
@@ -32,7 +32,7 @@ export function About() {
                 className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-navy-900/10 to-transparent"
               />
               <Image
-                src="/images/hero-consultant.webp"
+                src="/images/photos/about-team.webp"
                 alt="Recruitment consultant at work"
                 width={746}
                 height={1056}
