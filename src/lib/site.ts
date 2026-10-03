@@ -1,7 +1,9 @@
 export const siteConfig = {
   name: "Recruitment Consultant",
   legalName: "Recruitment Consultant",
-  tagline: "People | Potential | Progress",
+  /** Shown in the organisation schema and the email header. The logo lockup
+   * itself now reads "Since 2010" rather than a tagline. */
+  tagline: "Right People For A Brighter Tomorrow",
   domain: "recruitmentconsultant.co.in",
   url:
     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??

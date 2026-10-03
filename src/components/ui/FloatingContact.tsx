@@ -57,7 +57,7 @@ export function FloatingContact() {
             ? { target: "_blank", rel: "noopener noreferrer" }
             : {})}
           aria-label={action.label}
-          className={`group relative grid h-13 w-13 place-items-center rounded-full text-white shadow-float transition-transform duration-200 hover:scale-105 ${action.className}`}
+          className={`group relative grid h-12 w-12 place-items-center rounded-full text-white shadow-float transition-transform duration-200 hover:scale-105 sm:h-13 sm:w-13 ${action.className}`}
         >
           {action.key === "whatsapp" ? (
             <span
@@ -76,7 +76,7 @@ export function FloatingContact() {
         type="button"
         onClick={() => open("employer")}
         aria-label="Open the enquiry form"
-        className="group relative grid h-13 w-13 place-items-center rounded-full bg-gold text-ink shadow-float transition-transform duration-200 hover:scale-105"
+        className="group relative grid h-12 w-12 place-items-center rounded-full bg-gold text-ink shadow-float transition-transform duration-200 hover:scale-105 sm:h-13 sm:w-13"
       >
         <Icon name="mail" size={23} />
         <span className="pointer-events-none absolute left-[calc(100%+0.65rem)] whitespace-nowrap rounded-lg bg-ink px-3 py-1.5 text-xs font-semibold text-white opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100 max-sm:hidden">

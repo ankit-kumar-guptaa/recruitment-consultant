@@ -3,8 +3,8 @@ import { Icon } from "@/components/ui/Icon";
 import { EnquiryButton } from "@/components/ui/EnquiryButton";
 import { RingBackdrop, DotGrid, Squiggle } from "@/components/ui/Artwork";
 import { Reveal } from "@/components/motion/Reveal";
-import { CountUp } from "@/components/motion/CountUp";
-import { heroHighlights, heroStats, siteConfig } from "@/lib/site";
+import { HeroLeadForm } from "./HeroLeadForm";
+import { heroHighlights, siteConfig } from "@/lib/site";
 
 export function Hero() {
   return (
@@ -136,29 +136,12 @@ export function Hero() {
         </Reveal>
       </div>
 
-      {/* ---------- Floating stat strip (sits below the visual, never over it) ---------- */}
-      <div className="container-page relative z-10 pb-2 sm:-mb-10 sm:translate-y-10 sm:pb-0">
+      {/* ---------- Lead capture bar ----------
+          Sits on the hero / logo-strip boundary so the form is visible without
+          scrolling, while the hero visual stays untouched. */}
+      <div className="container-page relative z-10 mt-8 pb-2 sm:-mb-12 sm:translate-y-12 sm:pb-0">
         <Reveal delay={120}>
-          <ul className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-slate-200/70 shadow-float ring-1 ring-slate-200/70 lg:grid-cols-4">
-            {heroStats.map((stat) => (
-              <li
-                key={stat.label}
-                className="flex items-center gap-3 bg-white/90 px-5 py-5 backdrop-blur transition-colors hover:bg-white"
-              >
-                <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl ${stat.tone}`}>
-                  <Icon name={stat.icon} size={22} />
-                </span>
-                <span className="min-w-0">
-                  <strong className="block font-display text-xl font-extrabold leading-none text-navy-900 sm:text-2xl">
-                    <CountUp value={stat.value} suffix={stat.suffix} />
-                  </strong>
-                  <span className="mt-1 block text-xs leading-snug text-ink-soft sm:text-sm">
-                    {stat.label}
-                  </span>
-                </span>
-              </li>
-            ))}
-          </ul>
+          <HeroLeadForm />
         </Reveal>
       </div>
     </section>

@@ -5,14 +5,17 @@ Marketing site for a pan-India recruitment consultancy, built with **Next.js 15 
 
 ## What is built so far
 
-- **Brand** — the supplied logo lockup in `public/brand/` (`logo.webp` for light
+- **Brand** — the supplied logo lockup (reading "Since 2010" under the wordmark) in `public/brand/` (`logo.webp` for light
   backgrounds, `logo-white.webp` for the dark footer) plus the circular icon, wired up
   as the favicon (`src/app/icon.png`) and Apple touch icon (`src/app/apple-icon.png`).
 - **Header** — sticky, responsive, active-link state, expandable search, mobile drawer,
   scroll-progress bar and a `Hire Talent` CTA that opens the enquiry popup.
 - **Hero** — headline, sub-copy, dual CTAs, four trust highlights and a clean portrait
-  (nothing overlaps the photo). A glass stat strip with animated counters floats on the
-  boundary between the hero and the logo strip.
+  (nothing overlaps the photo). A **lead capture bar** floats on the boundary between the
+  hero and the logo strip: intent switch plus four fields and a button, so a visitor can
+  leave their details without scrolling or opening anything. Anyone who needs to attach a
+  CV or paste a full JD is pushed to the detailed form in the modal.
+- **Stats band** — the four headline numbers with animated counters, below the logo strip.
 - **Home sections** — logo strip, who-we-are, services, industries, why-us (with a live
   shortlist mock-up), 4-step process, pan-India coverage, employer vs. job-seeker split,
   testimonials, insights/blog, FAQ accordion and a closing CTA band.

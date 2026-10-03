@@ -21,7 +21,7 @@ export function Logo({
     >
       <Image
         src={inverted ? "/brand/logo-white.webp" : "/brand/logo.webp"}
-        alt={`${siteConfig.name} — ${siteConfig.tagline}`}
+        alt={`${siteConfig.name} — recruitment agency in India since ${siteConfig.foundedYear}`}
         width={LOGO_W}
         height={LOGO_H}
         priority
