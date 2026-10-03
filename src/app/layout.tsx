@@ -74,7 +74,7 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     images: [
       {
-        url: "/opengraph-image",
+        url: "/opengraph-image.jpg",
         width: 1200,
         height: 630,
         alt: `${siteConfig.name} — recruitment agency in India for employers`,
@@ -86,7 +86,7 @@ export const metadata: Metadata = {
     title:
       "Recruitment Agency in India | Staffing & Hiring Company for Employers",
     description: siteConfig.shortDescription,
-    images: ["/opengraph-image"],
+    images: ["/opengraph-image.jpg"],
   },
   robots: {
     index: true,

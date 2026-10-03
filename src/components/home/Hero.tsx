@@ -9,7 +9,7 @@ import { heroHighlights, siteConfig } from "@/lib/site";
 export function Hero() {
   return (
     <section
-      className="relative overflow-x-clip bg-gradient-to-b from-navy-50 via-white to-white"
+      className="relative overflow-x-clip bg-gradient-to-b from-navy-50 via-white mb-4 to-white"
       aria-labelledby="hero-heading"
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">

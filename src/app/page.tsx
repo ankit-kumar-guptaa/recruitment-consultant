@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/home/Hero";
-import { TrustBar } from "@/components/home/TrustBar";
+// Trust bar stays off until the client-logo list is cleared for use.
+// import { TrustBar } from "@/components/home/TrustBar";
 import { StatsBand } from "@/components/home/StatsBand";
 import { About } from "@/components/home/About";
 import { Services } from "@/components/home/Services";
@@ -36,7 +37,7 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <TrustBar />
+      {/* <TrustBar /> */}
       <StatsBand />
       <About />
       <Services />

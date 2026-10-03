@@ -1,19 +1,19 @@
-import { NextResponse } from "next/server";
-import {
-  isMailConfigured,
-  sendEnquiry,
-  type CvAttachment,
-  type Enquiry,
-} from "@/lib/mailer";
-import { siteConfig } from "@/lib/site";
+﻿import "server-only";
+import { NextRequest, NextResponse } from "next/server";
+import nodemailer from "nodemailer";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
+// -- Config from environment
+const SMTP_HOST = process.env.SMTP_HOST ?? "";
+const SMTP_PORT = Number(process.env.SMTP_PORT ?? 465);
+const SMTP_USER = process.env.SMTP_USER ?? "";
+const SMTP_PASS = process.env.SMTP_PASS ?? "";
+const MAIL_FROM = process.env.MAIL_FROM ?? SMTP_USER;
+const MAIL_TO   = process.env.MAIL_TO   ?? "";
 
-/** Keep in sync with the limits in components/ui/EnquiryForm.tsx */
 const CV_MAX_BYTES = 5 * 1024 * 1024;
-const CV_EXTENSIONS = [".pdf", ".doc", ".docx", ".rtf", ".odt"];
-const CV_TYPES: Record<string, string> = {
+// Validated by extension: browsers report an empty or wrong MIME type for .doc
+// and .docx often enough that type-only checks reject real CVs.
+const CV_TYPE_BY_EXTENSION: Record<string, string> = {
   ".pdf": "application/pdf",
   ".doc": "application/msword",
   ".docx":
@@ -22,110 +22,167 @@ const CV_TYPES: Record<string, string> = {
   ".odt": "application/vnd.oasis.opendocument.text",
 };
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-function str(value: FormDataEntryValue | null, max = 2000) {
-  return typeof value === "string" ? value.trim().slice(0, max) : "";
-}
-
-/** Strip directory parts and anything that is not safe in a filename. */
+/** Strips any directory part and anything unsafe in a filename. */
 function safeFilename(name: string) {
   const base = name.split(/[\\/]/).pop() ?? "cv";
   return base.replace(/[^A-Za-z0-9._-]/g, "_").slice(0, 120) || "cv";
 }
 
-export async function POST(request: Request) {
-  let form: FormData;
+function str(fd: FormData, key: string, max = 2000) {
+  return String(fd.get(key) ?? "").trim().slice(0, max);
+}
+
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 204 });
+}
+
+export async function POST(req: NextRequest) {
+  let fd: FormData;
   try {
-    form = await request.formData();
+    fd = await req.formData();
   } catch {
-    return NextResponse.json(
-      { ok: false, error: "Invalid request body." },
-      { status: 400 },
-    );
+    return NextResponse.json({ ok: false, error: "Invalid form data." }, { status: 400 });
   }
 
-  // Honeypot: bots fill hidden fields, humans do not.
-  if (str(form.get("website"))) {
+  // Honeypot
+  if (str(fd, "website")) {
     return NextResponse.json({ ok: true });
   }
 
-  const enquiry: Enquiry = {
-    intent: form.get("intent") === "jobseeker" ? "jobseeker" : "employer",
-    name: str(form.get("name"), 120),
-    email: str(form.get("email"), 160),
-    phone: str(form.get("phone"), 30),
-    company: str(form.get("company"), 160),
-    industry: str(form.get("industry"), 120),
-    role: str(form.get("role"), 200),
-    experience: str(form.get("experience"), 60),
-    message: str(form.get("message"), 2000),
-    receivedAt: new Date().toLocaleString("en-IN", {
-      timeZone: "Asia/Kolkata",
-      dateStyle: "medium",
-      timeStyle: "short",
-    }),
-    sourcePage: request.headers.get("referer") ?? siteConfig.url,
-  };
+  const intent   = str(fd, "intent") === "jobseeker" ? "jobseeker" : "employer";
+  const name     = str(fd, "name",     120);
+  const email    = str(fd, "email",    160);
+  const phone    = str(fd, "phone",    30);
+  const company  = str(fd, "company",  200);
+  const industry = str(fd, "industry", 100);
+  const role     = str(fd, "role",     300);
+  const experience = str(fd, "experience", 50);
+  const message  = str(fd, "message",  2000);
 
-  if (!enquiry.name || !enquiry.phone || !EMAIL_RE.test(enquiry.email)) {
-    return NextResponse.json(
-      { ok: false, error: "Please enter a valid name, phone number and email." },
-      { status: 422 },
-    );
+  if (!name || !email || !phone) {
+    return NextResponse.json({ ok: false, error: "Name, email and phone are required." }, { status: 422 });
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return NextResponse.json({ ok: false, error: "Please enter a valid email address." }, { status: 422 });
   }
 
-  // ---------- CV attachment (job seekers only) ----------
-  let cv: CvAttachment | undefined;
-  const file = form.get("cv");
-
-  if (enquiry.intent === "jobseeker" && file instanceof File && file.size > 0) {
-    const filename = safeFilename(file.name);
-    const extension = filename.slice(filename.lastIndexOf(".")).toLowerCase();
-
-    if (!CV_EXTENSIONS.includes(extension)) {
-      return NextResponse.json(
-        { ok: false, error: "Please attach a PDF, DOC, DOCX, RTF or ODT file." },
-        { status: 415 },
-      );
+  const attachments: nodemailer.SendMailOptions["attachments"] = [];
+  if (intent === "jobseeker") {
+    const cvFile = fd.get("cv");
+    if (cvFile && cvFile instanceof File && cvFile.size > 0) {
+      if (cvFile.size > CV_MAX_BYTES) {
+        return NextResponse.json({ ok: false, error: "CV must be under 5 MB." }, { status: 422 });
+      }
+      const cleanName = safeFilename(cvFile.name);
+      const extension = cleanName.slice(cleanName.lastIndexOf(".")).toLowerCase();
+      const contentType = CV_TYPE_BY_EXTENSION[extension];
+      if (!contentType) {
+        return NextResponse.json({ ok: false, error: "CV must be a PDF, DOC, DOCX, RTF or ODT file." }, { status: 422 });
+      }
+      const buffer = Buffer.from(await cvFile.arrayBuffer());
+      attachments.push({
+        filename: `${name.replace(/[^A-Za-z0-9]+/g, "-")}-CV${extension}`,
+        content: buffer,
+        contentType,
+      });
     }
-    if (file.size > CV_MAX_BYTES) {
-      return NextResponse.json(
-        { ok: false, error: "Your CV is larger than 5 MB. Please upload a smaller file." },
-        { status: 413 },
-      );
-    }
-
-    cv = {
-      filename: `${enquiry.name.replace(/[^A-Za-z0-9]+/g, "-")}-CV${extension}`,
-      content: Buffer.from(await file.arrayBuffer()),
-      contentType: CV_TYPES[extension] ?? "application/octet-stream",
-    };
   }
 
-  // Always log the lead before attempting delivery, so a mail outage can never
-  // lose it silently — the record is in the server logs either way.
-  console.info("[enquiry]", { ...enquiry, cv: cv ? cv.filename : null });
+  const label   = intent === "employer" ? "Employer Enquiry" : "Job Seeker Profile";
+  const subject = `[RecruitmentConsultant] ${label} - ${name}`;
 
-  if (!isMailConfigured()) {
+  const rows =
+    intent === "employer"
+      ? [
+          ["Intent",   "Employer (looking for candidates)"],
+          ["Name",     name],
+          ["Email",    email],
+          ["Phone",    phone],
+          ["Company",  company],
+          ["Industry", industry],
+          ["Roles",    role],
+          ["Message",  message],
+        ]
+      : [
+          ["Intent",              "Job Seeker (looking for a job)"],
+          ["Name",                name],
+          ["Email",               email],
+          ["Phone",               phone],
+          ["Last employer",       company],
+          ["Industry",            industry],
+          ["Experience",          experience],
+          ["Role & location",     message],
+        ];
+
+  const tableRows = rows
+    .filter(([, v]) => v)
+    .map(
+      ([k, v]) =>
+        `<tr><td style="padding:6px 12px;font-weight:600;white-space:nowrap;color:#374151">${k}</td><td style="padding:6px 12px;color:#111827">${v}</td></tr>`,
+    )
+    .join("");
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><title>${subject}</title></head>
+<body style="font-family:sans-serif;background:#f9fafb;margin:0;padding:24px">
+  <div style="max-width:560px;margin:0 auto;background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08)">
+    <div style="background:#1e3a5f;padding:20px 24px">
+      <h1 style="margin:0;font-size:18px;color:#ffffff">New ${label}</h1>
+      <p style="margin:4px 0 0;font-size:13px;color:#93c5fd">RecruitmentConsultant.co.in</p>
+    </div>
+    <table style="width:100%;border-collapse:collapse;font-size:14px">${tableRows}</table>
+    ${attachments.length ? `<p style="padding:12px 24px;font-size:13px;color:#6b7280">CV attached: ${attachments[0].filename}</p>` : ""}
+  </div>
+</body>
+</html>`;
+
+  const text = rows.filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`).join("\n");
+
+  // Logged before delivery is attempted: if SMTP is down the lead still exists
+  // in the server logs rather than disappearing.
+  console.info("[enquiry]", {
+    intent, name, email, phone, company, industry, role, experience, message,
+    cv: attachments[0]?.filename ?? null,
+    receivedAt: new Date().toISOString(),
+  });
+
+  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS || !MAIL_TO) {
     console.warn(
       "[enquiry] SMTP is not configured — set SMTP_HOST, SMTP_USER, SMTP_PASS and MAIL_TO. Lead logged only.",
     );
     return NextResponse.json({ ok: true });
   }
 
-  const result = await sendEnquiry(enquiry, cv);
+  try {
+    const transporter = nodemailer.createTransport({
+      host:   SMTP_HOST,
+      port:   SMTP_PORT,
+      secure: SMTP_PORT === 465,
+      auth:   { user: SMTP_USER, pass: SMTP_PASS },
+      // Without these the request hangs on the OS TCP timeout — minutes of a
+      // spinning submit button if the mail host is slow or unreachable.
+      connectionTimeout: 12_000,
+      greetingTimeout:   8_000,
+      socketTimeout:     20_000,
+    });
 
-  if (!result.sent) {
-    console.error("[enquiry] delivery failed:", result);
+    await transporter.sendMail({
+      from:        `"RecruitmentConsultant.co.in" <${MAIL_FROM}>`,
+      replyTo:     `"${name}" <${email}>`,
+      to:          MAIL_TO,
+      subject,
+      text,
+      html,
+      attachments,
+    });
+
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    console.error("[enquiry] mail send failed:", err);
     return NextResponse.json(
-      {
-        ok: false,
-        error: `We could not send your request just now. Please email us directly at ${siteConfig.email}.`,
-      },
+      { ok: false, error: "We could not send your message right now. Please try again later." },
       { status: 502 },
     );
   }
-
-  return NextResponse.json({ ok: true });
 }

@@ -1,17 +1,18 @@
 import Image from "next/image";
+import { Photo } from "@/components/ui/Photo";
 import { Icon } from "@/components/ui/Icon";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { EnquiryButton } from "@/components/ui/EnquiryButton";
 import { DotGrid } from "@/components/ui/Artwork";
 import { Reveal } from "@/components/motion/Reveal";
-import { aboutPoints } from "@/lib/site";
+import { aboutPoints, yearsInBusiness } from "@/lib/site";
 
 export function About() {
   return (
     <section
       id="about"
       aria-labelledby="about-heading"
-      className="py-16 sm:py-20 lg:py-24"
+      className="py-16 mt-5 sm:py-20 lg:py-24"
     >
       <div className="container-page grid gap-14 lg:grid-cols-2 lg:items-center lg:gap-16">
         {/* Portrait panel */}
@@ -31,19 +32,26 @@ export function About() {
                 aria-hidden="true"
                 className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-navy-900/10 to-transparent"
               />
-              <Image
-                src="/images/hero-consultant.webp"
-                alt="Recruitment consultant at work"
-                width={746}
-                height={1056}
+              <Photo
+                slot="aboutTeam"
                 sizes="(min-width: 1024px) 26vw, 70vw"
-                className="absolute bottom-0 left-1/2 h-[96%] w-auto max-w-none -translate-x-1/2 object-contain"
+                className="absolute inset-0 h-full w-full object-cover"
+                fallback={
+                  <Image
+                    src="/images/hero-consultant.webp"
+                    alt="Recruitment consultant at work"
+                    width={746}
+                    height={1056}
+                    sizes="(min-width: 1024px) 26vw, 70vw"
+                    className="absolute bottom-0 left-1/2 h-[96%] w-auto max-w-none -translate-x-1/2 object-contain"
+                  />
+                }
               />
             </div>
 
             <div className="absolute bottom-0 left-0 w-[13rem] rounded-2xl bg-white p-5 shadow-float ring-1 ring-slate-100">
               <p className="font-display text-3xl font-extrabold leading-none text-navy-900">
-                12<span className="text-gold">+</span>
+                {yearsInBusiness}<span className="text-gold">+</span>
               </p>
               <p className="mt-1.5 text-sm font-medium leading-snug text-ink">
                 Years of recruitment experience in India

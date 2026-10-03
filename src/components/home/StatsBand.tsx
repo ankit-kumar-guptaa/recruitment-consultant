@@ -6,7 +6,7 @@ import { heroStats } from "@/lib/site";
 /** The four headline numbers, sitting below the logo strip. */
 export function StatsBand() {
   return (
-    <section aria-label="Our numbers" className="bg-white py-10 sm:py-12">
+    <section aria-label="Our numbers" className="bg-white pb-10 pt-10 sm:pb-12 sm:pt-28">
       <div className="container-page">
         <dl className="grid grid-cols-2 gap-6 lg:grid-cols-4">
           {heroStats.map((stat, index) => (
