@@ -21,9 +21,9 @@ export const siteConfig = {
    * the structured data.
    */
   showPhoneNumber: true,
-  phoneDisplay: "+91 98703 64340",
-  phoneHref: "+919870364340",
-  whatsapp: "919870364340",
+  phoneDisplay: "+91 76690 73000",
+  phoneHref: "+917669073000",
+  whatsapp: "917669073000",
   officeHours: "Monday to Saturday, 9:30 am – 6:30 pm IST",
   /** Head office. Every branch is listed in `branches` below. */
   address: {
@@ -100,8 +100,8 @@ export const branches: Branch[] = [
     postalCode: "110020",
     country: "IN",
     countryName: "India",
-    phoneDisplay: "+91 98703 64340",
-    phoneHref: "+919870364340",
+    phoneDisplay: "+91 76690 73000",
+    phoneHref: "+917669073000",
     isHeadOffice: true,
     cityPath: "/recruitment-agency-in-delhi-ncr",
   },
