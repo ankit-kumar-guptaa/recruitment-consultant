@@ -4,11 +4,13 @@ import { Logo } from "@/components/ui/Logo";
 import { siteConfig, industries, yearsInBusiness } from "@/lib/site";
 import { serviceDetails } from "@/lib/services-content";
 import { cityPages } from "@/lib/cities-content";
+import { rolePages } from "@/lib/roles-content";
 
 const quickLinks = [
   { label: "About Us", href: "/about" },
   { label: "Our Services", href: "/services" },
   { label: "Industries", href: "/industries" },
+  { label: "Hire By Role", href: "/hire" },
   { label: "Locations", href: "/locations" },
   { label: "Employers", href: "/employers" },
   { label: "Job Seekers", href: "/job-seekers" },
@@ -144,6 +146,26 @@ export function Footer() {
             <Icon name="whatsapp" size={18} />
             Chat on WhatsApp
           </a>
+        </div>
+      </div>
+
+      <div className="border-t border-white/10">
+        <div className="container-page py-5">
+          <h2 className="text-[0.66rem] font-bold uppercase tracking-[0.14em] text-navy-400">
+            Hire by role
+          </h2>
+          <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-xs">
+            {rolePages.map((role) => (
+              <li key={role.slug}>
+                <Link
+                  href={`/hire/${role.slug}`}
+                  className="text-navy-300 transition hover:text-white"
+                >
+                  Hire {role.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
 

@@ -1,6 +1,15 @@
 # SEO page plan — recruitmentconsultant.co.in
 
-**Today: 37 indexable URLs. Target: 132 over four batches.**
+**Started at 37 indexable URLs. Target: ~100 over four batches.**
+
+| Batch | Status |
+| --- | --- |
+| 1 — Industries (12) | ✅ shipped — `/industries/<slug>`, 62.6–65.4% unique body copy |
+| 2 — Roles (16 + hub) | ✅ shipped — `/hire/<slug>`, 58.4–63.2% unique body copy |
+| 3 — Service × city (18) | not started |
+| 4 — Content & comparison (19) | not started |
+
+**Live total: 66 URLs in the sitemap.**
 
 Built against the quality gates in the `seo-programmatic` skill. The headline
 rule those gates impose: **≥30–40% of the body copy on any page must be genuinely
@@ -26,7 +35,7 @@ can write something true and specific about that combination.
 
 ---
 
-## Batch 1 — Industry pages (12) · highest value
+## Batch 1 — Industry pages (12) · shipped
 
 `/industries/<slug>` — already linked from the nav, the footer and every city
 page, so they inherit internal links on day one.
@@ -52,7 +61,7 @@ concentrates geographically, typical notice-period and attrition behaviour, and
 four sector-specific FAQs. None of that transfers between sectors — the
 uniqueness gate is met by the subject matter, not by padding.
 
-## Batch 2 — Role / designation pages (16)
+## Batch 2 — Role / designation pages (16) · shipped
 
 `/hire/<role>` — pure hiring intent, the highest-converting keyword class.
 
@@ -111,14 +120,48 @@ offer letter format.
 
 ## Running total
 
-| Batch | Pages | Cumulative |
-| --- | --- | --- |
-| Today | 37 | 37 |
-| 1 — Industries | 12 | 49 |
-| 2 — Roles | 16 | 65 |
-| 3 — Service × city | 18 | 83 |
-| 4 — Content | 19 | 102 |
+| Batch | Pages | Cumulative | Status |
+| --- | --- | --- | --- |
+| Starting point | 37 | 37 | — |
+| 1 — Industries | 12 | 49 | ✅ shipped |
+| 2 — Roles (incl. `/hire` hub) | 17 | 66 | ✅ shipped |
+| 3 — Service × city | 18 | 84 | pending |
+| 4 — Content | 19 | 103 | pending |
 
 Stopping at ~100 is deliberate. Past that the marginal page stops earning its
 crawl budget for a site this age, and the risk side of the ledger grows faster
 than the traffic side.
+
+
+---
+
+## Gate results on what has shipped
+
+Measured on the rendered pages, with shared header, nav and footer boilerplate
+counted *against* uniqueness (so the real figures are better than these):
+
+| Set | Pages | Words/page | Lowest uniqueness | Metadata risk |
+| --- | --- | --- | --- | --- |
+| Batch 1 — industries | 12 | 1,726–1,827 | 62.6% | low, 0/12 templated |
+| Batch 2 — roles | 16 | 1,684–1,779 | 58.4% | low, 0/16 templated |
+
+Both sets clear the warn threshold (40%) by a wide margin and the hard stop
+(30%) by more than double. Uniqueness is measured as the share of a page's
+5-word shingles that appear on no sibling page in the same set.
+
+Lighthouse on the new pages (mobile, throttled, local `next start`):
+accessibility 100, best practices 100, SEO 100, performance 92–96. See
+docs/LIGHTHOUSE-AUDIT.md.
+
+## Next: submitting these for indexing
+
+1. Verify `https://recruitmentconsultant.co.in` in Google Search Console if it
+   is not already.
+2. Submit `/sitemap.xml` there. All 66 URLs are in it with correct canonicals.
+3. Request indexing manually for the hubs first — `/industries`, `/hire` — then
+   let the internal links carry crawl to the 28 new pages. They are each linked
+   from at least three places, so this does not need 28 manual submissions.
+4. Watch Coverage for two to four weeks before starting batch 3. What to look
+   for: pages indexed versus discovered-not-indexed. A high
+   discovered-not-indexed count is the signal to improve the existing pages
+   rather than publish more.

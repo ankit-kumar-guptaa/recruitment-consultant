@@ -10,6 +10,7 @@ import { CtaBand } from "@/components/home/CtaBand";
 import { BreadcrumbJsonLd, ServiceJsonLd } from "@/components/seo/JsonLd";
 import { industryPages, industryBySlug } from "@/lib/industries-content";
 import { serviceDetails } from "@/lib/services-content";
+import { rolePages } from "@/lib/roles-content";
 import { siteConfig } from "@/lib/site";
 
 type Params = { params: Promise<{ slug: string }> };
@@ -42,6 +43,11 @@ export default async function IndustryPage({ params }: Params) {
   const { slug } = await params;
   const industry = industryBySlug.get(slug);
   if (!industry) notFound();
+
+  // Role briefs that name this sector as one of their main hiring grounds.
+  const sectorRoles = rolePages.filter((role) =>
+    role.industries.includes(industry.slug),
+  );
 
   const related = industry.related
     .map((s) => industryBySlug.get(s))
@@ -289,10 +295,56 @@ export default async function IndustryPage({ params }: Params) {
         </div>
       </section>
 
+      {/* ---------- Role briefs for this sector ---------- */}
+      {sectorRoles.length > 0 ? (
+        <section
+          aria-labelledby="sector-roles-heading"
+          className="bg-navy-50/60 py-16 sm:py-20"
+        >
+          <div className="container-page">
+            <Reveal>
+              <SectionHeading
+                id="sector-roles-heading"
+                eyebrow="Role Briefs"
+                title={`Hiring briefs for ${industry.name} roles`}
+                description="Indicative salary bands, realistic timelines and the checklist we screen on, role by role."
+              />
+            </Reveal>
+
+            <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {sectorRoles.map((role, index) => (
+                <Reveal as="li" key={role.slug} delay={(index % 3) * 80}>
+                  <Link
+                    href={`/hire/${role.slug}`}
+                    className="group flex h-full flex-col rounded-2xl border border-white bg-white p-6 shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-float"
+                  >
+                    <h3 className="font-display text-base font-bold text-ink">
+                      Hire {role.title}s
+                    </h3>
+                    <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-soft">
+                      {role.salaryBands[1].experience}:{" "}
+                      {role.salaryBands[1].band}
+                    </p>
+                    <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-navy-600">
+                      Salary bands &amp; checklist
+                      <Icon
+                        name="arrow"
+                        size={16}
+                        className="transition-transform group-hover:translate-x-1"
+                      />
+                    </span>
+                  </Link>
+                </Reveal>
+              ))}
+            </ul>
+          </div>
+        </section>
+      ) : null}
+
       {/* ---------- Services available in this practice ---------- */}
       <section
         aria-labelledby="industry-services-heading"
-        className="bg-navy-50/60 py-16 sm:py-20 lg:py-24"
+        className="py-16 sm:py-20 lg:py-24"
       >
         <div className="container-page">
           <Reveal>
