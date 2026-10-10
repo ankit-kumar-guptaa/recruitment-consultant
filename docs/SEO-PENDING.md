@@ -15,14 +15,14 @@ the fastest available rankings.
 
 | # | Item | Owner | Why it is P0 |
 | --- | --- | --- | --- |
-| P0-1 | **Verify the domain in Google Search Console**, submit `/sitemap.xml` (66 URLs ready), request indexing for `/`, `/industries`, `/hire` | Client | Nothing can be measured or diagnosed until this exists. Every timeline in the strategy counts from this date. |
+| ~~P0-1~~ | ✅ **Done 10 Oct 2026.** Domain property verified in Search Console, indexing requested | Client | Timelines in the strategy count from this date. Re-submit `/sitemap.xml` after the next deploy — it is now 68 URLs. |
 | P0-2 | **Give me the GSC verification string and a GA4 measurement ID** so I wire them into the site | Both | Verification via DNS or the HTML tag; GA4 so we can see which pages produce enquiries, not just clicks. |
 | P0-3 | **Create and verify a Google Business Profile for each office** — Okhla (head office), Hyderabad, Pune, Hapur. Real address, the +91 76690 73000 number, category "Employment agency", office photos, hours | Client | **Fastest wins available: local pack in 1–3 months.** Currently forfeited entirely. Needs postcard/phone verification, so start now — it takes weeks. |
 | P0-4 | **Replace the invented testimonials.** `src/lib/site.ts` currently ships "Priya Sharma, Head of Talent, SaaS Product Company" and "Rahul Mehta, Operations Director, Logistics Firm" — I wrote those as placeholders. They are not real people | Both | A prospect who checks loses trust. Fabricated trust signals are also a Google quality problem. Two real quotes with permission, or remove the section. |
 | P0-5 | **Decide the client logo strip.** `clientLogos` lists TATA, Infosys, HCL, Wipro, Amazon, Accenture, Airtel, Reliance. Component is commented out and must stay off until these are real clients who have cleared being named | Client | Naming companies as clients without permission is a legal exposure, not just an SEO one. |
 | P0-6 | **Verify the headline numbers** — 5,000+ positions closed, 1,000+ employers served, and the About-page milestone timeline | Client | These are my estimates, not audited figures. If they are wrong they must change before anyone quotes them. |
 | P0-7 | **Fix the social profile URLs.** `siteConfig.social` points at linkedin.com/company/recruitmentconsultant etc. — placeholders that probably 404 | Both | They are in the Organization schema as `sameAs`. Dead `sameAs` links weaken the entity rather than strengthening it. Give me the real handles, or I remove them. |
-| P0-8 | **Rotate the SMTP password immediately.** It was committed in plaintext to `.env.example` in commits `07cb209` and `246b044`, and **this repository is public** — so the password has been readable on GitHub by anyone. Removed from the current file, but it stays in git history until history is rewritten or the repo is made private | Client | **This is the most urgent item on the page, ahead of every SEO task.** Rotate the Hostinger mailbox password, then decide on history: either make the repo private, or rewrite history with `git filter-repo`. Assume the old password is compromised. |
+| P0-8 | **Rotate the SMTP password.** It was committed in plaintext to `.env.example` in commits `07cb209` and `246b044`. The repository has since been made private, which stops further exposure, but it was public while those commits were live | Client | Removed from the current file; still in git history. Private repo closes the window, so this is no longer an emergency — but rotate the mailbox password once, because there is no way to know whether it was read while the repo was public. |
 | P0-9 | **Set the SMTP env vars on the host and run `npm run mail:test`** | Client | The enquiry form is the only conversion path on the site. It has never been tested end to end against the live mail host — the container blocks SMTP ports. If this is broken, every lead is lost silently. |
 | P0-10 | **Confirm which domain actually serves the site.** The GitHub repo's homepage field points at `https://recruitment-consultant.vercel.app`, while every canonical, the sitemap and the Organization schema point at `https://recruitmentconsultant.co.in` (from `NEXT_PUBLIC_SITE_URL`) | Client | If the custom domain is not attached in Vercel, Google is being told every page's canonical lives on a domain that does not serve it — which can stop the whole site indexing. One-minute check: open both URLs. If only the vercel.app one works, attach `recruitmentconsultant.co.in` in Vercel and point the DNS at it before submitting anything to Search Console. Verify in Search Console whichever domain you settle on — not both. |
 
@@ -35,10 +35,10 @@ the fastest available rankings.
 | P1-1 | **3–5 real case studies** at `/work/<slug>` | Both | The template's top content priority and our biggest competitive gap. Each needs: client (name with permission, or "a tier-1 auto component manufacturer in the Chakan belt"), the brief, what was hard, what we did, **numbers** — roles closed, days to shortlist, days to join, retention — and ideally one quote. I build the pages and schema; I need the real stories. One paragraph each from Rajiv sir is enough to start. |
 | P1-2 | **Team / leadership page** at `/about/team` with Person + ProfilePage schema | Both | Rajiv sir first: name, role, years in recruitment, sectors, a photo, real LinkedIn URL. Then any consultant who will be client-facing. Named people with verifiable profiles are the single strongest E-E-A-T signal an agency can add, and right now there is not one human being on the site. |
 | P1-3 | **Blog author attribution** | Both | Articles are currently authored by the Organization. Move to a named author with a credential line and a link to their team page. |
-| P1-4 | **Standalone `/process` and `/faq` pages** | Dev | Both exist only as home-page sections. As pages they can rank for "how does a recruitment agency work", "recruitment agency fees India" style informational queries and feed the money pages. |
+| ~~P1-4~~ | ✅ **Done.** `/process` (with HowTo schema and a who-does-what table) and `/faq` (FAQPage schema, 8 questions) | Dev | Linked from the footer and from each other. Sitemap now 68 URLs. |
 | P1-5 | **First 8–15 referring domains** | Client-led | The unglamorous one that decides whether tier 2 ever happens. Realistic starting list: India-focused business directories (JustDial, IndiaMART, Sulekha, Yellow Pages India), the local chamber of commerce, NASSCOM or sector association listings if a membership exists, the UAE office equivalents, and any client site with a "our partners" page. **No paid link schemes** — they are a manual-action risk. |
 | P1-6 | **Fix mobile LCP** | Dev | 2.9–3.5s against a 2.5s "good" threshold, and 67–74% of it is render delay from above-the-fold client hydration. Re-measure against the deployed site first (local TTFB alone is 455ms). Then reduce client JS in the header and hero if it is still red. |
-| P1-7 | **LocalBusiness schema per office, with geo coordinates** | Both | City pages currently carry a city-scoped Service. Adding a real LocalBusiness per office with lat/long supports the Business Profile work in P0-3. Needs the exact addresses confirmed. |
+| ~~P1-7~~ | ✅ **Done.** Five `EmploymentAgency` entities on `/contact`, one per office, each with its own address, hours and `parentOrganization` | Dev | `geo` coordinates deliberately omitted — a guessed pin that contradicts the real Business Profile is worse than none. Add them once P0-3 gives us verified locations. |
 
 ---
 
@@ -51,8 +51,10 @@ the fastest available rankings.
 | P2-3 | **Blog to 12–15 posts** | Dev | Employer-intent informational topics that feed the money pages: recruitment agency fees in India, notice period and buyout norms, how to write a JD that gets responses, contract vs permanent, campus hiring timelines, BGV in India. One a week. |
 | P2-4 | **Batch 4: comparison + resource pages** | Dev | `/compare/*` and `/resources/*` per the plan. |
 | P2-5 | **Collect real Google reviews** | Client | Ask every placed client for one. Drives the local pack hard. Only after P0-3. Never incentivised, never written for them. |
-| P2-6 | **Bing Webmaster Tools + IndexNow** | Dev | Cheap. Bing feeds Microsoft Copilot citations, and IndexNow pushes new URLs instantly. |
+| P2-6 | **Bing Webmaster Tools** — verify the site, grab the free API key | Client | IndexNow is already wired: key file is served and `npm run indexnow` submits the sitemap to Bing, Yandex and Naver. Bing verification is still needed, and its free API key also makes `docs/BACKLINKS-PLAN.md` scoreable. |
 | P2-7 | **Remove or keep `public/images.zip`** | — | **Decided: keep it public.** Noted here so it is a recorded decision rather than an oversight. |
+| P2-8 | **Google Analytics MCP** — enable the two APIs, create ADC credentials, set `GOOGLE_APPLICATION_CREDENTIALS` and `GOOGLE_PROJECT_ID` | Client | `.mcp.json` and `docs/ANALYTICS-MCP-SETUP.md` are ready. **Deliberately P2, not P0:** GA4 has no data yet and will not until `NEXT_PUBLIC_GA4_ID` is deployed and traffic arrives. Worth doing around week 4–6. Never paste the credential JSON into chat. |
+| P2-9 | **Free backlink API keys** — Moz (2,500 rows/month) and Bing Webmaster | Client | `docs/BACKLINKS-PLAN.md` currently reports INSUFFICIENT DATA because no source is configured. Set `MOZ_API_KEY` and `BING_WEBMASTER_API_KEY` in the environment settings and the analysis produces real numbers, including competitor gap analysis. |
 
 ---
 
@@ -107,6 +109,17 @@ Fifteen minutes in Search Console, in this order:
 **Do not** check rankings daily with a rank tracker in month one. New pages
 bounce between positions 8 and 60 for weeks while Google works out where they
 belong. Watching that movement produces bad decisions.
+
+---
+
+## Where the link-building work lives
+
+Backlinks are handled in two documents of their own, because the answer is long:
+
+- `docs/BACKLINKS-PLAN.md` — what I can and cannot do, the three-phase
+  acquisition plan, and the toxic patterns to refuse.
+- `docs/CITATIONS-NAP.md` — the exact business details to paste into every
+  listing, plus the submission tracker.
 
 ---
 

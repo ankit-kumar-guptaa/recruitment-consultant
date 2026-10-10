@@ -5,7 +5,7 @@ import { Photo } from "@/components/ui/Photo";
 import { ContactForm } from "@/components/ui/ContactForm";
 import { Reveal } from "@/components/motion/Reveal";
 import { Branches } from "@/components/contact/Branches";
-import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
+import { BreadcrumbJsonLd, OfficesJsonLd } from "@/components/seo/JsonLd";
 import { siteConfig, yearsInBusiness } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -155,6 +155,7 @@ export default function ContactPage() {
       </section>
 
       <Branches />
+      <OfficesJsonLd />
 
       <BreadcrumbJsonLd items={[{ name: "Contact", path: "/contact" }]} />
     </>

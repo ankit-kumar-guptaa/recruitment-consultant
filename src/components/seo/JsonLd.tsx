@@ -329,3 +329,126 @@ export function LocalServiceJsonLd({
     </>
   );
 }
+
+/** FAQ block for a standalone page (the home-page block uses its own @id). */
+export function StandaloneFaqJsonLd({
+  faqs: pageFaqs,
+  path,
+}: {
+  faqs: readonly { question: string; answer: string }[];
+  path: string;
+}) {
+  return (
+    <Script
+      data={{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": `${siteConfig.url}${path}#faq`,
+        url: `${siteConfig.url}${path}`,
+        inLanguage: "en-IN",
+        publisher: { "@id": `${siteConfig.url}/#organization` },
+        mainEntity: pageFaqs.map((faq) => ({
+          "@type": "Question",
+          name: faq.question,
+          acceptedAnswer: { "@type": "Answer", text: faq.answer },
+        })),
+      }}
+    />
+  );
+}
+
+/** A documented procedure — used for the hiring process page. */
+export function HowToJsonLd({
+  name,
+  description,
+  path,
+  steps,
+}: {
+  name: string;
+  description: string;
+  path: string;
+  steps: readonly { name: string; text: string }[];
+}) {
+  return (
+    <Script
+      data={{
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "@id": `${siteConfig.url}${path}#howto`,
+        name,
+        description,
+        url: `${siteConfig.url}${path}`,
+        inLanguage: "en-IN",
+        publisher: { "@id": `${siteConfig.url}/#organization` },
+        step: steps.map((step, index) => ({
+          "@type": "HowToStep",
+          position: index + 1,
+          name: step.name,
+          text: step.text,
+        })),
+      }}
+    />
+  );
+}
+
+/**
+ * One LocalBusiness per office, emitted on the contact page.
+ *
+ * This is separate from the `location` array on the Organization entity: that
+ * one establishes the offices belong to the company, while these are
+ * individually addressable entities that can be matched to a Google Business
+ * Profile. `geo` is deliberately omitted — publishing guessed coordinates is
+ * worse than publishing none, because a wrong pin contradicts the real profile.
+ */
+export function OfficesJsonLd() {
+  return (
+    <>
+      {branches.map((branch) => {
+        const path = branch.cityPath ?? "/contact";
+        const phone = branch.phoneDisplay ?? siteConfig.phoneDisplay;
+
+        return (
+          <Script
+            key={branch.name}
+            data={{
+              "@context": "https://schema.org",
+              "@type": "EmploymentAgency",
+              "@id": `${siteConfig.url}/contact#${branch.locality
+                .toLowerCase()
+                .replace(/[^a-z]+/g, "-")}`,
+              name: `${siteConfig.name} — ${branch.locality}`,
+              parentOrganization: { "@id": `${siteConfig.url}/#organization` },
+              url: `${siteConfig.url}${path}`,
+              image: `${siteConfig.url}/brand/icon-512.png`,
+              email: siteConfig.email,
+              ...(siteConfig.showPhoneNumber ? { telephone: phone } : {}),
+              priceRange: "$$",
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: branch.lines.slice(0, -1).join(", "),
+                addressLocality: branch.locality,
+                addressRegion: branch.region,
+                ...(branch.postalCode ? { postalCode: branch.postalCode } : {}),
+                addressCountry: branch.country,
+              },
+              areaServed: { "@type": "City", name: branch.locality },
+              openingHoursSpecification: {
+                "@type": "OpeningHoursSpecification",
+                dayOfWeek: [
+                  "Monday",
+                  "Tuesday",
+                  "Wednesday",
+                  "Thursday",
+                  "Friday",
+                  "Saturday",
+                ],
+                opens: "09:30",
+                closes: "18:30",
+              },
+            }}
+          />
+        );
+      })}
+    </>
+  );
+}

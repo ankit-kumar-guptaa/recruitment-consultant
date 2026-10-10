@@ -12,6 +12,8 @@ const quickLinks = [
   { label: "Industries", href: "/industries" },
   { label: "Hire By Role", href: "/hire" },
   { label: "Locations", href: "/locations" },
+  { label: "Our Process", href: "/process" },
+  { label: "FAQs", href: "/faq" },
   { label: "Employers", href: "/employers" },
   { label: "Job Seekers", href: "/job-seekers" },
   { label: "Blog", href: "/blog" },

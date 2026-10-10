@@ -31,7 +31,7 @@ Marketing site for a pan-India recruitment consultancy, built with **Next.js 15 
   `public/images/banners/` (four variants: navy, cobalt, teal, gold — about 20 KB each).
   Regenerate or restyle them with `scripts/banners.mjs` in the scratchpad notes; the
   variant is chosen per page via the `variant` prop on `PageHero`.
-- **Pages** — 66 indexable routes, each with its own metadata, canonical URL and
+- **Pages** — 68 indexable routes, each with its own metadata, canonical URL and
   breadcrumb schema:
   - Core: `/`, `/about`, `/services`, `/industries`, `/locations`, `/employers`,
     `/job-seekers`, `/contact`, `/blog`, plus `/search` (noindex).
@@ -275,6 +275,9 @@ public/
 | `docs/SEO-PENDING.md` | **Start here.** Every outstanding task, P0 to P3, with owner and a week-by-week plan for the first 12 weeks |
 | `docs/COMPETITOR-ANALYSIS.md` | Read of Randstad, ABC Consultants, ManpowerGroup and JAC, plus the competitors that matter more |
 | `docs/SEO-PAGE-PLAN.md` | The four-batch page expansion plan and its quality gates; batches 1 and 2 shipped |
+| `docs/BACKLINKS-PLAN.md` | What can and cannot be done about backlinks, the three-phase acquisition plan, and the patterns to refuse |
+| `docs/CITATIONS-NAP.md` | Exact NAP text for every directory listing, plus the submission tracker |
+| `docs/ANALYTICS-MCP-SETUP.md` | Connecting the Google Analytics MCP server |
 | `docs/LIGHTHOUSE-AUDIT.md` | Lighthouse scores, Core Web Vitals and the accessibility defects fixed |
 
 ## Environment variables
