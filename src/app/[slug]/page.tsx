@@ -14,6 +14,7 @@ import {
 } from "@/components/seo/JsonLd";
 import { cityPages, cityBySlug } from "@/lib/cities-content";
 import { serviceDetails } from "@/lib/services-content";
+import { industryPages } from "@/lib/industries-content";
 import { branches, heroStats, siteConfig, yearsInBusiness } from "@/lib/site";
 
 type Params = { params: Promise<{ slug: string }> };
@@ -57,6 +58,16 @@ export default async function CityPage({ params }: Params) {
   const { slug } = await params;
   const city = cityBySlug.get(slug.replace(CITY_PREFIX, ""));
   if (!city) notFound();
+
+  // Practices that name this city as a talent hub lead the list; the rest
+  // follow, because we do staff every practice from every city we cover.
+  const localPractices = industryPages.filter((industry) =>
+    industry.talentHubs.some((hub) => hub.slug === city.slug),
+  );
+  const practices = [
+    ...localPractices,
+    ...industryPages.filter((industry) => !localPractices.includes(industry)),
+  ];
 
   const nearby = city.nearby
     .map((s) => cityBySlug.get(s))
@@ -318,6 +329,51 @@ export default async function CityPage({ params }: Params) {
               </details>
             ))}
           </Reveal>
+        </div>
+      </section>
+
+      {/* ---------- Sector practices ---------- */}
+      <section
+        aria-labelledby="city-industries-heading"
+        className="bg-navy-50/60 py-16 sm:py-20"
+      >
+        <div className="container-page">
+          <Reveal>
+            <SectionHeading
+              id="city-industries-heading"
+              eyebrow="Sector Practices"
+              title={`Industry practices we run out of ${city.name}`}
+              description="Each practice is staffed by consultants who recruit only for that sector — the roles, the salary bands and the certifications that decide a shortlist."
+            />
+          </Reveal>
+
+          <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {practices.map((industry, index) => (
+              <Reveal as="li" key={industry.slug} delay={(index % 3) * 70}>
+                <Link
+                  href={`/industries/${industry.slug}`}
+                  className="group flex h-full items-start gap-3.5 rounded-2xl border border-white bg-white p-5 shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-float"
+                >
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-navy-50 text-navy-700 transition group-hover:bg-navy-800 group-hover:text-white">
+                    <Icon name={industry.icon} size={20} />
+                  </span>
+                  <span className="min-w-0">
+                    <h3 className="font-display text-sm font-bold leading-tight text-ink">
+                      {industry.name} Recruitment
+                    </h3>
+                    {localPractices.includes(industry) ? (
+                      <span className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-[0.08em] text-emerald-700">
+                        Major talent hub
+                      </span>
+                    ) : null}
+                    <span className="mt-1 block text-[0.8rem] leading-snug text-ink-soft">
+                      {industry.rolesByFunction[0].roles}
+                    </span>
+                  </span>
+                </Link>
+              </Reveal>
+            ))}
+          </ul>
         </div>
       </section>
 

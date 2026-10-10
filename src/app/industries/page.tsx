@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { PageHero } from "@/components/layout/PageHero";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { EnquiryButton } from "@/components/ui/EnquiryButton";
@@ -51,21 +52,29 @@ export default function IndustriesPage() {
 
           <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {industries.map((industry, index) => (
-              <Reveal
-                as="li"
-                key={industry.name}
-                delay={(index % 3) * 90}
-                className="group flex h-full flex-col rounded-2xl border border-slate-100 bg-white p-7 shadow-card transition duration-300 hover:-translate-y-1.5 hover:border-navy-200 hover:shadow-float"
-              >
-                <span className="grid h-13 w-13 place-items-center rounded-xl bg-navy-50 p-3 text-navy-700 transition group-hover:bg-navy-800 group-hover:text-white">
-                  <Icon name={industry.icon} size={26} />
-                </span>
-                <h2 className="mt-5 font-display text-lg font-bold text-ink">
-                  {industry.name} Recruitment
-                </h2>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-soft">
-                  Roles we fill: {industry.roles}.
-                </p>
+              <Reveal as="li" key={industry.name} delay={(index % 3) * 90}>
+                <Link
+                  href={`/industries/${industry.slug}`}
+                  className="group flex h-full flex-col rounded-2xl border border-slate-100 bg-white p-7 shadow-card transition duration-300 hover:-translate-y-1.5 hover:border-navy-200 hover:shadow-float"
+                >
+                  <span className="grid h-13 w-13 place-items-center rounded-xl bg-navy-50 p-3 text-navy-700 transition group-hover:bg-navy-800 group-hover:text-white">
+                    <Icon name={industry.icon} size={26} />
+                  </span>
+                  <h2 className="mt-5 font-display text-lg font-bold text-ink">
+                    {industry.name} Recruitment
+                  </h2>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-soft">
+                    Roles we fill: {industry.roles}.
+                  </p>
+                  <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-navy-600">
+                    Visit the practice
+                    <Icon
+                      name="arrow"
+                      size={16}
+                      className="transition-transform group-hover:translate-x-1"
+                    />
+                  </span>
+                </Link>
               </Reveal>
             ))}
           </ul>

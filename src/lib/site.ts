@@ -279,45 +279,81 @@ export const services = [
   },
 ] as const;
 
+/**
+ * Sector practices. `slug` is the industry landing page at /industries/<slug>
+ * and must match a record in lib/industries-content.ts.
+ */
 export const industries = [
   {
     icon: "chip",
     name: "IT & Software",
+    slug: "it-software-recruitment",
     roles: "Engineering, data, cloud, product, QA",
   },
-  { icon: "bank", name: "BFSI", roles: "Banking, NBFC, insurance, fintech" },
+  {
+    icon: "bank",
+    name: "BFSI",
+    slug: "bfsi-recruitment",
+    roles: "Banking, NBFC, insurance, fintech",
+  },
   {
     icon: "factory",
     name: "Manufacturing",
+    slug: "manufacturing-recruitment",
     roles: "Plant, quality, maintenance, EHS",
   },
   {
     icon: "health",
     name: "Healthcare & Pharma",
+    slug: "healthcare-pharma-recruitment",
     roles: "Clinical, R&D, regulatory, sales",
   },
   {
     icon: "cart",
     name: "Retail & E-commerce",
+    slug: "retail-ecommerce-recruitment",
     roles: "Store ops, category, supply chain",
   },
   {
     icon: "truck",
     name: "Logistics & Supply Chain",
+    slug: "logistics-supply-chain-recruitment",
     roles: "Warehouse, transport, planning",
   },
-  { icon: "signal", name: "Telecom", roles: "Network, field ops, enterprise sales" },
-  { icon: "book", name: "Education & EdTech", roles: "Academic, counselling, sales" },
+  {
+    icon: "signal",
+    name: "Telecom",
+    slug: "telecom-recruitment",
+    roles: "Network, field ops, enterprise sales",
+  },
+  {
+    icon: "book",
+    name: "Education & EdTech",
+    slug: "education-edtech-recruitment",
+    roles: "Academic, counselling, sales",
+  },
   {
     icon: "building",
     name: "Real Estate & Infra",
+    slug: "real-estate-infra-recruitment",
     roles: "Projects, sales, civil, procurement",
   },
-  { icon: "cup", name: "Hospitality & Travel", roles: "Front office, F&B, operations" },
-  { icon: "car", name: "Automotive", roles: "Design, production, aftersales" },
+  {
+    icon: "cup",
+    name: "Hospitality & Travel",
+    slug: "hospitality-travel-recruitment",
+    roles: "Front office, F&B, operations",
+  },
+  {
+    icon: "car",
+    name: "Automotive",
+    slug: "automotive-recruitment",
+    roles: "Design, production, aftersales",
+  },
   {
     icon: "headset",
     name: "BPO & Shared Services",
+    slug: "bpo-shared-services-recruitment",
     roles: "Voice, non-voice, F&A, HRO",
   },
 ] as const;

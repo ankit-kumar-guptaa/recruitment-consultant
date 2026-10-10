@@ -172,7 +172,14 @@ export function Footer() {
           <p className="sr-only">Industries we recruit for</p>
           <ul className="flex flex-wrap gap-x-4 gap-y-2 text-xs text-navy-300">
             {industries.map((industry) => (
-              <li key={industry.name}>{industry.name} Recruitment</li>
+              <li key={industry.name}>
+                <Link
+                  href={`/industries/${industry.slug}`}
+                  className="transition hover:text-white"
+                >
+                  {industry.name} Recruitment
+                </Link>
+              </li>
             ))}
           </ul>
         </div>

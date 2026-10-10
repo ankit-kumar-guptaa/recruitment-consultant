@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/site";
 import { serviceDetails } from "@/lib/services-content";
+import { industryPages } from "@/lib/industries-content";
 import { posts } from "@/lib/blog-content";
 import { cityPages } from "@/lib/cities-content";
 
@@ -45,6 +46,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.85,
+    })),
+    ...industryPages.map((industry) => ({
+      url: url(`/industries/${industry.slug}`),
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
     })),
     ...cityPages.map((city) => ({
       url: url(`/recruitment-agency-in-${city.slug}`),
