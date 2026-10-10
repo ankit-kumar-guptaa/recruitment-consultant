@@ -10,27 +10,23 @@ export function StatsBand() {
       <div className="container-page">
         <dl className="grid grid-cols-2 gap-6 lg:grid-cols-4">
           {heroStats.map((stat, index) => (
-            <Reveal
-              key={stat.label}
-              delay={index * 90}
-              className="flex items-center gap-3"
-            >
-              <span
-                className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl ${stat.tone}`}
-              >
-                <Icon name={stat.icon} size={24} />
-              </span>
-              <span className="min-w-0">
-                <dt className="sr-only">{stat.label}</dt>
-                <dd>
+            <Reveal key={stat.label} delay={index * 90}>
+              <dt className="sr-only">{stat.label}</dt>
+              <dd className="flex items-center gap-3">
+                <span
+                  className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl ${stat.tone}`}
+                >
+                  <Icon name={stat.icon} size={24} />
+                </span>
+                <span className="min-w-0">
                   <span className="block font-display text-2xl font-extrabold leading-none text-navy-900 sm:text-3xl">
                     <CountUp value={stat.value} suffix={stat.suffix} />
                   </span>
                   <span className="mt-1 block text-xs leading-snug text-ink-soft sm:text-sm">
                     {stat.label}
                   </span>
-                </dd>
-              </span>
+                </span>
+              </dd>
             </Reveal>
           ))}
         </dl>

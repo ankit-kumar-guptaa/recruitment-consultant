@@ -104,7 +104,7 @@ export default async function IndustryPage({ params }: Params) {
               managers ask for first and most agencies never publish. */}
           <Reveal direction="right">
             <div className="rounded-3xl border border-slate-100 bg-navy-50/70 p-7 shadow-card sm:p-8">
-              <p className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-navy-600">
+              <p className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-navy-700">
                 Hiring Reality Check
               </p>
               <h2 className="mt-2 font-display text-lg font-bold text-ink">
@@ -116,7 +116,7 @@ export default async function IndustryPage({ params }: Params) {
                     key={note.label}
                     className="border-b border-slate-200 pb-4 last:border-0 last:pb-0"
                   >
-                    <dt className="text-[0.68rem] font-bold uppercase tracking-[0.1em] text-navy-600">
+                    <dt className="text-[0.68rem] font-bold uppercase tracking-[0.1em] text-navy-700">
                       {note.label}
                     </dt>
                     <dd className="mt-1 text-sm leading-relaxed text-ink-soft">
