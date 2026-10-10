@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Outfit, Plus_Jakarta_Sans, Caveat } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
@@ -88,6 +89,16 @@ export const metadata: Metadata = {
     description: siteConfig.shortDescription,
     images: ["/opengraph-image.jpg"],
   },
+  // Search Console's HTML-tag verification. Set NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+  // to the content="..." value only; leave it unset when the domain is verified
+  // by DNS and no tag is rendered at all.
+  ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? {
+        verification: {
+          google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+        },
+      }
+    : {}),
   robots: {
     index: true,
     follow: true,
@@ -111,6 +122,10 @@ export const viewport: Viewport = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  // No measurement ID, no analytics script — nothing is loaded and no cookie
+  // is set until NEXT_PUBLIC_GA4_ID is configured.
+  const ga4 = process.env.NEXT_PUBLIC_GA4_ID;
+
   return (
     <html
       lang="en-IN"
@@ -128,6 +143,19 @@ export default function RootLayout({
         </EnquiryProvider>
         <OrganizationJsonLd />
         <WebsiteJsonLd />
+        {ga4 ? (
+          <>
+            {/* afterInteractive keeps gtag off the critical path, so it does
+                not push LCP out the way a head script would. */}
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${ga4}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga4-init" strategy="afterInteractive">
+              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${ga4}');`}
+            </Script>
+          </>
+        ) : null}
       </body>
     </html>
   );

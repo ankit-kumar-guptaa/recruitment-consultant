@@ -31,7 +31,7 @@ Marketing site for a pan-India recruitment consultancy, built with **Next.js 15 
   `public/images/banners/` (four variants: navy, cobalt, teal, gold — about 20 KB each).
   Regenerate or restyle them with `scripts/banners.mjs` in the scratchpad notes; the
   variant is chosen per page via the `variant` prop on `PageHero`.
-- **Pages** — 37 indexable routes, each with its own metadata, canonical URL and
+- **Pages** — 66 indexable routes, each with its own metadata, canonical URL and
   breadcrumb schema:
   - Core: `/`, `/about`, `/services`, `/industries`, `/locations`, `/employers`,
     `/job-seekers`, `/contact`, `/blog`, plus `/search` (noindex).
@@ -266,3 +266,22 @@ public/
     blog-content.ts     article bodies as typed blocks
     cities-content.ts   the seventeen city pages
 ```
+
+## SEO documentation
+
+| Document | What is in it |
+| --- | --- |
+| `docs/SEO-STRATEGY.md` | Keyword tiers, realistic ranking timeline, KPI targets, architecture gaps, GEO plan |
+| `docs/SEO-PENDING.md` | **Start here.** Every outstanding task, P0 to P3, with owner and a week-by-week plan for the first 12 weeks |
+| `docs/COMPETITOR-ANALYSIS.md` | Read of Randstad, ABC Consultants, ManpowerGroup and JAC, plus the competitors that matter more |
+| `docs/SEO-PAGE-PLAN.md` | The four-batch page expansion plan and its quality gates; batches 1 and 2 shipped |
+| `docs/LIGHTHOUSE-AUDIT.md` | Lighthouse scores, Core Web Vitals and the accessibility defects fixed |
+
+## Environment variables
+
+Copy `.env.example` to `.env.local` and fill it in. `.env.example` must never
+contain a real credential — it is committed, and this repository is public.
+
+Search Console verification (`NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`) and GA4
+(`NEXT_PUBLIC_GA4_ID`) are both optional: leave them unset and no verification
+tag is rendered and no analytics script is loaded.
