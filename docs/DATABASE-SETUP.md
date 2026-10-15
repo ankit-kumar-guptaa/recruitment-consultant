@@ -5,13 +5,60 @@ steps, in this order.
 
 ---
 
+## Step 0 — get the real database and user names ⚠️
+
+**Hostinger does not use the short names.** It puts an account prefix on both
+the database and the user, like `u141142577_`. phpMyAdmin shows it in the left
+sidebar — in this account the database is:
+
+```
+u141142577_rc_db
+```
+
+…not `rc_db`. The username is prefixed the same way.
+
+Get both exactly right from **hPanel → Databases → Management**, which lists
+the full names. Using the short name gives `Unknown database` or
+`Access denied`, and the error message never mentions the prefix, which is why
+this is step zero.
+
+For this account:
+
+| | Value |
+| --- | --- |
+| `DB_HOST` | `srv1086.hstgr.io` |
+| `DB_PORT` | `3306` |
+| `DB_NAME` | `u141142577_rc_db` |
+| `DB_USER` | `u141142577_rc_db` *(confirm in hPanel)* |
+| `DB_PASS` | the database user's password |
+
+---
+
 ## Step 1 — create the table
 
-hPanel → **Databases → phpMyAdmin** → open `rc_db` → **SQL** tab → paste the
-whole of `db/001-enquiries.sql` → **Go**.
+Two ways. Either works.
 
-It creates one table, `enquiries`. It is safe to re-run — it only creates the
-table if it is not already there.
+**Easiest — one command:**
+
+```bash
+npm run db:init
+```
+
+It connects, sees the table is missing, creates it from `db/001-enquiries.sql`
+and reports back. (This needs step 2 done first, since it connects from your
+machine.)
+
+**Or by hand, in the browser:** hPanel → **Databases → phpMyAdmin** → click
+**`u141142577_rc_db`** in the left sidebar → **SQL** tab → paste the whole of
+`db/001-enquiries.sql` → **Go**.
+
+Make sure the correct database is selected first — the SQL tab at the server
+level runs against no database and the table will go nowhere. If the page says
+*"No tables found in database"*, you are in the right place and the SQL has not
+been run yet.
+
+It creates one table, `enquiries`. Safe to re-run — it only creates the table
+if it is not already there.
 
 ---
 
@@ -55,9 +102,11 @@ usually you do not):
 | --- | --- |
 | `DB_HOST` | `srv1086.hstgr.io` |
 | `DB_PORT` | `3306` |
-| `DB_NAME` | `rc_db` |
-| `DB_USER` | `rc_db` |
+| `DB_NAME` | `u141142577_rc_db` |
+| `DB_USER` | `u141142577_rc_db` |
 | `DB_PASS` | *(the password, after you have changed it)* |
+
+Prefixed names — see step 0.
 
 Then **redeploy** — environment variables are read at deploy time, so an
 existing deployment will not pick them up.
@@ -96,8 +145,12 @@ If it fails, the script says what to do:
 | Error | Cause |
 | --- | --- |
 | `ETIMEDOUT` / `ECONNREFUSED` | Step 2 not done — Remote MySQL is not open to this machine |
-| `ER_ACCESS_DENIED_ERROR` | Wrong username or password |
-| `Table enquiries does not exist` | Step 1 not done |
+| `ER_BAD_DB_ERROR` | Wrong database name — almost always the missing `u141142577_` prefix |
+| `ER_ACCESS_DENIED_ERROR` | Wrong username (same prefix problem) or wrong password |
+| `Table enquiries does not exist` | Step 1 not done — run `npm run db:init` |
+
+The script prints the likely cause and the fix for each of these, rather than
+just the raw MySQL error.
 
 Then submit the form on the live site once and run `npm run db:test` again —
 the row count should go up.
