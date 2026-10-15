@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/site";
+import { contentUpdated } from "@/lib/content-dates";
 import { serviceDetails } from "@/lib/services-content";
 import { industryPages } from "@/lib/industries-content";
 import { rolePages } from "@/lib/roles-content";
@@ -18,54 +19,54 @@ type Freq = MetadataRoute.Sitemap[number]["changeFrequency"];
  * deliberately absent — it is noindex and disallowed in robots.txt.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
   const url = (path: string) => `${siteConfig.url}${path === "/" ? "" : path}`;
+  const on = (date: string) => new Date(`${date}T00:00:00Z`);
 
-  const core: { path: string; priority: number; freq: Freq }[] = [
-    { path: "/", priority: 1.0, freq: "weekly" },
-    { path: "/employers", priority: 0.95, freq: "monthly" },
-    { path: "/services", priority: 0.9, freq: "monthly" },
-    { path: "/industries", priority: 0.85, freq: "monthly" },
-    { path: "/hire", priority: 0.85, freq: "monthly" },
-    { path: "/locations", priority: 0.85, freq: "monthly" },
-    { path: "/about", priority: 0.8, freq: "monthly" },
-    { path: "/process", priority: 0.75, freq: "monthly" },
-    { path: "/faq", priority: 0.7, freq: "monthly" },
-    { path: "/job-seekers", priority: 0.75, freq: "monthly" },
-    { path: "/contact", priority: 0.75, freq: "monthly" },
-    { path: "/blog", priority: 0.7, freq: "weekly" },
-    { path: "/privacy-policy", priority: 0.3, freq: "yearly" },
-    { path: "/terms", priority: 0.3, freq: "yearly" },
+  const core: { path: string; priority: number; freq: Freq; updated: string }[] = [
+    { path: "/", priority: 1.0, freq: "weekly", updated: contentUpdated.core },
+    { path: "/employers", priority: 0.95, freq: "monthly", updated: contentUpdated.core },
+    { path: "/services", priority: 0.9, freq: "monthly", updated: contentUpdated.services },
+    { path: "/industries", priority: 0.85, freq: "monthly", updated: contentUpdated.industries },
+    { path: "/hire", priority: 0.85, freq: "monthly", updated: contentUpdated.roles },
+    { path: "/locations", priority: 0.85, freq: "monthly", updated: contentUpdated.cities },
+    { path: "/about", priority: 0.8, freq: "monthly", updated: contentUpdated.core },
+    { path: "/process", priority: 0.75, freq: "monthly", updated: contentUpdated.process },
+    { path: "/faq", priority: 0.7, freq: "monthly", updated: contentUpdated.faq },
+    { path: "/job-seekers", priority: 0.75, freq: "monthly", updated: contentUpdated.core },
+    { path: "/contact", priority: 0.75, freq: "monthly", updated: contentUpdated.core },
+    { path: "/blog", priority: 0.7, freq: "weekly", updated: contentUpdated.core },
+    { path: "/privacy-policy", priority: 0.3, freq: "yearly", updated: contentUpdated.core },
+    { path: "/terms", priority: 0.3, freq: "yearly", updated: contentUpdated.core },
   ];
 
   return [
     ...core.map((entry) => ({
       url: url(entry.path),
-      lastModified: now,
+      lastModified: on(entry.updated),
       changeFrequency: entry.freq,
       priority: entry.priority,
     })),
     ...serviceDetails.map((service) => ({
       url: url(`/services/${service.slug}`),
-      lastModified: now,
+      lastModified: on(contentUpdated.services),
       changeFrequency: "monthly" as const,
       priority: 0.85,
     })),
     ...rolePages.map((role) => ({
       url: url(`/hire/${role.slug}`),
-      lastModified: now,
+      lastModified: on(contentUpdated.roles),
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
     ...industryPages.map((industry) => ({
       url: url(`/industries/${industry.slug}`),
-      lastModified: now,
+      lastModified: on(contentUpdated.industries),
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
     ...cityPages.map((city) => ({
       url: url(`/recruitment-agency-in-${city.slug}`),
-      lastModified: now,
+      lastModified: on(contentUpdated.cities),
       changeFrequency: "monthly" as const,
       priority: 0.75,
     })),

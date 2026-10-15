@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { Icon } from "@/components/ui/Icon";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { hiringProcess } from "@/lib/site";
 import { Reveal } from "@/components/motion/Reveal";
@@ -38,6 +40,20 @@ export function Process() {
             </Reveal>
           ))}
         </ol>
+
+        <Reveal delay={200} className="mt-12 text-center">
+          <Link
+            href="/process"
+            className="group inline-flex items-center gap-2 rounded-full border border-navy-200 px-6 py-3 text-sm font-semibold text-navy-800 transition hover:border-navy-800 hover:bg-navy-50"
+          >
+            See the full process, and what we need from you
+            <Icon
+              name="arrow"
+              size={16}
+              className="transition-transform group-hover:translate-x-1"
+            />
+          </Link>
+        </Reveal>
       </div>
     </section>
   );

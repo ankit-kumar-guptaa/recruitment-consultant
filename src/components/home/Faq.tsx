@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Icon } from "@/components/ui/Icon";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { faqs } from "@/lib/site";
@@ -37,6 +38,20 @@ export function Faq() {
               </p>
             </details>
           ))}
+        </Reveal>
+
+        <Reveal delay={200} className="mt-8 text-center">
+          <Link
+            href="/faq"
+            className="group inline-flex items-center gap-2 text-sm font-semibold text-navy-700 underline underline-offset-4"
+          >
+            All questions employers ask us
+            <Icon
+              name="arrow"
+              size={16}
+              className="transition-transform group-hover:translate-x-1"
+            />
+          </Link>
         </Reveal>
       </div>
     </section>

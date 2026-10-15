@@ -275,6 +275,7 @@ public/
 | `docs/SEO-PENDING.md` | **Start here.** Every outstanding task, P0 to P3, with owner and a week-by-week plan for the first 12 weeks |
 | `docs/COMPETITOR-ANALYSIS.md` | Read of Randstad, ABC Consultants, ManpowerGroup and JAC, plus the competitors that matter more |
 | `docs/SEO-PAGE-PLAN.md` | The four-batch page expansion plan and its quality gates; batches 1 and 2 shipped |
+| `docs/INDEXING-DIAGNOSIS.md` | Why pages were not being indexed, what was fixed in code, and the hosting checks still outstanding |
 | `docs/BACKLINKS-PLAN.md` | What can and cannot be done about backlinks, the three-phase acquisition plan, and the patterns to refuse |
 | `docs/CITATIONS-NAP.md` | Exact NAP text for every directory listing, plus the submission tracker |
 | `docs/ANALYTICS-MCP-SETUP.md` | Connecting the Google Analytics MCP server |

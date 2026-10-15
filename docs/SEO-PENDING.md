@@ -16,7 +16,7 @@ the fastest available rankings.
 | # | Item | Owner | Why it is P0 |
 | --- | --- | --- | --- |
 | ~~P0-1~~ | ✅ **Done 10 Oct 2026.** Domain property verified in Search Console, indexing requested | Client | Timelines in the strategy count from this date. Re-submit `/sitemap.xml` after the next deploy — it is now 68 URLs. |
-| P0-2 | **Give me the GSC verification string and a GA4 measurement ID** so I wire them into the site | Both | Verification via DNS or the HTML tag; GA4 so we can see which pages produce enquiries, not just clicks. |
+| ~~P0-2~~ | ✅ **Done 15 Oct 2026.** GA4 `G-25H22Q1RNX` is the built-in default, so it works on any deployment with no env var set. Search Console is verified by DNS (domain property), so no HTML tag is needed | Both | `NEXT_PUBLIC_GA4_ID` still overrides; set it to `off` to disable on staging. |
 | P0-3 | **Create and verify a Google Business Profile for each office** — Okhla (head office), Hyderabad, Pune, Hapur. Real address, the +91 76690 73000 number, category "Employment agency", office photos, hours | Client | **Fastest wins available: local pack in 1–3 months.** Currently forfeited entirely. Needs postcard/phone verification, so start now — it takes weeks. |
 | P0-4 | **Replace the invented testimonials.** `src/lib/site.ts` currently ships "Priya Sharma, Head of Talent, SaaS Product Company" and "Rahul Mehta, Operations Director, Logistics Firm" — I wrote those as placeholders. They are not real people | Both | A prospect who checks loses trust. Fabricated trust signals are also a Google quality problem. Two real quotes with permission, or remove the section. |
 | P0-5 | **Decide the client logo strip.** `clientLogos` lists TATA, Infosys, HCL, Wipro, Amazon, Accenture, Airtel, Reliance. Component is commented out and must stay off until these are real clients who have cleared being named | Client | Naming companies as clients without permission is a legal exposure, not just an SEO one. |
@@ -111,6 +111,16 @@ bounce between positions 8 and 60 for weeks while Google works out where they
 belong. Watching that movement produces bad decisions.
 
 ---
+
+## Indexing
+
+Search Console reported 56 pages "Discovered – currently not indexed" on
+12 Oct. Diagnosed and partly fixed on 15 Oct — see `docs/INDEXING-DIAGNOSIS.md`.
+Two causes were ours and are fixed (footer-only internal linking on all 17
+`/hire` URLs; a sitemap that stamped the build time on every URL). The nine
+**redirect errors are in hosting, not the app**, and need three `curl` commands
+run against the live domain — the one outstanding action, in §3 of that
+document.
 
 ## Where the link-building work lives
 

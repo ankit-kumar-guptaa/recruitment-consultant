@@ -122,9 +122,11 @@ export const viewport: Viewport = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  // No measurement ID, no analytics script — nothing is loaded and no cookie
-  // is set until NEXT_PUBLIC_GA4_ID is configured.
-  const ga4 = process.env.NEXT_PUBLIC_GA4_ID;
+  // The property's own measurement ID, so analytics works on any deployment
+  // without an env var having to be set first. NEXT_PUBLIC_GA4_ID overrides it
+  // (use a different ID on staging, or set it to "off" to disable entirely).
+  const configured = process.env.NEXT_PUBLIC_GA4_ID ?? "G-25H22Q1RNX";
+  const ga4 = configured === "off" ? null : configured;
 
   return (
     <html

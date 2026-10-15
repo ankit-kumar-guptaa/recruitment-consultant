@@ -7,6 +7,7 @@ import { About } from "@/components/home/About";
 import { Services } from "@/components/home/Services";
 import { WhyUs } from "@/components/home/WhyUs";
 import { Industries } from "@/components/home/Industries";
+import { HireByRole } from "@/components/home/HireByRole";
 import { Process } from "@/components/home/Process";
 import { HiringModels } from "@/components/home/HiringModels";
 import { Comparison } from "@/components/home/Comparison";
@@ -43,6 +44,7 @@ export default function HomePage() {
       <Services />
       <WhyUs />
       <Industries />
+      <HireByRole />
       <Process />
       <HiringModels />
       <Comparison />
