@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "mail:test": "node scripts/test-mail.mjs",
-    "indexnow": "node scripts/indexnow.mjs"
+    "indexnow": "node scripts/indexnow.mjs",
+    "check:canonical": "node scripts/check-canonical.mjs"
   },
   "dependencies": {
     "next": "^15.5.4",

@@ -5,6 +5,28 @@ export const siteConfig = {
    * itself now reads "Since 2010" rather than a tagline. */
   tagline: "Right People For A Brighter Tomorrow",
   domain: "recruitmentconsultant.co.in",
+  /**
+   * The canonical origin. THIS MUST BE THE HOST THAT ACTUALLY SERVES THE SITE,
+   * not merely one that redirects to it.
+   *
+   * On 15 Oct 2026 it was neither: Vercel had www as the primary domain, so
+   * https://recruitmentconsultant.co.in 308-redirected to
+   * https://www.recruitmentconsultant.co.in — while this value (and therefore
+   * every canonical tag, every sitemap URL, the robots.txt sitemap line and
+   * all the JSON-LD) named the apex. Each www page was telling Google "my
+   * canonical is the apex", and the apex was telling Google "I am not a page,
+   * go to www". Google cannot resolve that contradiction, and it stops
+   * indexing while it tries: 56 pages sat as "Discovered – currently not
+   * indexed" having never been crawled, plus 9 "Redirect error".
+   *
+   * The fix is to make the apex serve directly (Vercel → Domains → set
+   * recruitmentconsultant.co.in as primary). If you instead decide www should
+   * be the public face, change this value, or NEXT_PUBLIC_SITE_URL, to
+   * https://www.recruitmentconsultant.co.in in the same change — the two must
+   * never disagree.
+   *
+   * `npm run check:canonical` verifies the live site against this value.
+   */
   url:
     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
     "https://recruitmentconsultant.co.in",

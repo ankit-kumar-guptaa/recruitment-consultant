@@ -5,11 +5,16 @@ only you can check.
 
 | Reason | Pages | Source | Verdict |
 | --- | --- | --- | --- |
-| Discovered – currently not indexed | 56 | Google systems | **Mostly normal, partly our fault.** Fixed in code — see §1 |
-| Redirect error | 9 | Website | **A real fault, and it is in hosting, not the app** — see §3 |
+| Discovered – currently not indexed | 56 | Google systems | **Root cause found** — every sitemap URL redirects. See §3. Two secondary causes also fixed in code, §1 |
+| Redirect error | 9 | Website | **Root cause found: apex/www mismatch.** One setting in Vercel — see §3 |
 | Crawled – currently not indexed | 5 | Google systems | Normal for a new domain — see §2 |
-| Page with redirect | 1 | Website | Expected — see §3 |
+| Page with redirect | 1 | Website | Same cause as the redirect errors — see §3 |
 | Blocked due to other 4xx issue | 1 | Website | Needs one URL Inspection — see §3 |
+
+> **One sentence version:** the site serves on `www.recruitmentconsultant.co.in`
+> but tells Google its canonical address is `recruitmentconsultant.co.in`, which
+> only redirects to www. Every sitemap URL therefore redirects, and every page
+> claims a canonical that redirects back to it. Fix is one setting in Vercel — §3.
 
 ---
 
@@ -95,65 +100,103 @@ disallowed in robots.txt by design, so it should not be in your reports at all.
 
 ---
 
-## 3. The redirect and 4xx errors — these need you, in Vercel or DNS
+## 3. ROOT CAUSE FOUND — the apex/www mismatch
 
-**There are no redirects in the application.** `next.config.ts` has no
-`redirects()`, there is no middleware, and nothing in the code issues a 3xx.
-Verified in this codebase. So all 9 redirect errors are produced by hosting or
-DNS, above the app.
+**This is the one that matters. It explains all three redirect rows and most of
+the 56.**
 
-The usual culprits, in order of likelihood:
+Traced against the live site on 15 Oct:
 
-1. **www ↔ non-www loop.** Your Search Console property is a *Domain* property,
-   which covers `recruitmentconsultant.co.in`, `www.recruitmentconsultant.co.in`,
-   and both over http. If Vercel is set to redirect www → apex while DNS (or a
-   Cloudflare rule) sends apex → www, Google follows the loop and reports
-   "Redirect error".
-2. **A proxy in front of Vercel.** Cloudflare's "Always Use HTTPS" plus a Vercel
-   redirect produces the same loop.
-3. **Leftovers from the static-export build.** This project previously built
-   with `output: "export"` (removed in commit `c91e0b4`), which serves
-   `/path/index.html`. Any trailing-slash URL Google learned then now 308s to
-   the non-slash version under `trailingSlash: false` — that is almost certainly
-   your single "Page with redirect", and it is harmless.
+```
+https://recruitmentconsultant.co.in/        308  ->  https://www.recruitmentconsultant.co.in/
+https://www.recruitmentconsultant.co.in/    200
+http://recruitmentconsultant.co.in/         308  ->  https (apex)  308  ->  www
+```
 
-### How to find the real answer in five minutes
+So **the site serves on `www.`** — Vercel has www as the primary domain and the
+bare domain only redirects to it.
 
-1. In Search Console, open **Page indexing → Redirect error** and copy one URL.
-2. Paste it into **URL Inspection** at the top, then click **Test live URL**.
-   It shows the redirect chain Google actually follows. A chain that returns to
-   where it started is the loop.
-3. Separately, in a terminal:
+But everything the site *declares* names the bare domain:
 
-   ```bash
-   curl -sSIL https://recruitmentconsultant.co.in/        | grep -iE "^(HTTP|location)"
-   curl -sSIL https://www.recruitmentconsultant.co.in/    | grep -iE "^(HTTP|location)"
-   curl -sSIL http://recruitmentconsultant.co.in/         | grep -iE "^(HTTP|location)"
-   ```
+| Declared on the live site | Value |
+| --- | --- |
+| `<link rel="canonical">` on the home page | `https://recruitmentconsultant.co.in` |
+| `og:url` | `https://recruitmentconsultant.co.in` |
+| JSON-LD `url` / `@id` | `https://recruitmentconsultant.co.in` |
+| All 68 sitemap `<loc>` entries | `https://recruitmentconsultant.co.in/...` |
+| `Sitemap:` line in robots.txt | `https://recruitmentconsultant.co.in/sitemap.xml` |
 
-   **What correct looks like:** `http://` → one 301 to `https://`.
-   `www` → one 301 to the apex (or the other way round — pick one, consistently).
-   The apex over https → **200, no Location header.**
+Put together, this is what Google sees:
 
-   **What broken looks like:** more than one redirect hop, or a `Location` that
-   eventually points back to a URL already in the chain.
+1. It fetches the sitemap at the bare domain — redirected to www — and gets
+   **68 bare-domain URLs**.
+2. It fetches one of those URLs. It **redirects** to the www version.
+3. It reads the www page, which declares **its canonical is the bare-domain
+   URL** — the one that just redirected.
+4. So the canonical is a redirect, and the redirect target disowns itself.
 
-4. For the single **"Blocked due to other 4xx issue"**, run URL Inspection on
-   it. If it is `/api/enquiry`, ignore it — that route only accepts POST and is
-   disallowed in robots.txt; it should never have been crawled and indexing it
-   would be wrong anyway.
+A canonical pointing at a URL that redirects back is a contradiction Google
+cannot resolve, and it withholds indexing while it tries. That is precisely the
+shape of this report: **9 "Redirect error", 1 "Page with redirect", and 56 URLs
+sitting as "Discovered" with "Last crawled: N/A"** — every sitemap URL leads
+to a redirect, so the crawler never gets a clean page to index.
 
-**Send me the redirect chain output and I will tell you exactly what to change.**
+### The fix — one change, in Vercel, not in the code
 
-### Also fixed here, pre-emptively
+**Make the bare domain the primary one**, so `www` redirects to it instead of
+the other way round:
 
-`vercel.json` now sends `X-Robots-Tag: noindex, nofollow` for any request
-arriving on a `*.vercel.app` host. The preview and production `.vercel.app`
-URLs were otherwise indexable duplicates of the real site competing with it.
-The rule matches on the Host header, so it cannot affect
-`recruitmentconsultant.co.in`.
+> Vercel → the project → **Settings → Domains** → set
+> `recruitmentconsultant.co.in` as **Primary**. `www` keeps working and
+> redirects to it.
 
----
+Why the bare domain rather than www:
+
+- The code, the sitemap, every canonical tag and all the JSON-LD already name
+  it. Nothing else has to change.
+- Google already has those 68 bare-domain URLs queued. They become correct the
+  moment the apex serves, instead of a new set having to be discovered.
+- It matches the brand, the email address and the citation details in
+  `docs/CITATIONS-NAP.md`.
+
+**If you would rather keep www as the public face**, that is fine too, but then
+the other side must move in the same change: set the environment variable
+`NEXT_PUBLIC_SITE_URL=https://www.recruitmentconsultant.co.in` in Vercel →
+Settings → Environment Variables, and redeploy. What must never happen again is
+the two disagreeing.
+
+⚠️ **Check this first:** `NEXT_PUBLIC_SITE_URL` is already set to the bare
+domain in the local `.env.local`, so it is probably set in Vercel too. If it is
+set there to the bare domain, the primary-domain change above is all that is
+needed and the value is already right.
+
+### Verify it in one command
+
+```bash
+npm run check:canonical
+```
+
+It fetches the live site and fails loudly if the declared origin is not the one
+that serves, if the served page's canonical names a different origin, or if the
+sitemap lists URLs on a host that redirects. Run it after any domain change.
+
+Against the live site right now it reports both faults; after the Vercel change
+it should print `OK`.
+
+### After the fix
+
+1. Redeploy (or just change the primary domain — no redeploy needed if the env
+   var already names the bare domain).
+2. Run `npm run check:canonical` and confirm `OK`.
+3. In Search Console, **Validate Fix** on the "Redirect error" row.
+4. Re-submit `/sitemap.xml`.
+5. `npm run indexnow` to push the corrected set to Bing.
+
+### The one remaining unknown
+
+"Blocked due to other 4xx issue" (1 page) — run URL Inspection on it. If it is
+`/api/enquiry`, ignore it: that route only accepts POST and is disallowed in
+robots.txt, so it should not be crawled and should not be indexed.
 
 ## 4. Analytics
 
@@ -171,15 +214,16 @@ and does not worsen LCP.
 
 | # | Action | Who |
 | --- | --- | --- |
-| 1 | Deploy this branch | You |
-| 2 | Re-submit `/sitemap.xml` in Search Console so the corrected `lastmod` dates are picked up | You |
-| 3 | Run the three `curl -sSIL` commands in §3 and send me the output | You |
-| 4 | Request indexing for `/` and `/hire` only — the internal links now carry the rest | You |
-| 5 | Start the Google Business Profiles and the first citations (`docs/CITATIONS-NAP.md`) | You |
-| 6 | `npm run indexnow` after the deploy — gets the pages into Bing immediately, which Google does not participate in but Copilot citations depend on | Either |
-| 7 | Wait two weeks before judging. Then compare indexed vs discovered | — |
+| 1 | **Vercel → Settings → Domains → make `recruitmentconsultant.co.in` the Primary domain.** This is the fix | You |
+| 2 | Deploy this branch (it carries the internal-linking and sitemap-date fixes) | You |
+| 3 | `npm run check:canonical` — must print `OK` | Either |
+| 4 | Search Console → Page indexing → **Validate Fix** on the "Redirect error" row | You |
+| 5 | Re-submit `/sitemap.xml` | You |
+| 6 | `npm run indexnow` to push the corrected URLs to Bing | Either |
+| 7 | URL Inspection on the one "Blocked due to other 4xx" page | You |
+| 8 | Start the Google Business Profiles and first citations (`docs/CITATIONS-NAP.md`) | You |
 
-One honest expectation: after this fix the curve should start moving within one
-to three weeks, not days. Internal linking and sitemap accuracy remove the
-obstacles — but crawl budget on a new domain is earned with links and time, and
-there is no setting that skips that.
+Honest expectation: once the apex serves directly, Google has to re-crawl and
+re-evaluate the 68 URLs it already has queued. Expect movement in **one to
+three weeks**, not days — but unlike before, the obstacle is gone rather than
+being waited out.
