@@ -38,6 +38,7 @@ export function HeroLeadForm() {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
+    data.set("sourcePage", window.location.pathname);
     data.set("intent", intent);
 
     setStatus("submitting");

@@ -1,6 +1,7 @@
 ﻿import "server-only";
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { saveEnquiry, markEnquiryMailStatus, isDatabaseConfigured } from "@/lib/db";
 
 // -- Config from environment
 const SMTP_HOST = process.env.SMTP_HOST ?? "";
@@ -31,6 +32,13 @@ function safeFilename(name: string) {
 function str(fd: FormData, key: string, max = 2000) {
   return String(fd.get(key) ?? "").trim().slice(0, max);
 }
+
+/**
+ * Worst case is a slow database plus a slow mail host: a 6s database budget
+ * plus 12s of SMTP connection timeout. Vercel's default function limit would
+ * cut that off mid-request and lose the lead, so ask for enough headroom.
+ */
+export const maxDuration = 30;
 
 export async function OPTIONS() {
   return new NextResponse(null, { status: 204 });
@@ -67,6 +75,8 @@ export async function POST(req: NextRequest) {
   }
 
   const attachments: nodemailer.SendMailOptions["attachments"] = [];
+  let cvOriginalName: string | null = null;
+  let cvSizeBytes: number | null = null;
   if (intent === "jobseeker") {
     const cvFile = fd.get("cv");
     if (cvFile && cvFile instanceof File && cvFile.size > 0) {
@@ -80,6 +90,8 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ ok: false, error: "CV must be a PDF, DOC, DOCX, RTF or ODT file." }, { status: 422 });
       }
       const buffer = Buffer.from(await cvFile.arrayBuffer());
+      cvOriginalName = cleanName;
+      cvSizeBytes = cvFile.size;
       attachments.push({
         filename: `${name.replace(/[^A-Za-z0-9]+/g, "-")}-CV${extension}`,
         content: buffer,
@@ -147,6 +159,26 @@ export async function POST(req: NextRequest) {
     receivedAt: new Date().toISOString(),
   });
 
+  const enquiryId = await saveEnquiry({
+    intent,
+    name,
+    email,
+    phone,
+    company,
+    industry,
+    role,
+    experience,
+    message,
+    cvFilename: cvOriginalName,
+    cvSizeBytes,
+    sourcePage: str(fd, "sourcePage", 255) || null,
+    userAgent: (req.headers.get("user-agent") ?? "").slice(0, 255) || null,
+  });
+
+  if (isDatabaseConfigured && enquiryId === null) {
+    console.error("[enquiry] not saved to the database — see the error above.");
+  }
+
   if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS || !MAIL_TO) {
     console.warn(
       "[enquiry] SMTP is not configured — set SMTP_HOST, SMTP_USER, SMTP_PASS and MAIL_TO. Lead logged only.",
@@ -177,9 +209,14 @@ export async function POST(req: NextRequest) {
       attachments,
     });
 
+    await markEnquiryMailStatus(enquiryId, "sent");
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("[enquiry] mail send failed:", err);
+    await markEnquiryMailStatus(enquiryId, "failed");
+
+    // The lead is already in the database, so it is not lost — but the sender
+    // is told it failed so they can follow up another way.
     return NextResponse.json(
       { ok: false, error: "We could not send your message right now. Please try again later." },
       { status: 502 },

@@ -9,9 +9,11 @@
     "lint": "next lint",
     "mail:test": "node scripts/test-mail.mjs",
     "indexnow": "node scripts/indexnow.mjs",
-    "check:canonical": "node scripts/check-canonical.mjs"
+    "check:canonical": "node scripts/check-canonical.mjs",
+    "db:test": "node scripts/db-test.mjs"
   },
   "dependencies": {
+    "mysql2": "^3.15.3",
     "next": "^15.5.4",
     "nodemailer": "^7.0.13",
     "react": "^19.1.1",

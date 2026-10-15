@@ -121,6 +121,7 @@ export function EnquiryForm({
     const form = event.currentTarget;
     const data = new FormData(form);
     data.set("intent", intent);
+    data.set("sourcePage", window.location.pathname);
     if (!isEmployer && cv) data.set("cv", cv);
     else data.delete("cv");
 
