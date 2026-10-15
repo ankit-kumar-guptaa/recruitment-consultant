@@ -146,3 +146,47 @@ export async function markEnquiryMailStatus(
     console.error("[db] mail status update failed:", error);
   }
 }
+
+export type DatabaseStatus =
+  | "ok"
+  | "table_missing"
+  | "unreachable"
+  | "auth_failed"
+  | "wrong_database"
+  | "error";
+
+/**
+ * Coarse health check for /api/health.
+ *
+ * Returns a category, never the driver's message: the caller renders this to
+ * the public internet. The full error goes to the server log instead.
+ */
+export async function checkDatabase(): Promise<DatabaseStatus> {
+  if (!isDatabaseConfigured) return "error";
+
+  try {
+    const result = await withBudget(
+      getPool().query("SELECT 1 FROM enquiries LIMIT 1"),
+      "health check",
+    );
+    return result === null ? "unreachable" : "ok";
+  } catch (error) {
+    const code = (error as { code?: string }).code;
+    console.error("[db] health check failed:", error);
+
+    switch (code) {
+      case "ER_NO_SUCH_TABLE":
+        return "table_missing";
+      case "ETIMEDOUT":
+      case "ECONNREFUSED":
+      case "ENOTFOUND":
+        return "unreachable";
+      case "ER_ACCESS_DENIED_ERROR":
+        return "auth_failed";
+      case "ER_BAD_DB_ERROR":
+        return "wrong_database";
+      default:
+        return "error";
+    }
+  }
+}

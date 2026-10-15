@@ -105,6 +105,23 @@ Vercel primary-domain fix in `docs/INDEXING-DIAGNOSIS.md` worked.
 
 ---
 
+## `npm run db:test` / `npm run db:init` — the enquiry database
+
+```bash
+npm run db:init    # creates the enquiries table if it is missing
+npm run db:test    # connects and reports; add -- --insert to prove writes work
+```
+
+Both need the `DB_*` values in `.env.local`, and Remote MySQL open on
+Hostinger. See `docs/DATABASE-SETUP.md`.
+
+**No terminal?** Everything these do can be done in the browser instead:
+create the table by pasting `db/001-enquiries.sql` into phpMyAdmin's SQL tab,
+and check the connection by opening
+`https://recruitmentconsultant.co.in/api/health`.
+
+---
+
 ## The ones you already know
 
 | Command | What it does |

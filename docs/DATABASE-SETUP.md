@@ -118,6 +118,35 @@ on this machine, and `.env.local` is gitignored so they are never committed.
 
 ## Step 4 — check it works
 
+### Without a terminal: open `/api/health` in the browser
+
+```
+https://recruitmentconsultant.co.in/api/health
+```
+
+It answers in plain JSON:
+
+```json
+{"ok":true,"database":"ok","mail":"configured","checkedAt":"..."}
+```
+
+`"ok": true` means a form submission right now would be both stored and
+emailed. If it is not working, `database` says which step is outstanding:
+
+| `database` | What it means |
+| --- | --- |
+| `ok` | Connected, and the `enquiries` table is there |
+| `not_configured` | The `DB_*` variables are not set on this deployment — or they were added but it has not been **redeployed** since |
+| `unreachable` | Remote MySQL is not open (step 2), or `DB_HOST` is wrong |
+| `wrong_database` | `DB_NAME` is wrong — usually the missing `u141142577_` prefix |
+| `auth_failed` | `DB_USER` or `DB_PASS` is wrong (same prefix trap on the user) |
+| `table_missing` | Connected fine, but step 1 has not been done |
+
+It deliberately reports no hostname, database name or driver error — those stay
+in the Vercel function logs.
+
+### With a terminal
+
 ```bash
 npm run db:test
 ```
