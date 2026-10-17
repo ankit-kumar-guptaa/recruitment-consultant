@@ -275,6 +275,7 @@ public/
 | `docs/SEO-PENDING.md` | **Start here.** Every outstanding task, P0 to P3, with owner and a week-by-week plan for the first 12 weeks |
 | `docs/COMPETITOR-ANALYSIS.md` | Read of Randstad, ABC Consultants, ManpowerGroup and JAC, plus the competitors that matter more |
 | `docs/SEO-PAGE-PLAN.md` | The four-batch page expansion plan and its quality gates; batches 1 and 2 shipped |
+| `docs/ANALYTICS-TAGS.md` | GA4 and Google Ads tags, conversion tracking, and why both share one loader |
 | `docs/DATABASE-SETUP.md` | Creating the `enquiries` table, opening Remote MySQL, and how enquiry storage behaves |
 | `docs/RUNNING-SCRIPTS.md` | Where and how to run `npm run indexnow`, `check:canonical` and the rest |
 | `docs/INDEXING-DIAGNOSIS.md` | Why pages were not being indexed, what was fixed in code, and the hosting checks still outstanding |

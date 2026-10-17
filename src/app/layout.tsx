@@ -122,11 +122,21 @@ export const viewport: Viewport = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  // The property's own measurement ID, so analytics works on any deployment
-  // without an env var having to be set first. NEXT_PUBLIC_GA4_ID overrides it
-  // (use a different ID on staging, or set it to "off" to disable entirely).
-  const configured = process.env.NEXT_PUBLIC_GA4_ID ?? "G-25H22Q1RNX";
-  const ga4 = configured === "off" ? null : configured;
+  // Google's own IDs, so both work on any deployment without an env var having
+  // to be set first. Either variable overrides its ID (point a staging
+  // deployment elsewhere), and the literal "off" disables that one.
+  //
+  // GA4 (G-) and Google Ads (AW-) are different products: GA4 measures which
+  // pages bring traffic and leads, Ads measures conversions for the ad
+  // account. They are NOT alternatives, so both are configured here — through
+  // ONE gtag.js loader, which is what Google means by "don't add more than one
+  // Google tag per page". Two separate loaders would double-count.
+  const ga4Id = process.env.NEXT_PUBLIC_GA4_ID ?? "G-25H22Q1RNX";
+  const adsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID ?? "AW-16878629802";
+  const ga4 = ga4Id === "off" ? null : ga4Id;
+  const ads = adsId === "off" ? null : adsId;
+  // Whichever is present loads the library; the configs attach to it.
+  const tagLoaderId = ga4 ?? ads;
 
   return (
     <html
@@ -145,16 +155,22 @@ export default function RootLayout({
         </EnquiryProvider>
         <OrganizationJsonLd />
         <WebsiteJsonLd />
-        {ga4 ? (
+        {tagLoaderId ? (
           <>
             {/* afterInteractive keeps gtag off the critical path, so it does
                 not push LCP out the way a head script would. */}
             <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${ga4}`}
+              src={`https://www.googletagmanager.com/gtag/js?id=${tagLoaderId}`}
               strategy="afterInteractive"
             />
-            <Script id="ga4-init" strategy="afterInteractive">
-              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${ga4}');`}
+            <Script id="gtag-init" strategy="afterInteractive">
+              {[
+                "window.dataLayer=window.dataLayer||[];",
+                "function gtag(){dataLayer.push(arguments);}",
+                "gtag('js',new Date());",
+                ga4 ? `gtag('config','${ga4}');` : "",
+                ads ? `gtag('config','${ads}');` : "",
+              ].join("")}
             </Script>
           </>
         ) : null}

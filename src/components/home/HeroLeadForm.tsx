@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { trackLeadConversion } from "@/lib/analytics";
 import { Icon } from "@/components/ui/Icon";
 import { useEnquiry } from "@/components/ui/EnquiryModal";
 import { intentTabs, type EnquiryIntent } from "@/components/ui/EnquiryForm";
@@ -48,6 +49,7 @@ export function HeroLeadForm() {
       const payload = (await res.json()) as { ok?: boolean; error?: string };
       if (!res.ok || !payload.ok) throw new Error(payload.error ?? "Something went wrong.");
       setStatus("success");
+      trackLeadConversion(intent, window.location.pathname);
       form.reset();
     } catch (error) {
       setStatus("error");

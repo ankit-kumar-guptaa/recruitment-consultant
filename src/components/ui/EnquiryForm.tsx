@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useRef, useState, type ReactNode } from "react";
+import { trackLeadConversion } from "@/lib/analytics";
 import { Icon } from "./Icon";
 import { industries } from "@/lib/site";
 
@@ -134,6 +135,7 @@ export function EnquiryForm({
         throw new Error(payload.error ?? "Something went wrong.");
       }
       setStatus("success");
+      trackLeadConversion(intent, window.location.pathname);
       form.reset();
       clearCv();
       onSuccess?.();
